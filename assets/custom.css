@@ -1,0 +1,103 @@
+a, a:hover {
+  color: #EC2E90;
+}
+
+.main-container {
+  margin-top: 25px;
+}
+.api-container {
+  height: 1px;
+}
+.api-reference {
+  position: fixed;
+  width: 314px;
+}
+
+.logo {
+  margin-top: -40px;
+  margin-left: -14px;
+}
+
+.infinity-logo {
+  font-size: 1.5em;
+  position: relative;
+  top: 2px;
+  color: #1D95CB;
+  -webkit-transition: color 0.15s linear;
+     -moz-transition: color 0.15s linear;
+      -ms-transition: color 0.15s linear;
+       -o-transition: color 0.15s linear;
+          transition: color 0.15s linear;
+}
+.infinity-logo:hover {
+  color: #2EA6DC;
+  text-decoration:none;
+}
+
+h1 a {
+  color: #1D95CB;
+  -webkit-transition: color 0.2s linear;
+     -moz-transition: color 0.2s linear;
+      -ms-transition: color 0.2s linear;
+       -o-transition: color 0.2s linear;
+          transition: color 0.2s linear;
+}
+
+h1 a:hover {
+  color: #2EA6DC;
+  text-decoration: none;
+}
+
+h1 .logo-prefix {
+  font-size: 200px;
+  line-height: 200px;
+}
+h1 .logo-suffix {
+  font-size: 140px;
+  line-height: 140px;
+  position: relative;
+  top: -10px;
+  left: -4px;
+  color: black;
+}
+
+.main-copy {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.main-copy p {
+  font-size: 20px;
+  line-height: 27px;
+  font-weight: 200;
+  margin-bottom: 20px;
+}
+
+.download {
+  margin-bottom: 40px;
+}
+
+.download .btn {
+  float: right;
+}
+
+.navbar .container {
+  width: auto;
+}
+.navbar .brand {
+  line-height: 15px;
+}
+.navbar .navbar-inner ul li .btn {
+  font-weight: normal;
+  text-shadow: none;
+}
+
+.download p {
+  font-size: 11px;
+  font-style: italic;
+  text-align: right;
+}
+
+.row-fluid.list-item {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
