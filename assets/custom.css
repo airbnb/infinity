@@ -48,6 +48,22 @@ h1 a:hover {
   text-decoration: none;
 }
 
+h2, h3 {
+  font-weight: normal;
+}
+h2 a {
+  color: black;
+  -webkit-transition: color 0.1s ease-out;
+     -moz-transition: color 0.1s ease-out;
+      -ms-transition: color 0.1s ease-out;
+       -o-transition: color 0.1s ease-out;
+          transition: color 0.1s ease-out;
+}
+h2 a:hover {
+  text-decoration: none;
+  color: #1D95CB;
+}
+
 h1 .logo-prefix {
   font-size: 200px;
   line-height: 200px;
@@ -74,6 +90,7 @@ h1 .logo-suffix {
 
 .download {
   margin-bottom: 40px;
+  padding-right: 16px;
 }
 
 .download .btn {
@@ -91,13 +108,45 @@ h1 .logo-suffix {
   text-shadow: none;
 }
 
+.icon-github {
+  font-size: 12px;
+  position: relative;
+  left: -1px;
+}
+
+.fork {
+  position: relative;
+  left: 5px;
+}
+
 .download p {
   font-size: 11px;
   font-style: italic;
   text-align: right;
 }
 
-.row-fluid.list-item {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.api-doc {
+  margin-bottom: 40px;
+}
+.api-doc:last-child {
+  margin-bottom: 10px;
+}
+
+.summary .panel-header {
+  text-align:center;
+}
+
+.summary li {
+  text-align: right;
+}
+
+.summary a , .summary a:hover {
+  color: black;
+  font-size: 16px;
+  line-height: 40px;
+}
+
+.pug-box {
+  width: 100%;
+  margin-bottom: 50px;
 }
