@@ -6,12 +6,21 @@
   var template = _.template($('#demo-template').html()),
       pugTemplate = _.template($('#demo-pug-template').html());
 
+  var listView = new ListView({
+    className: 'list-view',
+    lazy: function() {
+      $(this).find('.pug').each(function() {
+      });
+    }
+  });
+  listView.appendTo($('#demo'));
+
   function pug(num) {
     var pugs = [];
     for(var index = 0; index < num; index++) {
       pugs.push(pugTemplate({
         num: num,
-        src: Pugs[Math.floor(Math.random() * Pugs.length)],
+        pug: Pugs[Math.floor(Math.random() * Pugs.length)],
         title: 'what are you',
         caption: 'I AM A PUG!!!!!!!!!!'
       }));
@@ -25,10 +34,12 @@
     });
   }
 
-    for(var i = 100; i > 0; i--) {
-      $('#demo').append(row(Math.floor(Math.random() * 2) + 2));
-    }
-    $('.pug').each(function() {
-      $(this).width($(this).parent().width() - 2);
-    });
+  for(var i = 50; i > 0; i--) {
+    listView.append(row(Math.floor(Math.random() * 2) + 2));
+  }
+
+  window._debugListView = function() {
+    return listView;
+  }
+  console.log(listView);
 }(window, jQuery, infinity, Pugs);
