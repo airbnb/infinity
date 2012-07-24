@@ -72,8 +72,8 @@ h1 .logo-suffix {
   font-size: 140px;
   line-height: 140px;
   position: relative;
-  top: -10px;
-  left: -4px;
+  top: -15px;
+  left: -10px;
   color: black;
 }
 
@@ -147,6 +147,59 @@ h1 .logo-suffix {
 }
 
 .pug-box {
+  position: relative;
   width: 100%;
   margin-bottom: 50px;
+}
+.pug-box:hover {
+  box-shadow: 0px 0px 5px 1px #EE71BA;
+  border-color: #EE71BA;
+}
+.pug {
+  border-radius: 4px;
+}
+
+.spinner {
+  margin: 40px 493px;
+}
+
+.heart {
+  background-color: #BBB;
+  width: 30px;
+  height: 31px;
+  display: block;
+  border-radius: 6px;
+  position: absolute;
+  opacity: 0.7;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  line-height: 24px;
+  box-shadow: 1px 1px 1px #002;
+  border: 1px solid #444;
+  text-decoration: none;
+  cursor: pointer;
+}
+.heart:hover {
+  text-decoration: none;
+}
+.heart:hover, .heart.saved {
+  opacity: 0.95;
+}
+
+.heart .heart-inner {
+  color: #222;
+  text-shadow: 1px 1px #DDD, -1px -1px #666;
+}
+.heart.saved .heart-inner {
+  color: #EE71BA;
+  text-shadow: 1px 1px #ECC, -1px -1px #844;
+}
+.heart .heart-inner {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}
+.tooltip {
+  z-index: 1000;
 }
