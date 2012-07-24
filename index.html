@@ -153,7 +153,11 @@
     <script type=text/html id=demo-pug-template>
       <div class='span<%= Math.floor(12 / num) %> pug-item'>
         <div class='matte-media-box pug-box'>
-          <img class=pug src="<%= src %>">
+          <% intendedSize = num === 3 ? 322 : 493 %>
+          <% scale = (intendedSize - 10) / pug.width %>
+          <img class=pug src="<%= pug.src %>" 
+                style="width: <%= pug.width * scale %>px;
+                      height: <%= pug.height * scale %>px;">
           <div class=caption>
             <h4><%= title %></h4>
             <p><%= caption %></p>
@@ -167,8 +171,8 @@
     <script>ender.noConflict();</script>
     <script type=text/javascript src=assets/stdair.min.js></script>
     <script type=text/javascript src=assets/o2.min.js></script>
-    <script type=text/javascript src=infinity.js></script>
     <script type=text/javascript src=pugs.js></script>
+    <script type=text/javascript src=infinity.js></script>
     <script type=text/javascript src=index.js></script>
   </body>
 </html>
