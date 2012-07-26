@@ -1,8 +1,11 @@
-!function(window, $, infinity, Pugs) {
+!function(window, $, infinity, Pug) {
   var ListView = infinity.ListView,
       ListItem = infinity.ListItem,
       _ = require('underscore'),
-      modal = require('o2-modal');
+      modal = require('o2-modal'),
+      Pugs = Pug.images,
+      PugNames = Pug.names,
+      PugTaglines = Pug.taglines;
 
   var template = _.template($('#demo-template').html()),
       pugTemplate = _.template($('#demo-pug-template').html()),
@@ -56,14 +59,25 @@
   }();
 
   function pug(num) {
-    var pugs = [];
+    var rotate, rotateRight, rotateLeft, tagline, name,
+        pugs = [];
     pugCount += num;
     for(var index = 0; index < num; index++) {
+      var rotate = Math.random() > 0.5;
+      rotateRight = rotate && Math.random() > 0.5;
+      rotateLeft = rotate && !rotateRight;
+      tagline = _.template(PugTaglines[
+        Math.floor(Math.random() * PugTaglines.length)
+      ]);
+      name = PugNames[Math.floor(Math.random() * PugNames.length)];
       pugs.push(pugTemplate({
         num: num,
         pug: Pugs[Math.floor(Math.random() * Pugs.length)],
-        title: 'what are you',
-        caption: 'I AM A PUG!!!!!!!!!!'
+        title: name,
+        caption: tagline({ name: name }),
+        price: Math.floor(Math.random() * 100 + 10),
+        rotateRight: rotateRight,
+        rotateLeft: rotateLeft
       }));
     }
     return pugs;
@@ -87,4 +101,4 @@
     return listView;
   }
   window.pugCount = function() { return pugCount; };
-}(window, jQuery, infinity, Pugs);
+}(window, jQuery, infinity, Pug);

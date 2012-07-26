@@ -176,6 +176,25 @@
           <div class=caption>
             <h4><%= title %></h4>
             <p><%= caption %></p>
+            <div class='price-tag
+                        <%= rotateRight ? "rotate-right" : "" %>
+                        <%= rotateLeft ? "rotate-left" : ""%>
+                        '>
+              <div class=price-bottom>
+                <div class=curr-symbol>
+                  $
+                </div>
+                <div class=price-text>
+                  <%= price %>
+                </div>
+                <div class=per-night>
+                  per night
+                </div>
+              </div>
+              <div class=price-top>
+              </div>
+              <i class='icon icon-pushpin'></i>
+            </div>
           </div>
 
           <a class='heart' rel=tooltip title='Save to Puglist'>
@@ -198,7 +217,10 @@
     <script>ender.noConflict();</script>
     <script type=text/javascript src=assets/stdair.min.js></script>
     <script type=text/javascript src=assets/o2.min.js></script>
+    <script type=text/javascript src=demo-package.js></script>
     <script type=text/javascript src=pugs.js></script>
+    <script type=text/javascript src=names.js></script>
+    <script type=text/javascript src=taglines.js></script>
     <script type=text/javascript src=infinity.js></script>
     <script type=text/javascript src=index.js></script>
   </body>
