@@ -161,6 +161,8 @@
     return item;
   };
 
+  // WARNING: this will always break for prepends.
+  // TODO: fix for prepends.
   function cacheCoordsFor(listView, listItem) {
     listItem.$el.remove();
     listView.$el.append(listItem.$el);
@@ -300,6 +302,18 @@
     if(possibleItem instanceof ListItem) return possibleItem;
     if(typeof possibleItem === 'string') possibleItem = $(possibleItem);
     return new ListItem(possibleItem);
+  }
+
+
+  /*
+   * tooSmall
+   * --------
+   *
+   * Alerts the given ListView that the given Page is too small. May result
+   * in modifications to the `pages` array.
+   */
+
+  function tooSmall(listView, page) {
   }
 
 
@@ -579,6 +593,18 @@
    */
 
   Page.prototype.prepend = function(item) {
+    var items = this.items;
+
+    // recompute coords, sizing
+    this.bottom += item.height;
+    this.width = this.width > item.width ? this.width : item.width;
+    this.height = this.bottom - this.top;
+
+    items.push(item);
+    item.parent = this;
+    this.$el.prepend(item.$el);
+
+    this.lazyloaded = false;
   };
 
 
@@ -664,6 +690,23 @@
     };
   }());
 
+  function removeItemFromPage(item, page) {
+    var index, length, foundIndex,
+        items = this.items;
+    for(index = 0, length = items.length; index < length; index++) {
+      if(items[index] === item) {
+        foundIndex = index;
+        break;
+      }
+    }
+    if(typeof foundIndex === 'undefined') return false;
+    items.splice(foundIndex, 1);
+    this.bottom -= item.height;
+    this.height = this.bottom - this.top;
+    if(!this.hasVacancy()) tooSmall(this.parent, this);
+    return true;
+  }
+
 
   /*
    * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -693,6 +736,7 @@
 
   ListItem.prototype.remove = function() {
     this.$el.remove();
+    removeItemFromPage(this, this.parent);
     this.cleanup();
   };
 
