@@ -40,10 +40,10 @@
 
   // Constants
   var PAGE_ID_ATTRIBUTE = 'data-infinity-pageid',
-      PAGE_TO_SCREEN_RATIO = 1.5,
+      PAGE_TO_SCREEN_RATIO = 2,
       NUM_BUFFER_PAGES = 1,
       PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1,
-      SCROLL_THROTTLE = 100;
+      SCROLL_THROTTLE = 50;
 
 
   /*
@@ -314,6 +314,22 @@
    */
 
   function tooSmall(listView, page) {
+    var index, length, foundIndex,
+        pages = listView.pages;
+    
+    for(index = 0, length = pages.length; index < length; index++) {
+      if(pages[index] === page) {
+        foundIndex = index;
+        break;
+      }
+    }
+
+    if(typeof foundIndex === 'undefined') return false;
+
+    // TODO: check for other pages
+    // merge if possible
+    // split if necessary
+    // splice out old pages
   }
 
 
@@ -363,9 +379,13 @@
    */
 
   function indexWithinRange(listView, top, bottom) {
-    var index, length, curr,
-        startIndex = listView.startIndex,
+    var index, length, curr, startIndex,
         pages = listView.pages;
+
+    // start looking at the index of the page last contained by
+    // the screen -- not the first page in the onscreen pages
+    startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
+                          pages.length - 1);
 
     top -= listView.top;
     bottom -= listView.top;
