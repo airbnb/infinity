@@ -169,7 +169,7 @@
         <div class='matte-media-box pug-box'>
           <% intendedSize = num === 3 ? 322 : 493 %>
           <% scale = (intendedSize - 10) / pug.width %>
-          <img class='pug' src="<%= pug.src %>" 
+          <img class='pug' data-original="<%= pug.src %>" 
                 style="width: <%= pug.width * scale %>px;
                       height: <%= pug.height * scale %>px;">
 

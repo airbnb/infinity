@@ -15,6 +15,8 @@
     className: 'list-view',
     lazy: function() {
       $(this).find('.pug').each(function() {
+        var $ref = $(this);
+        $ref.attr('src', $ref.attr('data-original'));
       });
     }
   });
