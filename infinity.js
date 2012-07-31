@@ -294,10 +294,6 @@
   ListView.prototype.find = function(findObj) {
   };
 
-  ListView.prototype.at = function(index) {
-  };
-
-
   /*
    * startIndexWithinRange
    * ---------------------
