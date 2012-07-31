@@ -11,7 +11,7 @@
       pugTemplate = _.template($('#demo-pug-template').html()),
       spinnerTemplate = _.template($('#spinner-template').html());
 
-  var listView = new ListView({
+  var listView = new ListView($('#demo'), {
     className: 'list-view',
     lazy: function() {
       $(this).find('.pug').each(function() {
@@ -20,7 +20,6 @@
       });
     }
   });
-  listView.appendTo($('#demo'));
 
   var currPug = null;
   $(document).on('click', '.modal .save', function() {

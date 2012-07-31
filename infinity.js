@@ -53,7 +53,7 @@
    * ==============
    */
 
-  function ListView(options) {
+  function ListView($el, options) {
     options = options || {};
 
     this.$el = div();
@@ -72,6 +72,7 @@
     this.startIndex = 0;
 
     ScrollEvent.attach(this);
+    $el.html(this.$el);
   }
 
   function initBuffer(listView) {
@@ -113,6 +114,7 @@
     var lastPage, index, length,
         item = convertToItem(obj),
         pages = this.pages,
+        pagesToInsert = [],
         pageChange = false;
 
     cacheCoordsFor(this, item);
@@ -134,35 +136,16 @@
     index = updateStartIndex(this);
     length = Math.min(index + PAGES_ONSCREEN, pages.length);
     for(index; index < length; index++) {
-      pages[index].appendTo(this.$el);
+      pagesToInsert.push(pages[index]);
     }
+    insertPagesInView(this);
 
     return item;
   };
 
-
-  /*
-   * prepend
-   * -------
-   *
-   * Prepends a jQuery element or a ListItem to the ListView.
-   *
-   * - obj: a jQuery element, a string of valid HTML, or a ListItem.
-   */
-
-  ListView.prototype.prepend = function(obj) {
-    var firstPage,
-        item = convertToItem(obj),
-        pageChange = false;
-
-    cacheCoordsFor(this, item);
-    this.height += item.height;
-
-    return item;
-  };
 
   // WARNING: this will always break for prepends.
-  // TODO: fix for prepends.
+  // Once you add support for prepends, change this.
   function cacheCoordsFor(listView, listItem) {
     listItem.$el.remove();
     listView.$el.append(listItem.$el);
@@ -172,12 +155,17 @@
 
   
   // TODO: optimize
-  function orderedInsert(listView, pages) {
+  function insertPagesInView(listView) {
     var index, length, curr,
+        pages = listView.pages,
         inserted = false,
         inOrder = true;
-    for(index = 0, length = pages.length; index < length; index++) {
+    index = listView.startIndex;
+    length = Math.min(index + PAGES_ONSCREEN, pages.length);
+
+    for(index; index < length; index++) {
       curr = pages[index];
+      curr.lazyload(listView.lazyFn);
       if(inserted && curr.onscreen) inOrder = false;
 
       if(!inOrder) {
@@ -205,7 +193,7 @@
    */
 
   function updateStartIndex(listView) {
-    var index, length, curr, pages, indexInView, pagesInView,
+    var index, length, curr, pages, indexInView,
         lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         scrollTop = $(window).scrollTop(),
@@ -218,14 +206,12 @@
     pages = listView.pages;
     startIndex = listView.startIndex;
     indexInView = new Array(pages.length);
-    pagesInView = [];
     lastIndex = Math.min(startIndex + PAGES_ONSCREEN, pages.length);
     nextLastIndex = Math.min(nextIndex + PAGES_ONSCREEN, pages.length);
 
     // mark current pages as valid
     for(index = nextIndex, length = nextLastIndex; index < length; index++) {
       indexInView[index] = true;
-      pagesInView.push(pages[index]);
     }
     // sweep any invalid old pages
     for(index = startIndex, length = lastIndex; index < length; index++) {
@@ -234,43 +220,10 @@
 
     listView.startIndex = nextIndex;
 
-    orderedInsert(listView, pagesInView);
+    insertPagesInView(listView);
     updateBuffer(listView);
-    listView.lazyload();
     return nextIndex;
   }
-
-
-  /*
-   * appendTo
-   * --------
-   *
-   * Proxies to jQuery to append the ListView's jQuery element to the given
-   * jQuery element.
-   *
-   * - $el: a jQuery element.
-   */
-
-  ListView.prototype.appendTo = function($el) {
-    this.$el.appendTo($el);
-    this.top = this.$el.offset().top;
-  };
-
-
-  /*
-   * prependTo
-   * ---------
-   * 
-   * Proxies to jQuery to prepend the ListView's jQuery element to the given
-   * jQuery element.
-   *
-   * - $el: a jQuery element.
-   */
-
-  ListView.prototype.prependTo = function($el) {
-    this.$el.prependTo($el);
-    this.top = this.$el.offset().top;
-  };
 
 
   /*
@@ -429,23 +382,6 @@
 
   ListView.prototype.cleanup = function() {
     ScrollEvent.detach(this);
-  };
-
-  /*
-   * ListView lazy loading
-   * =====================
-   */
-
-  ListView.prototype.lazyload = function() {
-    if(!this.lazy) return;
-
-    var index = this.startIndex,
-        pages = this.pages,
-        length = Math.min(index + PAGES_ONSCREEN, pages.length);
-
-    for(index; index < length; index++) {
-      pages[index].lazyload(this.lazyFn);
-    }
   };
 
 
@@ -689,8 +625,11 @@
   };
 
   Page.prototype.lazyload = function(callback) {
+    var index, length;
     if(!this.lazyloaded) {
-      callback.call(this.$el[0]);
+      for(index = 0, length = this.$el.length; index < length; index++) {
+        callback.call(this.$el[index]);
+      }
       this.lazyloaded = true;
     }
   };
