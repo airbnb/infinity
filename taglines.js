@@ -47,5 +47,7 @@ Pug.taglines = [
   'Brussel sprout farmer.',
   'Ramen enthusiast.',
   'One-of-a-kind cyborg pug.',
-  'Enjoys a fine radial gradient before breakfast each morning.'
+  'Enjoys a fine radial gradient before breakfast each morning.',
+  'Gold farmer.',
+  'Will make Dogbnb clones in exchange for tea and crumpets.'
 ];
