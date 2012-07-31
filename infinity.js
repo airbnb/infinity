@@ -56,7 +56,9 @@
   function ListView($el, options) {
     options = options || {};
 
-    this.$el = div();
+    this.$el = $el;
+    $el.html(''); // clear any existing children
+
     if(options.className) this.$el.addClass(options.className);
     if(options.id) this.$el.attr('id', options.id);
     this.lazy = !!options.lazy;
@@ -64,7 +66,6 @@
 
     initBuffer(this);
 
-    this.top = 0;
     this.width = 0;
     this.height = 0;
 
@@ -72,7 +73,6 @@
     this.startIndex = 0;
 
     ScrollEvent.attach(this);
-    $el.html(this.$el);
   }
 
   function initBuffer(listView) {
@@ -335,9 +335,6 @@
     // the screen -- not the first page in the onscreen pages
     startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
                           pages.length - 1);
-
-    top -= listView.top;
-    bottom -= listView.top;
 
     if(pages.length <= 0) return -1;
 
