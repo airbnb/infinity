@@ -40,10 +40,10 @@
 
   // Constants
   var PAGE_ID_ATTRIBUTE = 'data-infinity-pageid',
-      PAGE_TO_SCREEN_RATIO = 2,
+      PAGE_TO_SCREEN_RATIO = 3,
       NUM_BUFFER_PAGES = 1,
       PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1,
-      SCROLL_THROTTLE = 50;
+      SCROLL_THROTTLE = 300;
 
 
   /*
