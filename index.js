@@ -5,7 +5,8 @@
       modal = require('o2-modal'),
       Pugs = Pug.images,
       PugNames = Pug.names,
-      PugTaglines = Pug.taglines;
+      PugTaglines = Pug.taglines,
+      PugStorage = Pug.storage;
 
   var template = _.template($('#demo-template').html()),
       pugTemplate = _.template($('#demo-pug-template').html()),
@@ -23,7 +24,15 @@
 
   var currPug = null;
   $(document).on('click', '.modal .save', function() {
-    if(currPug) currPug.addClass('saved');
+    if(currPug) {
+      currPug.addClass('saved');
+      var $box = currPug.closest('.pug-box');
+      PugStorage.save(
+        $box.attr('data-pug'),
+        $box.attr('data-name'),
+        $box.attr('data-caption')
+      );
+    }
     modal.close();
     return false;
   });
@@ -34,7 +43,7 @@
   });
   $(document).on('click', '.heart', function() {
     currPug = $(this);
-    modal('#save-modal').open();
+    if(!currPug.hasClass('saved')) modal('#save-modal').open();
     return false;
   });
 
@@ -59,34 +68,47 @@
     });
   }();
 
-  function pug(num) {
-    var rotate, rotateRight, rotateLeft, tagline, name,
+  function pug(num, pug, name, caption) {
+    var rotate, rotateRight, rotateLeft;
+    pugCount++;
+
+    rotate = Math.random() > 0.5;
+    rotateRight = rotate && Math.random() > 0.5;
+    rotateLeft = rotate && !rotateRight;
+    saved = PugStorage.check(pug.src, name, caption);
+    if(saved) console.log('YES!');
+
+    return pugTemplate({
+      num: num,
+      pug: pug,
+      title: name,
+      caption: caption,
+      saved: saved,
+      price: Math.floor(Math.random() * 100 + 10),
+      rotateRight: rotateRight,
+      rotateLeft: rotateLeft
+    });
+  }
+
+  function pugs(num) {
+    var tagline, name, pugData, caption,
         pugs = [];
-    pugCount += num;
     for(var index = 0; index < num; index++) {
-      var rotate = Math.random() > 0.5;
-      rotateRight = rotate && Math.random() > 0.5;
-      rotateLeft = rotate && !rotateRight;
       tagline = _.template(PugTaglines[
         Math.floor(Math.random() * PugTaglines.length)
       ]);
       name = PugNames[Math.floor(Math.random() * PugNames.length)];
-      pugs.push(pugTemplate({
-        num: num,
-        pug: Pugs[Math.floor(Math.random() * Pugs.length)],
-        title: name,
-        caption: tagline({ name: name }),
-        price: Math.floor(Math.random() * 100 + 10),
-        rotateRight: rotateRight,
-        rotateLeft: rotateLeft
-      }));
+      caption = tagline({name: name});
+      pugData = Pugs[Math.floor(Math.random() * Pugs.length)];
+
+      pugs.push(pug(num, pugData, name, caption));
     }
     return pugs;
   }
 
   function row(num) {
     return template({
-      pugs: pug(num)
+      pugs: pugs(num)
     });
   }
 

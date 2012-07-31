@@ -34,7 +34,7 @@ a, a:hover {
   text-decoration:none;
 }
 
-h1 a {
+.logo-link {
   color: #1D95CB;
   -webkit-transition: color 0.2s linear;
      -moz-transition: color 0.2s linear;
@@ -43,7 +43,7 @@ h1 a {
           transition: color 0.2s linear;
 }
 
-h1 a:hover {
+.logo-link:hover {
   color: #2EA6DC;
   text-decoration: none;
 }
@@ -51,7 +51,7 @@ h1 a:hover {
 h2, h3 {
   font-weight: normal;
 }
-h2 a {
+.api-header-link {
   color: black;
   -webkit-transition: color 0.1s ease-out;
      -moz-transition: color 0.1s ease-out;
@@ -59,16 +59,16 @@ h2 a {
        -o-transition: color 0.1s ease-out;
           transition: color 0.1s ease-out;
 }
-h2 a:hover {
+.api-header-link:hover {
   text-decoration: none;
   color: #1D95CB;
 }
 
-h1 .logo-prefix {
+.logo-prefix {
   font-size: 200px;
   line-height: 200px;
 }
-h1 .logo-suffix {
+.logo-suffix {
   font-size: 140px;
   line-height: 140px;
   position: relative;
@@ -119,7 +119,7 @@ h1 .logo-suffix {
   left: 5px;
 }
 
-.download p {
+.download-copy {
   font-size: 11px;
   font-style: italic;
   text-align: right;
@@ -130,6 +130,12 @@ h1 .logo-suffix {
 }
 .api-doc:last-child {
   margin-bottom: 10px;
+}
+
+.api-copy {
+  font-size: 14px;
+  margin-top: 14px;
+  line-height: 22px;
 }
 
 .summary .panel-header {

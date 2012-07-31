@@ -12,7 +12,7 @@
       <div class=row>
         <div class=span12>
           <h1 class=logo>
-            <a href=/>
+            <a class=logo-link href=/>
               <span class=logo-prefix>&infin;</span>
               <span class=logo-suffix>.js</span>
             </a>
@@ -45,12 +45,12 @@
                       panel-background-white
                       panel-border panel-padding'>
             <div class=row-fluid>
-              <p>Development version (unminified, with comments)</p>
+              <p class=download-copy>Development version (unminified, with comments)</p>
               <a href=infinity-wrapper.js class='btn gray'>Download</a>
             </div>
             <br>
             <div class=row-fluid>
-              <p>Production version (minified and comments stripped)</p>
+              <p class=download-copy>Production version (minified and comments stripped)</p>
               <a href=# class=btn>Download</a>
             </div>
           </div>
@@ -89,10 +89,31 @@
           <div class='panel-padding'>
 
             <div class='row-fluid api-doc' id=api-listview>
-              <div class=span9>
-                <h2><a href=#api-listview>ListView</a></h2>
+              <div class=span8>
+                <h2><a class=api-header-link href=#api-listview>ListView</a></h2>
+                <p class=api-copy>
+                  A <strong>ListView</strong> is a container
+                  that moves content in and out of the DOM on the scroll event.
+                  ListViews help keep repaint times of expensive pages down
+                  (and scrolling smooth) by making sure that there are never
+                  too many elements onscreen at a single time. ListViews excel
+                  at speeding up long lists of complex HTML elements,
+                  where new content is frequently appended to the end and
+                  existing content is rarely removed.
+                </p>
+                <p class=api-copy>
+                  ListViews are simple, and have several caveats: they can't be
+                  nested inside each other, and they can't have heights set via
+                  CSS. Additionally, ListViews can't easily change sizes except
+                  by appending or removing elements, and so list items that
+                  need to slide open or change their sizing will be difficult
+                  to implement. Appending elements to a ListView is relatively
+                  fast, but removing elements is slower &mdash; so designs that
+                  need to remove elements multiple times a second at high
+                  framerates will struggle.
+                </p>
               </div>
-              <div class=span3>
+              <div class='span3 offset1'>
                 <div class='panel-background-white panel-border summary'>
                   <div class='panel-header panel-header-dark'>
                     <h3>Table of Contents</h3>
@@ -112,7 +133,16 @@
 
             <div class='row-fluid api-doc' id=api-page>
               <div class=span9>
-                <h2><a href=#api-page>Page</a></h2>
+                <h2><a class=api-header-link href=#api-page>ListItem</a></h2>
+                <p class=api-copy>
+                  <strong>ListItems</strong> are wrappers for individual DOM
+                  nodes placed inside a ListView. You'll normally never need
+                  to create ListItems yourself; the ListView will automatically
+                  wrap any jQuery elements you pass into it for you. However,
+                  you may find it useful to interact with them
+                  individually, and so ListViews make it easy to inspect their
+                  collections of ListItems.
+                </p>
               </div>
               <div class=span3>
                 <div class='panel-background-white panel-border summary'>
@@ -166,7 +196,11 @@
 
     <script type=text/html id=demo-pug-template>
       <div class='span<%= Math.floor(12 / num) %> pug-item'>
-        <div class='matte-media-box pug-box'>
+        <div class='matte-media-box pug-box'
+          data-pug="<%= pug.src %>"
+          data-name="<%= title %>"
+          data-caption="<%= caption %>"
+        >
           <% intendedSize = num === 3 ? 322 : 493 %>
           <% scale = (intendedSize - 10) / pug.width %>
           <img class='pug' data-original="<%= pug.src %>" 
@@ -174,8 +208,8 @@
                       height: <%= pug.height * scale %>px;">
 
           <div class=caption>
-            <h4><%= title %></h4>
-            <p><%= caption %></p>
+            <h4 class=caption-name><%= title %></h4>
+            <p class=caption-text><%= caption %></p>
             <div class='price-tag
                         <%= rotateRight ? "rotate-right" : "" %>
                         <%= rotateLeft ? "rotate-left" : ""%>
@@ -197,7 +231,7 @@
             </div>
           </div>
 
-          <a class='heart' rel=tooltip title='Save to Puglist'>
+          <a class='heart<%= saved ? " saved" : "" %>' rel=tooltip title='Save to Puglist'>
             <i class='icon icon-heart heart-inner'></i>
           </a>
         </div>
@@ -221,6 +255,7 @@
     <script type=text/javascript src=pugs.js></script>
     <script type=text/javascript src=names.js></script>
     <script type=text/javascript src=taglines.js></script>
+    <script type=text/javascript src=storage.js></script>
     <script type=text/javascript src=infinity.js></script>
     <script type=text/javascript src=index.js></script>
   </body>
