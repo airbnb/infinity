@@ -114,7 +114,13 @@
 
   function pb(num) {
     for(var i = num; i > 0; i--) {
-      listView.append(row(Math.floor(Math.random() * 2) + 2));
+      /*
+      $('#demo').append(row(3));
+      $('.pug').each(function() {
+        $(this).attr('src', $(this).attr('data-original'));
+      });
+      */
+      listView.append(row(3));
     }
   }
 
