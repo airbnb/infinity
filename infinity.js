@@ -43,7 +43,7 @@
       PAGE_TO_SCREEN_RATIO = 3,
       NUM_BUFFER_PAGES = 1,
       PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1,
-      SCROLL_THROTTLE = 300;
+      SCROLL_THROTTLE = 350;
 
 
   /*
@@ -66,6 +66,7 @@
 
     initBuffer(this);
 
+    this.top = this.$el.offset().top;
     this.width = 0;
     this.height = 0;
 
@@ -111,10 +112,9 @@
    */
 
   ListView.prototype.append = function(obj) {
-    var lastPage, index, length,
+    var lastPage,
         item = convertToItem(obj),
         pages = this.pages,
-        pagesToInsert = [],
         pageChange = false;
 
     cacheCoordsFor(this, item);
@@ -130,14 +130,6 @@
     }
 
     lastPage.append(item);
-
-    // TODO: update index, buffer
-
-    index = updateStartIndex(this);
-    length = Math.min(index + PAGES_ONSCREEN, pages.length);
-    for(index; index < length; index++) {
-      pagesToInsert.push(pages[index]);
-    }
     insertPagesInView(this);
 
     return item;
@@ -196,10 +188,10 @@
     var index, length, curr, pages, indexInView,
         lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        scrollTop = $(window).scrollTop(),
-        viewportHeight = $(window).height(),
-        scrollBottom = scrollTop + viewportHeight,
-        nextIndex = startIndexWithinRange(listView, scrollTop, scrollBottom);
+        viewTop = $(window).scrollTop() - listView.top,
+        viewHeight = $(window).height(),
+        viewBottom = viewTop + viewHeight,
+        nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
     if( nextIndex < 0 || nextIndex === startIndex) return startIndex;
 
@@ -328,42 +320,49 @@
    */
 
   function indexWithinRange(listView, top, bottom) {
-    var index, length, curr, startIndex,
-        pages = listView.pages;
+    var index, length, curr, startIndex, midpoint, diff, prevDiff,
+        pages = listView.pages,
+        rangeMidpoint = top + (bottom - top)/2;
 
-    // start looking at the index of the page last contained by
-    // the screen -- not the first page in the onscreen pages
+    // start looking at the index of the page last contained by the screen --
+    // not the first page in the onscreen pages
     startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
                           pages.length - 1);
 
     if(pages.length <= 0) return -1;
 
     curr = pages[startIndex];
-    if(curr.top > bottom) {
+    midpoint = curr.top + curr.height/2;
+    prevDiff = rangeMidpoint - midpoint;
+    if(prevDiff < 0) {
       // search above
       for(index = startIndex - 1; index >= 0; index--) {
         curr = pages[index];
-        if(curr.bottom < top) {
-          if(index === pages.length - 1) return pages.length - 1;
+        midpoint = curr.top + curr.height/2;
+        diff = rangeMidpoint - midpoint;
+        if(diff > 0) {
+          if(diff < -prevDiff) return index;
           return index + 1;
         }
-        if(curr.top <= bottom && curr.bottom >= top) return index;
+        prevDiff = diff;
       }
       return 0;
-    } else if (curr.bottom < top) {
+    } else if (prevDiff > 0) {
       // search below
       for(index = startIndex + 1, length = pages.length; index < length; index++) {
         curr = pages[index];
-        if(curr.top > bottom) {
-          if(index === 0) return 0;
+        midpoint = curr.top + curr.height/2;
+        diff = rangeMidpoint - midpoint;
+        if(diff < 0) {
+          if(-diff < prevDiff) return index;
           return index - 1;
         }
-        if(curr.top <= bottom && curr.bottom >= top) return index;
+        prevDiff = diff;
       }
       return pages.length - 1;
     }
 
-    // found it
+    // perfect hit! return this guy.
     return startIndex;
   }
 
