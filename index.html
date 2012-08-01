@@ -74,6 +74,8 @@
               <li class=divider-vertical>
               <li><a href=#api-listitem>ListItem</a>
               <li class=divider-vertical>
+              <li><a href=#api-config>Configuration</a>
+              <li class=divider-vertical>
               <li><a href=#demo>Demo</a>
             </ul>
 
@@ -152,6 +154,11 @@
                     Methods
                 </a></h3>
                 <ul class=api-list>
+                  <li><code>new ListView($el)</code>: creates a new ListView
+                  that will append its content inside the given
+                  jQuery element. The element passed in must be already in
+                  the DOM: otherwise, the ListView will cache incorrect
+                  size and positioning data.
                   <li><code>append($el | listItem)</code>: appends a jQuery
                   element or a ListItem to the ListView. Returns either the
                   given ListItem, or the given jQuery element wrapped inside of
@@ -169,7 +176,7 @@
 
             <div class='row-fluid api-doc' id=api-listitem>
               <div class=span9>
-                <h2><a class=api-header-link href=#api-page>ListItem</a></h2>
+                <h2><a class=api-header-link href=#api-listitem>ListItem</a></h2>
                 <p class=api-copy>
                   <strong>ListItems</strong> are wrappers for individual DOM
                   nodes placed inside a ListView. You'll normally never need
@@ -187,13 +194,88 @@
                   </div>
                   <div class=panel-padding>
                     <ul class=unstyled>
-                      <li class=pull-right><a href=#>Summary</a>
-                      <li class=pull-right><a href=#>Properties</a>
-                      <li class=pull-right><a href=#>Methods</a>
-                      <li class=pull-right><a href=#>Examples</a>
+                      <li class=pull-right><a href=#api-listitem>Summary</a>
+                      <li class=pull-right><a href=#api-listitem-properties>Properties</a>
+                      <li class=pull-right><a href=#api-listitem-methods>Methods</a>
+                      <li class=pull-right><a href=#api-listitem>Examples</a>
                     </ul>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listitem-properties>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listitem-properties>
+                    Properties
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>$el</code>: the jQuery element this ListItem wraps.
+                  <li><code>width</code>: the width of the ListItem.
+                  <li><code>height</code>: the height of the ListItem.
+                  <li><code>top</code>: the top of the ListItem onscreen,
+                  relative to its ListView parent.
+                  <li><code>bottom</code>: the bottom of the ListItem onscreen,
+                  relative to its ListView parent.
+                </ul>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listitem-methods>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listitem-methods>
+                    Methods
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>remove()</code>: permanently removes the ListItem
+                  from the ListView, and cleans up after it.
+                  <li><code>cleanup()</code>: unbinds all events and
+                  relinquishes all references it holds, but does not remove the
+                  ListItem from the ListView.
+                </ul>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=api-config>
+              <div class=span12>
+                <h2><a class=api-header-link href=#api-config>
+                    Configuring Infinity.js
+                </a></h2>
+                <p class=api-copy>
+                  We've tried to choose sensible defaults for Infinity,
+                  but sometimes there are special cases we haven't designed
+                  for. Infinity.js can be configured with two options to help
+                  make sure scrolling stays smooth for a variety of
+                  circumstances. The configuration options are as follows:
+                </p>
+                <ul class=api-list>
+                  <li><code>infinity.config.PAGE_TO_SCREEN_RATIO</code>:
+                  internally, Infinity.js puts its ListItems into blocks of
+                  <strong>Pages</strong>, and this variable controls how large a
+                  page should be relative to the size of the viewport. By
+                  default, it is set to <code>3</code>. Larger pages mean
+                  that Infinity has to swap pages less frequently, and smaller
+                  pages mean faster rendering times. If you have extremely
+                  complex pages, you might want to decrease this so that 
+                  there's less onscreen to slow down the page; on the other
+                  hand, if you have very simple pages, you might want to
+                  increase this to minimize even further the possibility of
+                  jarring swaps or scroll flickering.
+                  <li><code>infinity.config.SCROLL_THROTTLE</code>: Infinity.js
+                  throttles its scroll event: it only responds to scroll events
+                  every 350 milliseconds. If you'd like to make it respond
+                  more or less often, set this value to the desired number
+                  of milliseconds you'd like Infinity to throttle to. If you've
+                  increased the <code>PAGE_TO_SCREEN_RATIO</code>, you could
+                  increase the <code>SCROLL_THROTTLE</code> to do less frequent
+                  computation; if you've decreased the
+                  <code>PAGE_TO_SCREEN_RATIO</code>, you'll probably want to
+                  also decrease the <code>SCROLL_THROTTLE</code> to make sure
+                  the smaller pages get swapped onto the page more regularly,
+                  since your given buffer around the screen is smaller.
+                </ul>
               </div>
             </div>
 
