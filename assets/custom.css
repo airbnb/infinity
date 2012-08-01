@@ -132,10 +132,18 @@ h2, h3 {
   margin-bottom: 10px;
 }
 
-.api-copy {
+.api-copy, .api-list {
   font-size: 14px;
   margin-top: 14px;
   line-height: 22px;
+}
+
+.api-list li {
+  margin-bottom: 12px;
+  line-height: 22px;
+}
+.api-list li:last-child {
+  margin-bottom: 0;
 }
 
 .summary .panel-header {

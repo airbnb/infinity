@@ -45,12 +45,16 @@
                       panel-background-white
                       panel-border panel-padding'>
             <div class=row-fluid>
-              <p class=download-copy>Development version (unminified, with comments)</p>
+              <p class=download-copy>
+                Development version (unminified, with comments)
+              </p>
               <a href=infinity-wrapper.js class='btn gray'>Download</a>
             </div>
             <br>
             <div class=row-fluid>
-              <p class=download-copy>Production version (minified and comments stripped)</p>
+              <p class=download-copy>
+                Production version (minified and comments stripped)
+              </p>
               <a href=# class=btn>Download</a>
             </div>
           </div>
@@ -68,11 +72,9 @@
               <li class=divider-vertical>
               <li><a href=#api-listview>ListView</a>
               <li class=divider-vertical>
-              <li><a href=#api-page>Page</a>
+              <li><a href=#api-listitem>ListItem</a>
               <li class=divider-vertical>
-              <li><a href=#>ListItem</a>
-              <li class=divider-vertical>
-              <li><a href=#>Demo</a>
+              <li><a href=#demo>Demo</a>
             </ul>
 
             <ul class='nav pull-right'>
@@ -120,9 +122,9 @@
                   </div>
                   <div class=panel-padding>
                     <ul class=unstyled>
-                      <li class=pull-right><a href=#>Summary</a>
-                      <li class=pull-right><a href=#>Properties</a>
-                      <li class=pull-right><a href=#>Methods</a>
+                      <li class=pull-right><a href=#api-listview>Summary</a>
+                      <li class=pull-right><a href=#api-listview-properties>Properties</a>
+                      <li class=pull-right><a href=#api-listview-methods>Methods</a>
                       <li class=pull-right><a href=#>Examples</a>
                     </ul>
                   </div>
@@ -130,8 +132,42 @@
               </div>
             </div>
 
+            <div class='row-fluid api-doc' id=api-listview-properties>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listview-properties>
+                    Properties
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>$el</code>: the jQuery element used as the parent
+                  of the ListView.
+                  <li><code>width</code>: the width of the ListView.
+                  <li><code>height</code>: the height of the ListView.
+                </ul>
+              </div>
+            </div>
 
-            <div class='row-fluid api-doc' id=api-page>
+            <div class='row-fluid api-doc' id=api-listview-methods>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listview-methods>
+                    Methods
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>append($el | listItem)</code>: appends a jQuery
+                  element or a ListItem to the ListView. Returns either the
+                  given ListItem, or the given jQuery element wrapped inside of
+                  a new ListItem.
+                  <li><code>find(selector | $el)</code>:
+                  <li><code>remove()</code>: removes the ListView from the DOM,
+                  and cleans up after it.
+                  <li><code>cleanup()</code>: unbinds all events, but does not
+                  remove the ListView from the DOM.
+                </ul>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=api-listitem>
               <div class=span9>
                 <h2><a class=api-header-link href=#api-page>ListItem</a></h2>
                 <p class=api-copy>
