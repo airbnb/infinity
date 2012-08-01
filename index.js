@@ -12,6 +12,9 @@
       pugTemplate = _.template($('#demo-pug-template').html()),
       spinnerTemplate = _.template($('#spinner-template').html());
 
+  infinity.config.PAGE_TO_SCREEN_RATIO = 2;
+  infinity.config.SCROLL_THROTTLE = 100;
+
   var listView = new ListView($('#demo'), {
     className: 'list-view',
     lazy: function() {
