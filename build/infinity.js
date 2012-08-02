@@ -36,15 +36,17 @@
 
   // Packaging
   var oldInfinity = window.infinity,
-      infinity = window.infinity = {};
+      infinity = window.infinity = {},
+      config = infinity.config = {};
 
   // Constants
   var PAGE_ID_ATTRIBUTE = 'data-infinity-pageid',
-      PAGE_TO_SCREEN_RATIO = 3,
       NUM_BUFFER_PAGES = 1,
-      PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1,
-      SCROLL_THROTTLE = 350;
+      PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1;
 
+  // Config
+  config.PAGE_TO_SCREEN_RATIO = 3;
+  config.SCROLL_THROTTLE = 350;
 
   /*
    * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -226,7 +228,7 @@
    */
 
   ListView.prototype.remove = function() {
-    this.$el.remove();
+    this.$el.html('');
     this.cleanup();
   };
 
@@ -400,7 +402,7 @@
 
     function scrollHandler() {
       if(!scrollScheduled) {
-        setTimeout(scrollAll, SCROLL_THROTTLE);
+        setTimeout(scrollAll, config.SCROLL_THROTTLE);
         scrollScheduled = true;
       }
     }
@@ -564,7 +566,7 @@
    */
 
   Page.prototype.hasVacancy = function() {
-    return this.height < $(window).height() * PAGE_TO_SCREEN_RATIO;
+    return this.height < $(window).height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
 

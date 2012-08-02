@@ -228,7 +228,7 @@
    */
 
   ListView.prototype.remove = function() {
-    this.$el.remove();
+    this.$el.html('');
     this.cleanup();
   };
 
