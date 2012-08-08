@@ -72,8 +72,6 @@
     // Clear any existing children
     $el.html('');
 
-    if(options.className) this.$el.addClass(options.className);
-    if(options.id) this.$el.attr('id', options.id);
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
 

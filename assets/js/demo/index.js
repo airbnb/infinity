@@ -16,7 +16,6 @@
   infinity.config.SCROLL_THROTTLE = 100;
 
   var listView = new ListView($('#demo'), {
-    className: 'list-view',
     lazy: function() {
       $(this).find('.pug').each(function() {
         var $ref = $(this);

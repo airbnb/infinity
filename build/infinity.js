@@ -30,7 +30,7 @@
   // However, setting heights on ListItems is ok.
   //
   // If you're reading this, we probably want to hear from you. If the feeling
-  // is mutual: [http://www.airbnb.com/jobs](http://www.airbnb.com/jobs)
+  // is mutual: [get in touch.](http://www.airbnb.com/jobs)
 
 
   // Initial Setup
@@ -56,10 +56,10 @@
   // ==============
 
 
-  // Constructor
-  // -----------
+  // ### Constructor
   //
   // Creates a new instance of a ListView.
+  //
   // Takes:
   //
   // - $el: a jQuery element.
@@ -72,8 +72,6 @@
     // Clear any existing children
     $el.html('');
 
-    if(options.className) this.$el.addClass(options.className);
-    if(options.id) this.$el.attr('id', options.id);
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
 
@@ -107,18 +105,19 @@
     }
   }
 
-   // ListView manipulation
-   // =====================
+  // ListView manipulation
+  // ---------------------
 
 
-   // append
-   // ------
-   //
-   // Appends a jQuery element or a ListItem to the ListView.
-   //
-   // - obj: a jQuery element, a string of valid HTML, or a ListItem.
-   //
-   // TODO: optimized batch appends
+  // ### append
+  //
+  // Appends a jQuery element or a ListItem to the ListView.
+  //
+  // Takes:
+  //
+  // - obj: a jQuery element, a string of valid HTML, or a ListItem.
+  //
+  // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
     var lastPage,
@@ -180,18 +179,17 @@
   }
 
 
-  /*
-   * updateStartIndex
-   * ----------------
-   *
-   * Updates a given ListView when the throttled scroll event fires. Attempts
-   * to do as little work as possible: if the `startIndex` doesn't change,
-   * it'll exit early. If the `startIndex` does change, it finds all pages
-   * that have been scrolled out of view and removes them, then inserts only
-   * pages that have been now been scrolled into view.
-   *
-   * - listView: the ListView needing to be updated.
-   */
+  // ### updateStartIndex
+  //
+  // Updates a given ListView when the throttled scroll event fires. Attempts
+  // to do as little work as possible: if the `startIndex` doesn't change,
+  // it'll exit early. If the `startIndex` does change, it finds all pages
+  // that have been scrolled out of view and removes them, then inserts only
+  // pages that have been now been scrolled into view.
+  //
+  // Takes:
+  //
+  // - listView: the ListView needing to be updated.
 
   function updateStartIndex(listView) {
     var index, length, curr, pages, indexInView,
@@ -227,12 +225,9 @@
   }
 
 
-  /*
-   * remove
-   * ------
-   * 
-   * Removes the ListView from the DOM and cleans up after it.
-   */
+  // ### remove
+  // 
+  // Removes the ListView from the DOM and cleans up after it.
 
   ListView.prototype.remove = function() {
     this.$el.html('');
@@ -240,17 +235,16 @@
   };
 
 
-  /*
-   * convertToItem
-   * -------------
-   * 
-   * Given an object that is either a ListItem instance, a jQuery element, or a
-   * string of valid HTML, makes sure to return either the ListItem itself or 
-   * a new ListItem that wraps the element.
-   *
-   * - possibleItem: an object that is either a ListItem, a jQuery element, or
-   *   a string of valid HTML.
-   */
+  // ### convertToItem
+  // 
+  // Given an object that is either a ListItem instance, a jQuery element, or a
+  // string of valid HTML, makes sure to return either the ListItem itself or 
+  // a new ListItem that wraps the element.
+  //
+  // Takes:
+  //
+  // - possibleItem: an object that is either a ListItem, a jQuery element, or
+  //   a string of valid HTML.
   
   function convertToItem(possibleItem) {
     if(possibleItem instanceof ListItem) return possibleItem;
@@ -259,13 +253,10 @@
   }
 
 
-  /*
-   * tooSmall
-   * --------
-   *
-   * Alerts the given ListView that the given Page is too small. May result
-   * in modifications to the `pages` array.
-   */
+  // ### tooSmall
+  //
+  // Alerts the given ListView that the given Page is too small. May result
+  // in modifications to the `pages` array.
 
   function tooSmall(listView, page) {
     var index, length, foundIndex,
@@ -287,25 +278,22 @@
   }
 
 
-  /*
-   * ListView querying
-   * =================
-   */
+  // ListView querying
+  // -----------------
 
   ListView.prototype.find = function(findObj) {
   };
 
-  /*
-   * startIndexWithinRange
-   * ---------------------
-   *
-   * Finds the starting index for a listView, given a range. Wraps
-   * indexWithinRange. 
-   *
-   * - listView: the ListView whose startIndex you're calculating.
-   * - top: the top of the range.
-   * - bottom: the bottom of the range.
-   */
+  // ### startIndexWithinRange
+  //
+  // Finds the starting index for a listView, given a range. Wraps
+  // indexWithinRange. 
+  //
+  // Takes:
+  //
+  // - listView: the ListView whose startIndex you're calculating.
+  // - top: the top of the range.
+  // - bottom: the bottom of the range.
 
   function startIndexWithinRange(listView, top, bottom) {
     var index = indexWithinRange(listView, top, bottom);
@@ -315,25 +303,24 @@
   }
 
 
-  /*
-   * indexWithinRange
-   * ----------------
-   *
-   * Finds the index of the page closest to being within a given range. It's
-   * less useful than its wrapper function startIndexWithinRange, and you
-   * probably won't need to call this unwrapped version.
-   *
-   * - listView: the ListView instance whose pages you're looking at.
-   * - top: the top of the range.
-   * - bottom: the bottom of the range.
-   */
+  // ### indexWithinRange
+  //
+  // Finds the index of the page closest to being within a given range. It's
+  // less useful than its wrapper function startIndexWithinRange, and you
+  // probably won't need to call this unwrapped version.
+  //
+  // Takes:
+  //
+  // - listView: the ListView instance whose pages you're looking at.
+  // - top: the top of the range.
+  // - bottom: the bottom of the range.
 
   function indexWithinRange(listView, top, bottom) {
     var index, length, curr, startIndex, midpoint, diff, prevDiff,
         pages = listView.pages,
         rangeMidpoint = top + (bottom - top)/2;
 
-    // start looking at the index of the page last contained by the screen --
+    // Start looking at the index of the page last contained by the screen --
     // not the first page in the onscreen pages
     startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
                           pages.length - 1);
@@ -344,7 +331,7 @@
     midpoint = curr.top + curr.height/2;
     prevDiff = rangeMidpoint - midpoint;
     if(prevDiff < 0) {
-      // search above
+      // Search above
       for(index = startIndex - 1; index >= 0; index--) {
         curr = pages[index];
         midpoint = curr.top + curr.height/2;
@@ -357,7 +344,7 @@
       }
       return 0;
     } else if (prevDiff > 0) {
-      // search below
+      // Search below
       for(index = startIndex + 1, length = pages.length; index < length; index++) {
         curr = pages[index];
         midpoint = curr.top + curr.height/2;
@@ -371,41 +358,35 @@
       return pages.length - 1;
     }
 
-    // perfect hit! return this guy.
+    // Perfect hit! Return it.
     return startIndex;
   }
 
 
-  /*
-   * ListView cleanup
-   * ================
-   */
+  // ListView cleanup
+  // ----------------
 
   ListView.prototype.cleanup = function() {
     ScrollEvent.detach(this);
   };
 
 
-  /*
-   * ListView scrolling 
-   * ==================
-   *
-   * Internal scroll binding and throttling. Allows ListViews to bind to a
-   * throttled scroll event, and updates them as it fires.
-   */
+  // ListView scrolling 
+  // ------------------
+  //
+  // Internal scroll binding and throttling. Allows ListViews to bind to a
+  // throttled scroll event, and updates them as it fires.
 
   var ScrollEvent = (function(window, $) {
     var scrollIsBound = false,
         scrollScheduled = false,
         boundViews = [];
 
-    /*
-     * scrollHandler
-     * -------------
-     *
-     * Callback called on scroll. Schedules a `scrollAll` callback if needed,
-     * and disallows future scheduling.
-     */
+
+    // ### scrollHandler
+    //
+    // Callback called on scroll. Schedules a `scrollAll` callback if needed,
+    // and disallows future scheduling.
 
     function scrollHandler() {
       if(!scrollScheduled) {
@@ -414,14 +395,12 @@
       }
     }
 
-    /*
-     * scrollAll
-     * ---------
-     *
-     * Callback passed to the setTimeout throttle. Calls `scrollListView` on
-     * every bound ListView, and then allows new scroll events to be
-     * scheduled.
-     */
+
+    // ### scrollAll
+    //
+    // Callback passed to the setTimeout throttle. Calls `scrollListView` on
+    // every bound ListView, and then allows new scroll events to be
+    // scheduled.
 
     function scrollAll() {
       var index, length;
@@ -433,16 +412,15 @@
 
     return {
 
-      /*
-       * attach
-       * ------
-       *
-       * Binds a given ListView to a throttled scroll event. Does not create
-       * multiple event handlers if called by multiple ListViews.
-       *
-       * - listView: a ListView that is not currently bound to the scroll
-       *   event.
-       */
+      // ### attach
+      //
+      // Binds a given ListView to a throttled scroll event. Does not create
+      // multiple event handlers if called by multiple ListViews.
+      //
+      // Takes:
+      //
+      // - listView: a ListView that is not currently bound to the scroll
+      //   event.
 
       attach: function(listView) {
         if(!scrollIsBound) {
@@ -453,19 +431,18 @@
       },
 
 
-      /*
-       * detach
-       * ------
-       *
-       * Detaches a bound ListView from the throttled scroll event. If no
-       * ListViews remain bound to the throttled scroll, unbinds the scroll
-       * handler from the window's scroll event.
-       *
-       * Returns true if the listView was successfully detached, and false
-       * otherwise.
-       *
-       * - listView: a ListView that is currently bound to the scroll event.
-       */
+      // ### detach
+      //
+      // Detaches a bound ListView from the throttled scroll event. If no
+      // ListViews remain bound to the throttled scroll, unbinds the scroll
+      // handler from the window's scroll event.
+      //
+      // Returns true if the listView was successfully detached, and false
+      // otherwise.
+      //
+      // Takes:
+      //
+      // - listView: a ListView that is currently bound to the scroll event.
 
       detach: function(listView) {
         var index, length;
@@ -485,16 +462,12 @@
   }(window, $));
 
 
-  /*
-   * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   *
-   * Page class
-   * ==========
-   *
-   * An internal class used for ordering items into roughly screen-sized pages.
-   * Pages are removed and added to the DOM wholesale as they come in and out
-   * of view.
-   */
+  // Page class
+  // ==========
+  //
+  // An internal class used for ordering items into roughly screen-sized pages.
+  // Pages are removed and added to the DOM wholesale as they come in and out
+  // of view.
   
   function Page() {
     this.items = [];
@@ -514,19 +487,18 @@
   }
 
 
-  /*
-   * append
-   * ------
-   *
-   * Appends a ListItem to the Page.
-   *
-   * - item: a ListItem.
-   */
+  // ### append
+  //
+  // Appends a ListItem to the Page.
+  //
+  // Takes:
+  //
+  // - item: a ListItem.
 
   Page.prototype.append = function(item) {
     var items = this.items;
 
-    // recompute coords, sizing
+    // Recompute coords, sizing.
     if(items.length === 0) this.top = item.top;
     this.bottom = item.bottom;
     this.width = this.width > item.width ? this.width : item.width;
@@ -540,19 +512,18 @@
   };
 
 
-  /*
-   * prepend
-   * -------
-   *
-   * Prepends a ListItem to the Page.
-   *
-   * - item: a ListItem.
-   */
+  // ### prepend
+  //
+  // Prepends a ListItem to the Page.
+  //
+  // Takes:
+  //
+  // - item: a ListItem.
 
   Page.prototype.prepend = function(item) {
     var items = this.items;
 
-    // recompute coords, sizing
+    // Recompute coords, sizing.
     this.bottom += item.height;
     this.width = this.width > item.width ? this.width : item.width;
     this.height = this.bottom - this.top;
@@ -565,24 +536,18 @@
   };
 
 
-  /*
-   * hasVacancy
-   * ----------
-   *
-   * Returns false if the Page is at max capacity; false otherwise.
-   */
+  // ### hasVacancy
+  //
+  // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
     return this.height < $(window).height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
-  /*
-   * appendTo
-   * -----------
-   * 
-   * Proxies to jQuery to append the Page to the given jQuery element.
-   */
+  // ### appendTo
+  // 
+  // Proxies to jQuery to append the Page to the given jQuery element.
 
   Page.prototype.appendTo = function($el) {
     if(!this.onscreen) {
@@ -592,12 +557,9 @@
   };
 
 
-  /*
-   * prependTo
-   * ------------
-   *
-   * Proxies to jQuery to prepend the Page to the given jQuery element.
-   */
+  // ### prependTo
+  //
+  // Proxies to jQuery to prepend the Page to the given jQuery element.
 
   Page.prototype.prependTo = function($el) {
     if(!this.onscreen) {
@@ -607,12 +569,9 @@
   };
 
 
-  /*
-   * remove
-   * ------
-   *
-   * Removes the Page from the DOM and cleans up after it.
-   */
+  // ### remove
+  //
+  // Removes the Page from the DOM and cleans up after it.
 
   Page.prototype.remove = function() {
     if(this.onscreen) {
@@ -636,12 +595,9 @@
   };
 
 
-  /*
-   * generatePageId
-   * --------------
-   *
-   * Generates a unique ID for a Page.
-   */
+  // ### generatePageId
+  //
+  // Generates a unique ID for a Page.
 
   var generatePageId = (function() {
     var pageId = 0;
@@ -668,20 +624,16 @@
   }
 
 
-  /*
-   * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   *
-   * ListItem class
-   * ==============
-   *
-   * An individual item in the ListView.
-   *
-   * Has cached top, bottom, width, and height properties, determined from 
-   * jQuery. This positioning data will be determined when the ListItem is 
-   * inserted into a ListView; it can't be determined ahead of time.
-   *
-   * All positioning data is relative to the containing ListView.
-   */
+  // ListItem class
+  // ==============
+  //
+  // An individual item in the ListView.
+  //
+  // Has cached top, bottom, width, and height properties, determined from 
+  // jQuery. This positioning data will be determined when the ListItem is 
+  // inserted into a ListView; it can't be determined ahead of time.
+  //
+  // All positioning data is relative to the containing ListView.
 
   function ListItem($el) {
     this.$el = $el;
@@ -715,33 +667,23 @@
 
 
 
-  /*
-   * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   *
-   * Helper functions
-   * ================
-   */
+  // Helper functions
+  // ================
 
   
-  /*
-   * div
-   * ---
-   *
-   * Returns a new, empty `<div>` jQuery element.
-   */
+  // ### div
+  //
+  // Returns a new, empty `<div>` jQuery element.
 
   function div() {
     return $('<div></div>');
   }
 
 
-  /*
-   * blankDiv
-   * --------
-   * 
-   * Returns a new, empty `<div>` jQuery element. The `<div>` will have its 
-   * border, margin, and padding set to zero or none, as appropriate.
-   */
+  // ### blankDiv
+  // 
+  // Returns a new, empty `<div>` jQuery element. The `<div>` will have its 
+  // border, margin, and padding set to zero or none, as appropriate.
 
   function blankDiv() {
     return div().css({
@@ -752,27 +694,22 @@
   }
 
 
-  /*
-   * pxToInt
-   * -------
-   *
-   * Converts pixel values returned by jQuery to base-10 ints.
-   *
-   * - px: a string value, which starts with a number and is
-   *   prefixed with the string `'px'`.
-   */
+  // ### pxToInt
+  //
+  // Converts pixel values returned by jQuery to base-10 ints.
+  //
+  // Takes:
+  //
+  // - px: a string value, which starts with a number and is
+  //   prefixed with the string `'px'`.
 
   function pxToInt(px) {
     return parseInt(px.replace('px', ''), 10);
   }
 
 
-  /*
-   * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   *
-   * Export
-   * ======
-   */
+  // Export
+  // ======
 
   infinity.ListView = ListView;
   infinity.Page = Page;
