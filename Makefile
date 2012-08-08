@@ -7,6 +7,9 @@ build-js:
 	@./node_modules/.bin/uglifyjs -o ./build/infinity.min.js infinity.js
 	@gzip -c ./build/infinity.min.js > ./build/infinity.min.js.gz
 
+annotate:
+	@./node_modules/.bin/docco infinity.js
+
 build: clean build-js
 
-.PHONY: build
+.PHONY: build annotate

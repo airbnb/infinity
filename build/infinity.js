@@ -1,65 +1,76 @@
-/**
- * ©2012 Airbnb, Inc.
- * infinity.js may be freely distributed under the terms of the BSD license.
- * For all licensing information, details, and documention:
- * http://airbnb.github.com/infinity
- */
+//     ©2012 Airbnb, Inc.
+//     
+//     infinity.js may be freely distributed under the terms of the BSD
+//     license. For all licensing information, details, and documention:
+//     http://airbnb.github.com/infinity
 
 !function(window, Math, $) {
   'use strict';
 
-  /*
-   * infinity.js
-   * ===========
-   *
-   * infinity.js is a UITableView for the web. Use it to speed up scroll
-   * performance of long- or infinitely-scrolling lists of items.
-   *
-   * infinity.js has several caveats:
-   *
-   * 1. All DOM elements must either be visible or in the current layout.
-   * infinity.js does not support elements that will at some point affect the
-   * layout, but are currently hidden using `display:block`.
-   *
-   * 2. ListViews can't be nested.
-   *
-   * 3. Non-ListItem elements can't be the immediate children of ListView
-   * elements. Only ListItems can be immediate children of ListViews.
-   *
-   * 4. ListView elements can't have heights set directly on them. In most
-   * cases it is also likely that `min-height`s and `max-height`s will break.
-   * However, setting heights on ListItems is ok.
-   *
-   * If you're reading this, we probably want to hear from you. If the feeling
-   * is mutual: http://www.airbnb.com/jobs
-   */
 
-  // Packaging
+  // Welcome To Infinity
+  // ===================
+  //
+  // infinity.js is a UITableView for the web. Use it to speed up scroll
+  // performance of long- or infinitely-scrolling lists of items.
+  //
+  // infinity.js has several caveats:
+  //
+  // 1. All DOM elements must either be visible or in the current layout.
+  // infinity.js does not support elements that will at some point affect the
+  // layout, but are currently hidden using `display:block`.
+  //
+  // 2. ListViews can't be nested.
+  //
+  // 3. Non-ListItem elements can't be the immediate children of ListView
+  // elements. Only ListItems can be immediate children of ListViews.
+  //
+  // 4. ListView elements can't have heights set directly on them. In most
+  // cases it is also likely that `min-height`s and `max-height`s will break.
+  // However, setting heights on ListItems is ok.
+  //
+  // If you're reading this, we probably want to hear from you. If the feeling
+  // is mutual: [http://www.airbnb.com/jobs](http://www.airbnb.com/jobs)
+
+
+  // Initial Setup
+  // =============
+
+  // Packaging:
   var oldInfinity = window.infinity,
       infinity = window.infinity = {},
       config = infinity.config = {};
 
-  // Constants
+  // Constants:
   var PAGE_ID_ATTRIBUTE = 'data-infinity-pageid',
       NUM_BUFFER_PAGES = 1,
       PAGES_ONSCREEN = NUM_BUFFER_PAGES * 2 + 1;
 
-  // Config
+  // Config:
   config.PAGE_TO_SCREEN_RATIO = 3;
   config.SCROLL_THROTTLE = 350;
 
-  /*
-   * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   *
-   * ListView class
-   * ==============
-   */
+
+
+  // ListView Class
+  // ==============
+
+
+  // Constructor
+  // -----------
+  //
+  // Creates a new instance of a ListView.
+  // Takes:
+  //
+  // - $el: a jQuery element.
+  // - options: an optional hash of options
 
   function ListView($el, options) {
     options = options || {};
 
     this.$el = $el;
-    $el.html(''); // clear any existing children
+    // Clear any existing children
+    $el.html('');
 
     if(options.className) this.$el.addClass(options.className);
     if(options.id) this.$el.attr('id', options.id);
@@ -96,22 +107,18 @@
     }
   }
 
-  /*
-   * ListView manipulation
-   * =====================
-   */
+   // ListView manipulation
+   // =====================
 
 
-  /*
-   * append
-   * ------
-   *
-   * Appends a jQuery element or a ListItem to the ListView.
-   *
-   * - obj: a jQuery element, a string of valid HTML, or a ListItem.
-   *
-   * TODO: optimized batch appends
-   */
+   // append
+   // ------
+   //
+   // Appends a jQuery element or a ListItem to the ListView.
+   //
+   // - obj: a jQuery element, a string of valid HTML, or a ListItem.
+   //
+   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
     var lastPage,
