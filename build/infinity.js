@@ -120,6 +120,8 @@
   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
+    if(!obj || (obj.length && obj.length === 0)) return null;
+
     var lastPage,
         item = convertToItem(obj),
         pages = this.pages,
