@@ -286,10 +286,31 @@
 
       </div>
 
-      <div class=row>
-        <div id=demo class='span12 list-view'>
+      <div id=demo class=row>
+
+        <div class=span4>
+          <div class=row-fluid>
+            <div class='span12 list-view'>
+            </div>
+          </div>
         </div>
+
+        <div class=span4>
+          <div class=row-fluid>
+            <div class='span12 list-view'>
+            </div>
+          </div>
+        </div>
+
+        <div class=span4>
+          <div class=row-fluid>
+            <div class='span12 list-view'>
+            </div>
+          </div>
+        </div>
+
       </div>
+
     </div>
 
     <div class='modal fade' id=save-modal>
@@ -315,13 +336,13 @@
     </script>
 
     <script type=text/html id=demo-pug-template>
-      <div class='span<%= Math.floor(12 / num) %> pug-item'>
+      <div class='span12 pug-item'>
         <div class='matte-media-box pug-box'
           data-pug="<%= pug.src %>"
           data-name="<%= title %>"
           data-caption="<%= caption %>"
         >
-          <% intendedSize = num === 3 ? 322 : 493 %>
+          <% intendedSize = 322 %>
           <% scale = (intendedSize - 10) / pug.width %>
           <img class='pug' data-original="<%= pug.src %>" 
                 style="width: <%= pug.width * scale %>px;

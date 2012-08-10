@@ -12,16 +12,21 @@
       pugTemplate = _.template($('#demo-pug-template').html()),
       spinnerTemplate = _.template($('#spinner-template').html());
 
-  infinity.config.PAGE_TO_SCREEN_RATIO = 2;
-  infinity.config.SCROLL_THROTTLE = 100;
+  var columns = $('.list-view');
 
-  var listView = new ListView($('#demo'), {
-    lazy: function() {
-      $(this).find('.pug').each(function() {
-        var $ref = $(this);
-        $ref.attr('src', $ref.attr('data-original'));
-      });
-    }
+  infinity.config.PAGE_TO_SCREEN_RATIO = 3;
+  infinity.config.SCROLL_THROTTLE = 200;
+
+  columns.each(function() {
+    var listView = new ListView($(this), {
+      lazy: function() {
+        $(this).find('.pug').each(function() {
+          var $ref = $(this);
+          $ref.attr('src', $ref.attr('data-original'));
+        });
+      }
+    });
+    $(this).data('listView', listView);
   });
 
   var currPug = null;
@@ -62,7 +67,7 @@
     $(window).on('scroll', function() {
       if(!updateScheduled) {
         setTimeout(function() {
-          if(onscreen(spinner)) pb(200);
+          if(onscreen(spinner)) pb(100);
           updateScheduled = false;
         }, 500);
         updateScheduled = true;
@@ -70,19 +75,24 @@
     });
   }();
 
-  function pug(num, pug, name, caption) {
-    var rotate, rotateRight, rotateLeft;
+  function pug() {
+    var rotate, rotateRight, rotateLeft, name, caption, pugData;
     pugCount++;
+
+    tagline = _.template(PugTaglines[
+      Math.floor(Math.random() * PugTaglines.length)
+    ]);
+    name = PugNames[Math.floor(Math.random() * PugNames.length)];
+    caption = tagline({name: name});
+    pugData = Pugs[Math.floor(Math.random() * Pugs.length)];
 
     rotate = Math.random() > 0.5;
     rotateRight = rotate && Math.random() > 0.5;
     rotateLeft = rotate && !rotateRight;
-    saved = PugStorage.check(pug.src, name, caption);
-    if(saved) console.log('YES!');
+    saved = PugStorage.check(pugData.src, name, caption);
 
     return pugTemplate({
-      num: num,
-      pug: pug,
+      pug: pugData,
       title: name,
       caption: caption,
       saved: saved,
@@ -92,37 +102,25 @@
     });
   }
 
-  function pugs(num) {
-    var tagline, name, pugData, caption,
-        pugs = [];
-    for(var index = 0; index < num; index++) {
-      tagline = _.template(PugTaglines[
-        Math.floor(Math.random() * PugTaglines.length)
-      ]);
-      name = PugNames[Math.floor(Math.random() * PugNames.length)];
-      caption = tagline({name: name});
-      pugData = Pugs[Math.floor(Math.random() * Pugs.length)];
-
-      pugs.push(pug(num, pugData, name, caption));
-    }
-    return pugs;
-  }
 
   function row(num) {
-    return template({
-      pugs: pugs(num)
-    });
+    var index, colIndex, length, minCol, currCol;
+
+    for(index = 0; index < num; index++) {
+
+      for(colIndex = 0, length = columns.length; colIndex < length; colIndex++) {
+        currCol = $(columns[colIndex]);
+        if(!minCol) minCol = currCol;
+        else minCol = minCol.height() > currCol.height() ? currCol : minCol;
+      }
+
+      minCol.data('listView').append(pug());
+    }
   }
 
   function pb(num) {
     for(var i = num; i > 0; i--) {
-      /*
-      $('#demo').append(row(3));
-      $('.pug').each(function() {
-        $(this).attr('src', $(this).attr('data-original'));
-      });
-      */
-      listView.append(row(3));
+      row(3);
     }
   }
 
