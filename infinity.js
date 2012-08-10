@@ -314,6 +314,8 @@
     if(findObj instanceof ListItem) return findObj;
 
     // jQuery element
+    // TODO: make this work for multiple jQuery elements passed in (and make
+    // that be assumed to be the default).
     $itemEl = findObj;
     $pageEl = $itemEl.parent();
     while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
