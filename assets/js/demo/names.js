@@ -56,7 +56,7 @@ Pug.names = [
   'Nate B.',
   'Brian C.',
   'Joe G.',
-  'Joe Z.',
+  'Joebot Z.',
   'Jonathan G.',
   'Richard H.'
 ];
