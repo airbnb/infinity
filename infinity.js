@@ -134,7 +134,7 @@
     if(pages.length > 0) lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
-      lastPage = new Page();
+      lastPage = new Page(this);
       pages.push(lastPage);
       pageChange = true;
     }
@@ -261,22 +261,43 @@
   // in modifications to the `pages` array.
 
   function tooSmall(listView, page) {
-    var index, length, foundIndex,
-        pages = listView.pages;
-    
+    // Naive solution:
+    repartition(listView);
+  }
+
+
+  // ### repartition
+  //
+  // Repartitions the pages array. This can be used for either defragmenting
+  // the array, or recalculating everything on screen resize.
+
+  function repartition(listView) {
+    var currPage, newPage, index, length, itemIndex, pageLength, currItem,
+        nextItem,
+        pages = listView.pages,
+        newPages = [];
+
+    newPage = new Page(listView);
+    newPages.push(newPage);
+
     for(index = 0, length = pages.length; index < length; index++) {
-      if(pages[index] === page) {
-        foundIndex = index;
-        break;
+      currPage = pages[index];
+      for(itemIndex = 0, pageLength = currPage.items.length; itemIndex < pageLength; itemIndex++) {
+        currItem = currPage.items[index];
+        nextItem = convertToItem(currItem.$el);
+        if(newPage.hasVacancy()) {
+          newPage.append(nextItem);
+        } else {
+          newPage = new Page(listView);
+          newPages.push(newPage);
+          newPage.append(nextItem);
+        }
+        currItem.cleanup();
       }
+      currPage.cleanup();
     }
 
-    if(typeof foundIndex === 'undefined') return false;
-
-    // TODO: check for other pages
-    // merge if possible
-    // split if necessary
-    // splice out old pages
+    listView.pages = newPages;
   }
 
 
@@ -284,6 +305,31 @@
   // -----------------
 
   ListView.prototype.find = function(findObj) {
+    var page, index, length, items, currItem, pageId, $pageEl, $itemEl;
+
+    // TODO: make this work.
+    if(typeof findObj === 'string') return null;
+
+    // Silly option, but might as well.
+    if(findObj instanceof ListItem) return findObj;
+
+    // jQuery element
+    $itemEl = findObj;
+    $pageEl = $itemEl.parent();
+    while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
+      $itemEl = $pageEl;
+      $pageEl = $pageEl.parent();
+    }
+    pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
+    page = PageRegistry.lookup(pageId);
+    items = page.items;
+    for(index = 0, length = items.length; index < length; index++) {
+      currItem = items[index];
+      if(currItem.$el.is($itemEl)) return currItem;
+    }
+
+    // Not found
+    return null;
   };
 
   // ### startIndexWithinRange
@@ -471,11 +517,13 @@
   // Pages are removed and added to the DOM wholesale as they come in and out
   // of view.
   
-  function Page() {
+  function Page(parent) {
+    this.parent = parent;
+
     this.items = [];
     this.$el = blankDiv();
 
-    this.id = generatePageId();
+    this.id = PageRegistry.generatePageId(this);
     this.$el.attr(PAGE_ID_ATTRIBUTE, this.id);
 
     this.top = 0;
@@ -584,6 +632,8 @@
   };
 
   Page.prototype.cleanup = function() {
+    this.parent = null;
+    PageRegistry.remove(this);
   };
 
   Page.prototype.lazyload = function(callback) {
@@ -597,31 +647,51 @@
   };
 
 
-  // ### generatePageId
-  //
-  // Generates a unique ID for a Page.
+  // Page Registry
+  // ------------
 
-  var generatePageId = (function() {
-    var pageId = 0;
-    return function() {
-      return pageId++;
+  var PageRegistry = (function() {
+    var pages = [];
+    return {
+      generatePageId: function(page) {
+        return pages.push(page) - 1;
+      },
+      lookup: function(id) {
+        if(id >= pages.length) return null;
+        return pages[id];
+      },
+      remove: function(page) {
+        var id = page.id;
+        if(id >= pages.length) return false;
+        if(!pages[id]) return false;
+        pages[id] = null;
+        return true;
+      }
     };
   }());
 
+
+  // ### removeItemFromPage
+  //
+  // Removes a given ListItem from the given Page.
+
   function removeItemFromPage(item, page) {
     var index, length, foundIndex,
-        items = this.items;
+        items = page.items;
     for(index = 0, length = items.length; index < length; index++) {
       if(items[index] === item) {
         foundIndex = index;
         break;
       }
     }
-    if(typeof foundIndex === 'undefined') return false;
+
+    if(foundIndex == null) return false;
+
     items.splice(foundIndex, 1);
-    this.bottom -= item.height;
-    this.height = this.bottom - this.top;
-    if(!this.hasVacancy()) tooSmall(this.parent, this);
+    page.bottom -= item.height;
+    page.height = page.bottom - page.top;
+    if(!page.hasVacancy()) tooSmall(page.parent, page);
+
     return true;
   }
 
