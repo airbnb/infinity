@@ -69,7 +69,10 @@
     options = options || {};
 
     this.$el = blankDiv();
+    this.$shadow = blankDiv();
     $el.append(this.$el);
+    // don't append the shadow element -- it's meant to only be used for
+    // finding elements outside of the DOM
 
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
@@ -170,7 +173,7 @@
       if(inserted && curr.onscreen) inOrder = false;
 
       if(!inOrder) {
-        curr.remove();
+        curr.hide();
         curr.appendTo(listView.$el);
       } else if(!curr.onscreen) {
         inserted = true;
@@ -215,7 +218,7 @@
     }
     // sweep any invalid old pages
     for(index = startIndex, length = lastIndex; index < length; index++) {
-      if(!indexInView[index]) pages[index].remove();
+      if(!indexInView[index]) pages[index].hide();
     }
 
     listView.startIndex = nextIndex;
@@ -304,7 +307,7 @@
   // -----------------
 
   ListView.prototype.find = function(findObj) {
-    var page, index, length, items, currItem, pageId, $pageEl, $itemEl;
+    var page, index, length, items, currItem, pageId, items;
 
     // TODO: make this work.
     if(typeof findObj === 'string') return null;
@@ -313,24 +316,30 @@
     if(findObj instanceof ListItem) return findObj;
 
     // jQuery element
-    // TODO: make this work for multiple jQuery elements passed in (and make
-    // that be assumed to be the default).
-    $itemEl = findObj;
-    $pageEl = $itemEl.parent();
-    while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
-      $itemEl = $pageEl;
-      $pageEl = $pageEl.parent();
-    }
-    pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
-    page = PageRegistry.lookup(pageId);
-    items = page.items;
-    for(index = 0, length = items.length; index < length; index++) {
-      currItem = items[index];
-      if(currItem.$el.is($itemEl)) return currItem;
-    }
+    items = [];
+    findObj.each(function() {
+      var pageId, page, pageItems,
+          $itemEl = $(this),
+          $pageEl = $itemEl.parent();
 
-    // Not found
-    return null;
+      while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
+        $itemEl = $pageEl;
+        $pageEl = $pageEl.parent();
+      }
+
+      pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
+      page = PageRegistry.lookup(pageId);
+      pageItems = page.items;
+      for(index = 0, length = pageItems.length; index < length; index++) {
+        currItem = pageItems[index];
+        if(currItem.$el.is($itemEl)) {
+          items.push(currItem);
+          break;
+        }
+      }
+    });
+
+    return items;
   };
 
   // ### startIndexWithinRange
@@ -416,7 +425,11 @@
   // ----------------
 
   ListView.prototype.cleanup = function() {
+    var pages = this.pages;
     ScrollEvent.detach(this);
+    while(pages.length > 0) {
+      pages.pop().cleanup();
+    }
   };
 
 
@@ -602,6 +615,7 @@
 
   Page.prototype.appendTo = function($el) {
     if(!this.onscreen) {
+      this.$el.remove();
       this.$el.appendTo($el);
       this.onscreen = true;
     }
@@ -619,6 +633,17 @@
     }
   };
 
+  // ### hide
+  //
+  // Remove the Page temporarily, without cleaning up after it.
+
+  Page.prototype.hide = function() {
+    if(this.onscreen) {
+      this.$el.remove();
+      this.onscreen = false;
+    }
+  };
+
 
   // ### remove
   //
@@ -633,8 +658,12 @@
   };
 
   Page.prototype.cleanup = function() {
+    var items = this.items;
     this.parent = null;
     PageRegistry.remove(this);
+    while(items.length > 0) {
+      items.pop().cleanup();
+    }
   };
 
   Page.prototype.lazyload = function(callback) {
