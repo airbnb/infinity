@@ -68,9 +68,8 @@
   function ListView($el, options) {
     options = options || {};
 
-    this.$el = $el;
-    // Clear any existing children
-    $el.html('');
+    this.$el = blankDiv();
+    $el.append(this.$el);
 
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
@@ -232,7 +231,7 @@
   // Removes the ListView from the DOM and cleans up after it.
 
   ListView.prototype.remove = function() {
-    this.$el.html('');
+    this.$el.remove();
     this.cleanup();
   };
 
