@@ -89,10 +89,20 @@
     ScrollEvent.attach(this);
   }
 
+  // ### initBuffer
+  //
+  // Private ListView method. Initializes the buffer element.
+
   function initBuffer(listView) {
     listView._$buffer = blankDiv()
                         .prependTo(listView.$el);
   }
+
+
+  // ### updateBuffer
+  //
+  // Private ListView method. Updates the buffer to correctly push forward the
+  // first page.
 
   function updateBuffer(listView) {
     var firstPage,
@@ -306,11 +316,30 @@
   // ListView querying
   // -----------------
 
+  // ### find
+  //
+  // Given a selector string or jQuery element, return the items that hold the
+  // given or matching elements.
+  //
+  // Note: this is slower than an ordinary jQuery find. However, using jQuery
+  // to find elements will be bug-prone, since most of the elements won't be in
+  // the DOM tree. Caching elements is usually important, but it's even more
+  // important to do here.
+  //
+  // Arguments:
+  //
+  // - `findObj`: A selector string, or a jQuery element.
+  //
+  // Returns a ListItem.
+
   ListView.prototype.find = function(findObj) {
     var page, index, length, items, currItem, pageId, items;
 
-    // TODO: make this work.
-    if(typeof findObj === 'string') return null;
+    // If given a selector string, find everything matching onscreen and
+    // offscreen, and return both.
+    if(typeof findObj === 'string') {
+      return find(this.$el.find(findObj)).concat(find(this.$shadow.find(findObj)));
+    }
 
     // Silly option, but might as well.
     if(findObj instanceof ListItem) return findObj;
