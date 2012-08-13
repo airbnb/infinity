@@ -173,7 +173,7 @@
       if(inserted && curr.onscreen) inOrder = false;
 
       if(!inOrder) {
-        curr.hide();
+        curr.stash(listView.$shadow);
         curr.appendTo(listView.$el);
       } else if(!curr.onscreen) {
         inserted = true;
@@ -218,7 +218,7 @@
     }
     // sweep any invalid old pages
     for(index = startIndex, length = lastIndex; index < length; index++) {
-      if(!indexInView[index]) pages[index].hide();
+      if(!indexInView[index]) pages[index].stash(listView.$shadow);
     }
 
     listView.startIndex = nextIndex;
@@ -633,14 +633,15 @@
     }
   };
 
-  // ### hide
+  // ### stash
   //
-  // Remove the Page temporarily, without cleaning up after it.
+  // Temporarily stash the onscreen page under a different element.
 
-  Page.prototype.hide = function() {
+  Page.prototype.stash = function($el) {
     if(this.onscreen) {
       this.$el.remove();
       this.onscreen = false;
+      $el.append(this.$el);
     }
   };
 
