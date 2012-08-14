@@ -333,21 +333,23 @@
   // Returns a ListItem.
 
   ListView.prototype.find = function(findObj) {
-    var page, index, length, items, currItem, pageId, items;
+    var items, $onscreen, $offscreen;
 
     // If given a selector string, find everything matching onscreen and
     // offscreen, and return both.
     if(typeof findObj === 'string') {
-      return find(this.$el.find(findObj)).concat(find(this.$shadow.find(findObj)));
+      $onscreen = this.$el.find(findObj);
+      $offscreen = this.$shadow.find(findObj);
+      return this.find($onscreen).concat(this.find($offscreen));
     }
 
     // Silly option, but might as well.
-    if(findObj instanceof ListItem) return findObj;
+    if(findObj instanceof ListItem) return [findObj];
 
     // jQuery element
     items = [];
     findObj.each(function() {
-      var pageId, page, pageItems,
+      var pageId, page, pageItems, index, length, currItem,
           $itemEl = $(this),
           $pageEl = $itemEl.parent();
 
