@@ -1,0 +1,25 @@
+{
+  "name": "infinity",
+  "version": "0.2.0",
+  "description": "A UITableView for the web.",
+
+  "keywords": ["infinite", "scroll", "infinity", "UITableView", "ListView"],
+
+  "homepage": "http://airbnb.github.com/infinity",
+
+  "contributors": [
+    {"name": "Matt Baker", "url": "http://github.com/reissbaker"}
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/airbnb/infinity.git"
+  },
+
+  "dependencies": {},
+
+  "devDependencies": {
+    "uglify-js": "1.3.3",
+    "docco": "0.3.0"
+  }
+}
