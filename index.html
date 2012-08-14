@@ -156,11 +156,18 @@
                     Methods
                 </a></h3>
                 <ul class=api-list>
-                  <li><code>new ListView($el)</code>: creates a new ListView
-                  that will append its content inside the given
+                  <li><code>new ListView($el [, options])</code>: creates a new
+                  ListView that will append its content inside the given
                   jQuery element. The element passed in must be already in
                   the DOM: otherwise, the ListView will cache incorrect
-                  size and positioning data.
+                  size and positioning data. <code>options</code> is an options
+                  hash, and can be filled with the following options:
+                  <ul class=api-list>
+                    <li><code>lazy</code>: a function that will be called to
+                    lazily load any unloaded ListItems onscreen. The function
+                    will be called with the ListItem's jQuery element as its
+                    context.
+                  </ul>
                   <li><code>append($el | listItem)</code>: appends a jQuery
                   element or a ListItem to the ListView. Returns either the
                   given ListItem, or the given jQuery element wrapped inside of
