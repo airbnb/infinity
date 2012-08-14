@@ -62,8 +62,8 @@
   //
   // Takes:
   //
-  // - $el: a jQuery element.
-  // - options: an optional hash of options
+  // - `$el`: a jQuery element.
+  // - `options`: an optional hash of options
 
   function ListView($el, options) {
     options = options || {};
@@ -127,7 +127,7 @@
   //
   // Takes:
   //
-  // - obj: a jQuery element, a string of valid HTML, or a ListItem.
+  // - `obj`: a jQuery element, a string of valid HTML, or a ListItem.
   //
   // TODO: optimized batch appends
 
@@ -158,17 +158,34 @@
   };
 
 
-  // WARNING: this will always break for prepends.
-  // Once you add support for prepends, change this.
+  // ### cacheCoordsFor
+  //
+  // Caches the coordinates for a given ListItem within the given ListView.
+  //
+  // Takes:
+  //
+  // - `listView`: a ListView.
+  // - `listItem`: the ListItem whose coordinates you want to cache.
+
   function cacheCoordsFor(listView, listItem) {
     listItem.$el.remove();
+
+    // WARNING: this will always break for prepends. Once support gets added for
+    // prepends, change this.
     listView.$el.append(listItem.$el);
     updateCoords(listItem, listView.height);
     listItem.$el.remove();
   }
 
   
-  // TODO: optimize
+  // ### insertPagesInView
+  //
+  // Inserts any uninserted pages the given ListView owns.
+  //
+  // Takes:
+  //
+  // - `listView`: the ListView whose onscreen pages you'd like to insert.
+  
   function insertPagesInView(listView) {
     var index, length, curr,
         pages = listView.pages,
@@ -203,7 +220,7 @@
   //
   // Takes:
   //
-  // - listView: the ListView needing to be updated.
+  // - `listView`: the ListView needing to be updated.
 
   function updateStartIndex(listView) {
     var index, length, curr, pages, indexInView,
@@ -257,8 +274,8 @@
   //
   // Takes:
   //
-  // - possibleItem: an object that is either a ListItem, a jQuery element, or
-  //   a string of valid HTML.
+  // - `possibleItem`: an object that is either a ListItem, a jQuery element,
+  // or a string of valid HTML.
   
   function convertToItem(possibleItem) {
     if(possibleItem instanceof ListItem) return possibleItem;
@@ -380,9 +397,9 @@
   //
   // Takes:
   //
-  // - listView: the ListView whose startIndex you're calculating.
-  // - top: the top of the range.
-  // - bottom: the bottom of the range.
+  // - `listView`: the ListView whose startIndex you're calculating.
+  // - `top`: the top of the range.
+  // - `bottom`: the bottom of the range.
 
   function startIndexWithinRange(listView, top, bottom) {
     var index = indexWithinRange(listView, top, bottom);
@@ -400,9 +417,9 @@
   //
   // Takes:
   //
-  // - listView: the ListView instance whose pages you're looking at.
-  // - top: the top of the range.
-  // - bottom: the bottom of the range.
+  // - `listView`: the ListView instance whose pages you're looking at.
+  // - `top`: the top of the range.
+  // - `bottom`: the bottom of the range.
 
   function indexWithinRange(listView, top, bottom) {
     var index, length, curr, startIndex, midpoint, diff, prevDiff,
@@ -512,7 +529,7 @@
       //
       // Takes:
       //
-      // - listView: a ListView that is not currently bound to the scroll
+      // - `listView`: a ListView that is not currently bound to the scroll
       //   event.
 
       attach: function(listView) {
@@ -535,7 +552,7 @@
       //
       // Takes:
       //
-      // - listView: a ListView that is currently bound to the scroll event.
+      // - `listView`: a ListView that is currently bound to the scroll event.
 
       detach: function(listView) {
         var index, length;
@@ -588,7 +605,7 @@
   //
   // Takes:
   //
-  // - item: a ListItem.
+  // - `item`: a ListItem.
 
   Page.prototype.append = function(item) {
     var items = this.items;
@@ -613,7 +630,7 @@
   //
   // Takes:
   //
-  // - item: a ListItem.
+  // - `item`: a ListItem.
 
   Page.prototype.prepend = function(item) {
     var items = this.items;
@@ -689,6 +706,11 @@
     }
   };
 
+
+  // ### cleanup
+  //
+  // Cleans up the Page without removing it.
+
   Page.prototype.cleanup = function() {
     var items = this.items;
     this.parent = null;
@@ -698,11 +720,21 @@
     }
   };
 
+
+  // ### lazyload
+  //
+  // Runs the given lazy-loading callback on all unloaded page content.
+  //
+  // Takes:
+  //
+  // - `callback`: a function of the form `function([$el]){}`. Will run on
+  // each unloaded element, and will use the element as its calling context.
+  
   Page.prototype.lazyload = function(callback) {
     var index, length;
     if(!this.lazyloaded) {
       for(index = 0, length = this.$el.length; index < length; index++) {
-        callback.call(this.$el[index]);
+        callback.call(this.$el[index], this.$el[index]);
       }
       this.lazyloaded = true;
     }
@@ -780,16 +812,38 @@
     this.height = 0;
   }
 
+
+  // ### remove
+  //
+  // Removes the ListItem and its elements from the page, and cleans up after
+  // them.
+
   ListItem.prototype.remove = function() {
     this.$el.remove();
     removeItemFromPage(this, this.parent);
     this.cleanup();
   };
 
+
+  // ### cleanup
+  //
+  // Cleans up after the ListItem without removing it from the page.
+
   ListItem.prototype.cleanup = function() {
     this.parent = null;
   };
 
+
+  // ### updateCoords
+  //
+  // Updates the coordinates of the given ListItem, assuming a given y-offset
+  // from the parent ListView.
+  //
+  // Takes:
+  //
+  //  - `listItem`: the ListItem whose cached coordinates you want to update.
+  //  - `yOffset`: the y-offset of the ListItem from its ListView parent.
+  
   function updateCoords(listItem, yOffset) {
     var $el = listItem.$el,
         offset = $el.offset();
@@ -834,7 +888,7 @@
   //
   // Takes:
   //
-  // - px: a string value, which starts with a number and is
+  // - `px`: a string value, which starts with a number and is
   //   prefixed with the string `'px'`.
 
   function pxToInt(px) {
@@ -845,10 +899,12 @@
   // Export
   // ======
 
+  // Classes:
   infinity.ListView = ListView;
   infinity.Page = Page;
   infinity.ListItem = ListItem;
 
+  // Destroy own packaging:
   infinity.noConflict = function() {
     window.infinity = oldInfinity;
     return infinity;

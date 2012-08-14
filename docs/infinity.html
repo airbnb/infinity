@@ -36,8 +36,8 @@ is mutual: <a href="http://www.airbnb.com/jobs">get in touch.</a></p>           
 <p>Takes:</p>
 
 <ul>
-<li>$el: a jQuery element.</li>
-<li>options: an optional hash of options</li>
+<li><code>$el</code>: a jQuery element.</li>
+<li><code>options</code>: an optional hash of options</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">ListView</span><span class="p">(</span><span class="nx">$el</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
 
@@ -83,7 +83,7 @@ first page.</p>             </td>             <td class="code">               <d
 <p>Takes:</p>
 
 <ul>
-<li>obj: a jQuery element, a string of valid HTML, or a ListItem.</li>
+<li><code>obj</code>: a jQuery element, a string of valid HTML, or a ListItem.</li>
 </ul>
 
 <p>TODO: optimized batch appends</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">append</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
@@ -110,15 +110,32 @@ first page.</p>             </td>             <td class="code">               <d
     <span class="nx">insertPagesInView</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="nx">item</span><span class="p">;</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>WARNING: this will always break for prepends.
-Once you add support for prepends, change this.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">cacheCoordsFor</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">listItem</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
-    <span class="nx">listView</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h3>cacheCoordsFor</h3>
+
+<p>Caches the coordinates for a given ListItem within the given ListView.</p>
+
+<p>Takes:</p>
+
+<ul>
+<li><code>listView</code>: a ListView.</li>
+<li><code>listItem</code>: the ListItem whose coordinates you want to cache.</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">cacheCoordsFor</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">listItem</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>WARNING: this will always break for prepends. Once support gets added for
+prepends, change this.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">listView</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
     <span class="nx">updateCoords</span><span class="p">(</span><span class="nx">listItem</span><span class="p">,</span> <span class="nx">listView</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
   <span class="p">}</span>
 
-  </pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>TODO: optimize</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">insertPagesInView</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h3>insertPagesInView</h3>
+
+<p>Inserts any uninserted pages the given ListView owns.</p>
+
+<p>Takes:</p>
+
+<ul>
+<li><code>listView</code>: the ListView whose onscreen pages you'd like to insert.</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>  
+  <span class="kd">function</span> <span class="nx">insertPagesInView</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">curr</span><span class="p">,</span>
         <span class="nx">pages</span> <span class="o">=</span> <span class="nx">listView</span><span class="p">.</span><span class="nx">pages</span><span class="p">,</span>
         <span class="nx">inserted</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
@@ -139,7 +156,7 @@ Once you add support for prepends, change this.</p>             </td>           
         <span class="nx">curr</span><span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">listView</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
       <span class="p">}</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h3>updateStartIndex</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <h3>updateStartIndex</h3>
 
 <p>Updates a given ListView when the throttled scroll event fires. Attempts
 to do as little work as possible: if the <code>startIndex</code> doesn't change,
@@ -150,7 +167,7 @@ pages that have been now been scrolled into view.</p>
 <p>Takes:</p>
 
 <ul>
-<li>listView: the ListView needing to be updated.</li>
+<li><code>listView</code>: the ListView needing to be updated.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">updateStartIndex</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">curr</span><span class="p">,</span> <span class="nx">pages</span><span class="p">,</span> <span class="nx">indexInView</span><span class="p">,</span>
         <span class="nx">lastIndex</span><span class="p">,</span> <span class="nx">nextLastIndex</span><span class="p">,</span>
@@ -166,9 +183,9 @@ pages that have been now been scrolled into view.</p>
     <span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">listView</span><span class="p">.</span><span class="nx">startIndex</span><span class="p">;</span>
     <span class="nx">indexInView</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
     <span class="nx">lastIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">startIndex</span> <span class="o">+</span> <span class="nx">PAGES_ONSCREEN</span><span class="p">,</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-    <span class="nx">nextLastIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">nextIndex</span> <span class="o">+</span> <span class="nx">PAGES_ONSCREEN</span><span class="p">,</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>mark current pages as valid</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">nextIndex</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">nextLastIndex</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">nextLastIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">nextIndex</span> <span class="o">+</span> <span class="nx">PAGES_ONSCREEN</span><span class="p">,</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>mark current pages as valid</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">nextIndex</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">nextLastIndex</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">indexInView</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>sweep any invalid old pages</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">lastIndex</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>sweep any invalid old pages</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">lastIndex</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">indexInView</span><span class="p">[</span><span class="nx">index</span><span class="p">])</span> <span class="nx">pages</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">stash</span><span class="p">(</span><span class="nx">listView</span><span class="p">.</span><span class="nx">$shadow</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -177,12 +194,12 @@ pages that have been now been scrolled into view.</p>
     <span class="nx">insertPagesInView</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
     <span class="nx">updateBuffer</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">nextIndex</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h3>remove</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h3>remove</h3>
 
 <p>Removes the ListView from the DOM and cleans up after it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">cleanup</span><span class="p">();</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h3>convertToItem</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <h3>convertToItem</h3>
 
 <p>Given an object that is either a ListItem instance, a jQuery element, or a
 string of valid HTML, makes sure to return either the ListItem itself or 
@@ -191,18 +208,18 @@ a new ListItem that wraps the element.</p>
 <p>Takes:</p>
 
 <ul>
-<li>possibleItem: an object that is either a ListItem, a jQuery element, or
-a string of valid HTML.</li>
+<li><code>possibleItem</code>: an object that is either a ListItem, a jQuery element,
+or a string of valid HTML.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  
   <span class="kd">function</span> <span class="nx">convertToItem</span><span class="p">(</span><span class="nx">possibleItem</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">possibleItem</span> <span class="k">instanceof</span> <span class="nx">ListItem</span><span class="p">)</span> <span class="k">return</span> <span class="nx">possibleItem</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">possibleItem</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="nx">possibleItem</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">possibleItem</span><span class="p">);</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">ListItem</span><span class="p">(</span><span class="nx">possibleItem</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <h3>tooSmall</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h3>tooSmall</h3>
 
 <p>Alerts the given ListView that the given Page is too small. May result
-in modifications to the <code>pages</code> array.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">tooSmall</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">page</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Naive solution:</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">repartition</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <h3>repartition</h3>
+in modifications to the <code>pages</code> array.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">tooSmall</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">page</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>Naive solution:</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">repartition</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <h3>repartition</h3>
 
 <p>Repartitions the pages array. This can be used for either defragmenting
 the array, or recalculating everything on screen resize.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">repartition</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
@@ -232,7 +249,7 @@ the array, or recalculating everything on screen resize.</p>             </td>  
     <span class="p">}</span>
 
     <span class="nx">listView</span><span class="p">.</span><span class="nx">pages</span> <span class="o">=</span> <span class="nx">newPages</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <h2>ListView querying</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <h3>find</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <h2>ListView querying</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <h3>find</h3>
 
 <p>Given a selector string or jQuery element, return the items that hold the
 given or matching elements.</p>
@@ -249,12 +266,12 @@ important to do here.</p>
 </ul>
 
 <p>Returns a ListItem.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">find</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">findObj</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">items</span><span class="p">,</span> <span class="nx">$onscreen</span><span class="p">,</span> <span class="nx">$offscreen</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>If given a selector string, find everything matching onscreen and
+    <span class="kd">var</span> <span class="nx">items</span><span class="p">,</span> <span class="nx">$onscreen</span><span class="p">,</span> <span class="nx">$offscreen</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>If given a selector string, find everything matching onscreen and
 offscreen, and return both.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">findObj</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">$onscreen</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">findObj</span><span class="p">);</span>
       <span class="nx">$offscreen</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$shadow</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">findObj</span><span class="p">);</span>
       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">$onscreen</span><span class="p">).</span><span class="nx">concat</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">$offscreen</span><span class="p">));</span>
-    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>Silly option, but might as well.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">findObj</span> <span class="k">instanceof</span> <span class="nx">ListItem</span><span class="p">)</span> <span class="k">return</span> <span class="p">[</span><span class="nx">findObj</span><span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>jQuery element</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>Silly option, but might as well.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">findObj</span> <span class="k">instanceof</span> <span class="nx">ListItem</span><span class="p">)</span> <span class="k">return</span> <span class="p">[</span><span class="nx">findObj</span><span class="p">];</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>jQuery element</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="nx">findObj</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">pageId</span><span class="p">,</span> <span class="nx">page</span><span class="p">,</span> <span class="nx">pageItems</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">currItem</span><span class="p">,</span>
           <span class="nx">$itemEl</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">),</span>
@@ -278,7 +295,7 @@ offscreen, and return both.</p>             </td>             <td class="code"> 
     <span class="p">});</span>
 
     <span class="k">return</span> <span class="nx">items</span><span class="p">;</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <h3>startIndexWithinRange</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <h3>startIndexWithinRange</h3>
 
 <p>Finds the starting index for a listView, given a range. Wraps
 indexWithinRange. </p>
@@ -286,15 +303,15 @@ indexWithinRange. </p>
 <p>Takes:</p>
 
 <ul>
-<li>listView: the ListView whose startIndex you're calculating.</li>
-<li>top: the top of the range.</li>
-<li>bottom: the bottom of the range.</li>
+<li><code>listView</code>: the ListView whose startIndex you're calculating.</li>
+<li><code>top</code>: the top of the range.</li>
+<li><code>bottom</code>: the bottom of the range.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">startIndexWithinRange</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">indexWithinRange</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">);</span>
     <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">index</span> <span class="o">-</span> <span class="nx">NUM_BUFFER_PAGES</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
     <span class="nx">index</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">listView</span><span class="p">.</span><span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">index</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <h3>indexWithinRange</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <h3>indexWithinRange</h3>
 
 <p>Finds the index of the page closest to being within a given range. It's
 less useful than its wrapper function startIndexWithinRange, and you
@@ -303,13 +320,13 @@ probably won't need to call this unwrapped version.</p>
 <p>Takes:</p>
 
 <ul>
-<li>listView: the ListView instance whose pages you're looking at.</li>
-<li>top: the top of the range.</li>
-<li>bottom: the bottom of the range.</li>
+<li><code>listView</code>: the ListView instance whose pages you're looking at.</li>
+<li><code>top</code>: the top of the range.</li>
+<li><code>bottom</code>: the bottom of the range.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">indexWithinRange</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">curr</span><span class="p">,</span> <span class="nx">startIndex</span><span class="p">,</span> <span class="nx">midpoint</span><span class="p">,</span> <span class="nx">diff</span><span class="p">,</span> <span class="nx">prevDiff</span><span class="p">,</span>
         <span class="nx">pages</span> <span class="o">=</span> <span class="nx">listView</span><span class="p">.</span><span class="nx">pages</span><span class="p">,</span>
-        <span class="nx">rangeMidpoint</span> <span class="o">=</span> <span class="nx">top</span> <span class="o">+</span> <span class="p">(</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">top</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Start looking at the index of the page last contained by the screen --
+        <span class="nx">rangeMidpoint</span> <span class="o">=</span> <span class="nx">top</span> <span class="o">+</span> <span class="p">(</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">top</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <p>Start looking at the index of the page last contained by the screen --
 not the first page in the onscreen pages</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">startIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">listView</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">+</span> <span class="nx">NUM_BUFFER_PAGES</span><span class="p">,</span> 
                           <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
 
@@ -318,7 +335,7 @@ not the first page in the onscreen pages</p>             </td>             <td c
     <span class="nx">curr</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">[</span><span class="nx">startIndex</span><span class="p">];</span>
     <span class="nx">midpoint</span> <span class="o">=</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">height</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
     <span class="nx">prevDiff</span> <span class="o">=</span> <span class="nx">rangeMidpoint</span> <span class="o">-</span> <span class="nx">midpoint</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">prevDiff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <p>Search above</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">index</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">prevDiff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <p>Search above</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">index</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">curr</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
         <span class="nx">midpoint</span> <span class="o">=</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">height</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
         <span class="nx">diff</span> <span class="o">=</span> <span class="nx">rangeMidpoint</span> <span class="o">-</span> <span class="nx">midpoint</span><span class="p">;</span>
@@ -329,7 +346,7 @@ not the first page in the onscreen pages</p>             </td>             <td c
         <span class="nx">prevDiff</span> <span class="o">=</span> <span class="nx">diff</span><span class="p">;</span>
       <span class="p">}</span>
       <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">prevDiff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <p>Search below</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">prevDiff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p>Search below</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">curr</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
         <span class="nx">midpoint</span> <span class="o">=</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">curr</span><span class="p">.</span><span class="nx">height</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
         <span class="nx">diff</span> <span class="o">=</span> <span class="nx">rangeMidpoint</span> <span class="o">-</span> <span class="nx">midpoint</span><span class="p">;</span>
@@ -340,20 +357,20 @@ not the first page in the onscreen pages</p>             </td>             <td c
         <span class="nx">prevDiff</span> <span class="o">=</span> <span class="nx">diff</span><span class="p">;</span>
       <span class="p">}</span>
       <span class="k">return</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p>Perfect hit! Return it.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="nx">startIndex</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <h2>ListView cleanup</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <p>Perfect hit! Return it.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="nx">startIndex</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <h2>ListView cleanup</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">pages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pages</span><span class="p">;</span>
     <span class="nx">ScrollEvent</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="k">while</span><span class="p">(</span><span class="nx">pages</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">pages</span><span class="p">.</span><span class="nx">pop</span><span class="p">().</span><span class="nx">cleanup</span><span class="p">();</span>
     <span class="p">}</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <h2>ListView scrolling </h2>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <h2>ListView scrolling </h2>
 
 <p>Internal scroll binding and throttling. Allows ListViews to bind to a
 throttled scroll event, and updates them as it fires.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">ScrollEvent</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">scrollIsBound</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
         <span class="nx">scrollScheduled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
-        <span class="nx">boundViews</span> <span class="o">=</span> <span class="p">[];</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <h3>scrollHandler</h3>
+        <span class="nx">boundViews</span> <span class="o">=</span> <span class="p">[];</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <h3>scrollHandler</h3>
 
 <p>Callback called on scroll. Schedules a <code>scrollAll</code> callback if needed,
 and disallows future scheduling.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">function</span> <span class="nx">scrollHandler</span><span class="p">()</span> <span class="p">{</span>
@@ -361,7 +378,7 @@ and disallows future scheduling.</p>             </td>             <td class="co
         <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">scrollAll</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">SCROLL_THROTTLE</span><span class="p">);</span>
         <span class="nx">scrollScheduled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
       <span class="p">}</span>
-    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <h3>scrollAll</h3>
+    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <h3>scrollAll</h3>
 
 <p>Callback passed to the setTimeout throttle. Calls <code>scrollListView</code> on
 every bound ListView, and then allows new scroll events to be
@@ -373,7 +390,7 @@ scheduled.</p>             </td>             <td class="code">               <di
       <span class="nx">scrollScheduled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <h3>attach</h3>
+    <span class="k">return</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <h3>attach</h3>
 
 <p>Binds a given ListView to a throttled scroll event. Does not create
 multiple event handlers if called by multiple ListViews.</p>
@@ -381,7 +398,7 @@ multiple event handlers if called by multiple ListViews.</p>
 <p>Takes:</p>
 
 <ul>
-<li>listView: a ListView that is not currently bound to the scroll
+<li><code>listView</code>: a ListView that is not currently bound to the scroll
 event.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">attach</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">scrollIsBound</span><span class="p">)</span> <span class="p">{</span>
@@ -389,7 +406,7 @@ event.</li>
           <span class="nx">scrollIsBound</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="nx">boundViews</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
-      <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <h3>detach</h3>
+      <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <h3>detach</h3>
 
 <p>Detaches a bound ListView from the throttled scroll event. If no
 ListViews remain bound to the throttled scroll, unbinds the scroll
@@ -401,7 +418,7 @@ otherwise.</p>
 <p>Takes:</p>
 
 <ul>
-<li>listView: a ListView that is currently bound to the scroll event.</li>
+<li><code>listView</code>: a ListView that is currently bound to the scroll event.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">detach</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">;</span>
         <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">boundViews</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -417,7 +434,7 @@ otherwise.</p>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
       <span class="p">}</span>
     <span class="p">};</span>
-  <span class="p">}(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <h1>Page class</h1>
+  <span class="p">}(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <h1>Page class</h1>
 
 <p>An internal class used for ordering items into roughly screen-sized pages.
 Pages are removed and added to the DOM wholesale as they come in and out
@@ -439,16 +456,16 @@ of view.</p>             </td>             <td class="code">               <div 
     <span class="k">this</span><span class="p">.</span><span class="nx">lazyloaded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <h3>append</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <h3>append</h3>
 
 <p>Appends a ListItem to the Page.</p>
 
 <p>Takes:</p>
 
 <ul>
-<li>item: a ListItem.</li>
+<li><code>item</code>: a ListItem.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">append</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <p>Recompute coords, sizing.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <p>Recompute coords, sizing.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">bottom</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">width</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
@@ -458,16 +475,16 @@ of view.</p>             </td>             <td class="code">               <div 
     <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">lazyloaded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <h3>prepend</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-45">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-45">&#182;</a>               </div>               <h3>prepend</h3>
 
 <p>Prepends a ListItem to the Page.</p>
 
 <p>Takes:</p>
 
 <ul>
-<li>item: a ListItem.</li>
+<li><code>item</code>: a ListItem.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">prepend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-45">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-45">&#182;</a>               </div>               <p>Recompute coords, sizing.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-46">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-46">&#182;</a>               </div>               <p>Recompute coords, sizing.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">&gt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">width</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
 
@@ -476,11 +493,11 @@ of view.</p>             </td>             <td class="code">               <div 
     <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
 
     <span class="k">this</span><span class="p">.</span><span class="nx">lazyloaded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-46">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-46">&#182;</a>               </div>               <h3>hasVacancy</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-47">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-47">&#182;</a>               </div>               <h3>hasVacancy</h3>
 
 <p>Returns false if the Page is at max capacity; false otherwise.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasVacancy</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">&lt;</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="o">*</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PAGE_TO_SCREEN_RATIO</span><span class="p">;</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-47">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-47">&#182;</a>               </div>               <h3>appendTo</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <h3>appendTo</h3>
 
 <p>Proxies to jQuery to append the Page to the given jQuery element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">appendTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span><span class="p">)</span> <span class="p">{</span>
@@ -488,14 +505,14 @@ of view.</p>             </td>             <td class="code">               <div 
       <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">$el</span><span class="p">);</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <h3>prependTo</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <h3>prependTo</h3>
 
 <p>Proxies to jQuery to prepend the Page to the given jQuery element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">prependTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">prependTo</span><span class="p">(</span><span class="nx">$el</span><span class="p">);</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <h3>stash</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <h3>stash</h3>
 
 <p>Temporarily stash the onscreen page under a different element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">stash</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span><span class="p">)</span> <span class="p">{</span>
@@ -503,7 +520,7 @@ of view.</p>             </td>             <td class="code">               <div 
       <span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
       <span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <h3>remove</h3>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <h3>remove</h3>
 
 <p>Removes the Page from the DOM and cleans up after it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span><span class="p">)</span> <span class="p">{</span>
@@ -511,26 +528,34 @@ of view.</p>             </td>             <td class="code">               <div 
       <span class="k">this</span><span class="p">.</span><span class="nx">cleanup</span><span class="p">();</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">onscreen</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">};</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-52">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-52">&#182;</a>               </div>               <h3>cleanup</h3>
 
-  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<p>Cleans up the Page without removing it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">parent</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
     <span class="nx">PageRegistry</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="k">while</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">items</span><span class="p">.</span><span class="nx">pop</span><span class="p">().</span><span class="nx">cleanup</span><span class="p">();</span>
     <span class="p">}</span>
-  <span class="p">};</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <h3>lazyload</h3>
 
+<p>Runs the given lazy-loading callback on all unloaded page content.</p>
+
+<p>Takes:</p>
+
+<ul>
+<li><code>callback</code>: a function of the form <code>function([$el]){}</code>. Will run on
+each unloaded element, and will use the element as its calling context.</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>  
   <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">lazyload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">lazyloaded</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">callback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">[</span><span class="nx">index</span><span class="p">]);</span>
+        <span class="nx">callback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">[</span><span class="nx">index</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">[</span><span class="nx">index</span><span class="p">]);</span>
       <span class="p">}</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">lazyloaded</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <h2>Page Registry</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">PageRegistry</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <h2>Page Registry</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">PageRegistry</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">pages</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">return</span> <span class="p">{</span>
       <span class="nx">generatePageId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
@@ -548,7 +573,7 @@ of view.</p>             </td>             <td class="code">               <div 
         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
       <span class="p">}</span>
     <span class="p">};</span>
-  <span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-52">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-52">&#182;</a>               </div>               <h3>removeItemFromPage</h3>
+  <span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-55">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-55">&#182;</a>               </div>               <h3>removeItemFromPage</h3>
 
 <p>Removes a given ListItem from the given Page.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">removeItemFromPage</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">foundIndex</span><span class="p">,</span>
@@ -568,7 +593,7 @@ of view.</p>             </td>             <td class="code">               <div 
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">page</span><span class="p">.</span><span class="nx">hasVacancy</span><span class="p">())</span> <span class="nx">tooSmall</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">parent</span><span class="p">,</span> <span class="nx">page</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <h1>ListItem class</h1>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-56">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-56">&#182;</a>               </div>               <h1>ListItem class</h1>
 
 <p>An individual item in the ListView.</p>
 
@@ -585,18 +610,28 @@ inserted into a ListView; it can't be determined ahead of time.</p>
     <span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="p">}</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-57">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-57">&#182;</a>               </div>               <h3>remove</h3>
 
-  <span class="nx">ListItem</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<p>Removes the ListItem and its elements from the page, and cleans up after
+them.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListItem</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
     <span class="nx">removeItemFromPage</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">parent</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">cleanup</span><span class="p">();</span>
-  <span class="p">};</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-58">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-58">&#182;</a>               </div>               <h3>cleanup</h3>
 
-  <span class="nx">ListItem</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<p>Cleans up after the ListItem without removing it from the page.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListItem</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">parent</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-  <span class="p">};</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-59">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-59">&#182;</a>               </div>               <h3>updateCoords</h3>
 
+<p>Updates the coordinates of the given ListItem, assuming a given y-offset
+from the parent ListView.</p>
+
+<p>Takes:</p>
+
+<ul>
+<li><code>listItem</code>: the ListItem whose cached coordinates you want to update.</li>
+<li><code>yOffset</code>: the y-offset of the ListItem from its ListView parent.</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>  
   <span class="kd">function</span> <span class="nx">updateCoords</span><span class="p">(</span><span class="nx">listItem</span><span class="p">,</span> <span class="nx">yOffset</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">$el</span> <span class="o">=</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">$el</span><span class="p">,</span>
         <span class="nx">offset</span> <span class="o">=</span> <span class="nx">$el</span><span class="p">.</span><span class="nx">offset</span><span class="p">();</span>
@@ -604,11 +639,11 @@ inserted into a ListView; it can't be determined ahead of time.</p>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">$el</span><span class="p">.</span><span class="nx">outerHeight</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">$el</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <h1>Helper functions</h1>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-55">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-55">&#182;</a>               </div>               <h3>div</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-60">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-60">&#182;</a>               </div>               <h1>Helper functions</h1>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-61">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-61">&#182;</a>               </div>               <h3>div</h3>
 
 <p>Returns a new, empty <code>&lt;div&gt;</code> jQuery element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">div</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-56">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-56">&#182;</a>               </div>               <h3>blankDiv</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-62">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-62">&#182;</a>               </div>               <h3>blankDiv</h3>
 
 <p>Returns a new, empty <code>&lt;div&gt;</code> jQuery element. The <code>&lt;div&gt;</code> will have its 
 border, margin, and padding set to zero or none, as appropriate.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">blankDiv</span><span class="p">()</span> <span class="p">{</span>
@@ -617,22 +652,20 @@ border, margin, and padding set to zero or none, as appropriate.</p>            
       <span class="nx">padding</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">border</span><span class="o">:</span> <span class="s1">&#39;none&#39;</span>
     <span class="p">});</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-57">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-57">&#182;</a>               </div>               <h3>pxToInt</h3>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-63">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-63">&#182;</a>               </div>               <h3>pxToInt</h3>
 
 <p>Converts pixel values returned by jQuery to base-10 ints.</p>
 
 <p>Takes:</p>
 
 <ul>
-<li>px: a string value, which starts with a number and is
+<li><code>px</code>: a string value, which starts with a number and is
 prefixed with the string <code>'px'</code>.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">pxToInt</span><span class="p">(</span><span class="nx">px</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">px</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-58">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-58">&#182;</a>               </div>               <h1>Export</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListView</span> <span class="o">=</span> <span class="nx">ListView</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-64">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-64">&#182;</a>               </div>               <h1>Export</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-65">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-65">&#182;</a>               </div>               <p>Classes:</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListView</span> <span class="o">=</span> <span class="nx">ListView</span><span class="p">;</span>
   <span class="nx">infinity</span><span class="p">.</span><span class="nx">Page</span> <span class="o">=</span> <span class="nx">Page</span><span class="p">;</span>
-  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListItem</span> <span class="o">=</span> <span class="nx">ListItem</span><span class="p">;</span>
-
-  <span class="nx">infinity</span><span class="p">.</span><span class="nx">noConflict</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListItem</span> <span class="o">=</span> <span class="nx">ListItem</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-66">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-66">&#182;</a>               </div>               <p>Destroy own packaging:</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">noConflict</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="nb">window</span><span class="p">.</span><span class="nx">infinity</span> <span class="o">=</span> <span class="nx">oldInfinity</span><span class="p">;</span>
     <span class="k">return</span> <span class="nx">infinity</span><span class="p">;</span>
   <span class="p">};</span>
