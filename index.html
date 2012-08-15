@@ -3,6 +3,7 @@
   <head>
     <meta charset=utf-8>
     <title>Infinity.js</title>
+    <link rel=stylesheet type=text/css href=assets/google-code-prettify/prettify.css>
     <link rel=stylesheet type=text/css href=assets/o2.css>
     <link rel=stylesheet type=text/css href=assets/custom.css>
   </head>
@@ -72,7 +73,7 @@
               <span class=infinity-logo>&infin;</span> Reference Guide
             </a>
             <ul class=nav>
-              <li><a href=#api-listview>Introduction</a>
+              <li><a href=#quickstart>Quickstart</a>
               <li class=divider-vertical>
               <li><a href=#api-listview>ListView</a>
               <li class=divider-vertical>
@@ -94,9 +95,63 @@
         <div class=span12>
           <div class='panel-padding'>
 
+            <div class='row-fluid api-doc' id='quickstart'>
+              <div class=span12>
+                <h2><a class=api-header-link href=#quickstart>Quickstart</a></h2>
+
+                <p class=api-copy>It's easy to get started with Infinity.</p>
+
+<pre class='prettyprint linenums lang-js'>
+var $el = $('#my-infinite-container');
+var listView = new infinity.ListView($el);
+
+// ... When adding new content:
+
+var $newContent = $('&lt;p&gt;Hello World&lt;/p&gt;');
+listView.append($newContent);
+</pre>
+                <p class=api-copy>
+                  You can also find and remove items from a list:
+                </p>
+
+<pre class='prettyprint linenums lang-js'>
+var listItems = listView.find('.my-items');
+for(var index = 0, length = listItems.length; index < length; index++) {
+  listItems[index].remove();
+}
+</pre>
+                <p class=api-copy>
+                  It's important to use the ListView to find the items you want,
+                  and not the DOM, since the items will often be removed from
+                  the DOM to save scrolling performance. Note that
+                  <code>find()</code> will return an array of ListItems, which
+                  are wrappers around jQuery elements that cache positioning
+                  data and can communicate easily with the parent ListView 
+                  (which is taken care of behind the scenes during
+                  <code>remove()</code> operations).
+                </p>
+
+                <p class=api-copy>
+                  That's basically all you need to know to use Infinity. For
+                  full API documentation, keep reading.
+                </p>
+
+                <p class=api-copy>
+                  Also &mdash; because of a rendering bug in Firefox &mdash;
+                  if you're lazy-loading images inside of a ListView, you should
+                  set their <code>display</code> to <code>inline-block</code>,
+                  or Firefox will report the wrong height data to Infinity.
+                </p>
+              </div>
+            </div>
+
+            <hr>
+
             <div class='row-fluid api-doc' id=api-listview>
               <div class=span8>
-                <h2><a class=api-header-link href=#api-listview>ListView</a></h2>
+                <h2><a class=api-header-link href=#api-listview>
+                    ListView API Reference
+                </a></h2>
                 <p class=api-copy>
                   A <strong>ListView</strong> is a container
                   that moves content in and out of the DOM on the scroll event.
@@ -186,7 +241,9 @@
 
             <div class='row-fluid api-doc' id=api-listitem>
               <div class=span9>
-                <h2><a class=api-header-link href=#api-listitem>ListItem</a></h2>
+                <h2><a class=api-header-link href=#api-listitem>
+                    ListItem API Reference
+                </a></h2>
                 <p class=api-copy>
                   <strong>ListItems</strong> are wrappers for individual DOM
                   nodes placed inside a ListView. You'll normally never need
@@ -294,9 +351,14 @@
 
     </div>
     <script type=text/javascript src=https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js></script>
+    <script src="assets/google-code-prettify/prettify.js"></script>
     <script type=text/javascript src=assets/js/vendor/ender.min.js></script>
     <script>ender.noConflict();</script>
     <script type=text/javascript src=assets/js/vendor/stdair.min.js></script>
     <script type=text/javascript src=assets/js/vendor/o2.min.js></script>
+
+    <script>
+      prettyPrint();
+    </script>
   </body>
 </html>
