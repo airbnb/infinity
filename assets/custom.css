@@ -328,6 +328,8 @@ h2, h3 {
 
 .message-from {
   text-align: center;
+}
+h1.message-from {
   font-size: 60px;
   font-style: italic;
   line-height: 150px;
