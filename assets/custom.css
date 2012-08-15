@@ -2,6 +2,10 @@ a, a:hover {
   color: #EC2E90;
 }
 
+img {
+  display: inline-block;
+}
+
 .main-container {
   margin-top: 25px;
 }
