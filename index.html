@@ -82,7 +82,7 @@
             </ul>
 
             <ul class='nav pull-right'>
-              <li><a href=# class='pink btn fork'>
+              <li><a href=http://github.com/airbnb/infinity class='pink btn fork'>
                     <i class='icon icon-github'></i> Fork Me
                   </a>
             </ul>
@@ -292,135 +292,36 @@
 
             <hr>
 
-            <div class='row-fluid api-doc' id=api-demo>
+            <div id=demo class='row-fluid api-doc'>
               <div class=span12>
-                <h2><a class=api-header-link href=#api-demo>
+                <h2><a class=api-header-link>
                     Demo
                 </a></h2>
+
+                <p class=api-copy>
+                  For your viewing pleasure, we have included a heartwarming
+                  demo in two parts:
+                </p>
+
+                <a class=demo-link href=demo-on.html>
+                  "A Message From Brian Chesky: With Infinity"
+                </a>
+                <a class=demo-link href=demo-off.html>
+                  "A Message From Brian Chesky: Lacking Infinity"
+                </a>
               </div>
             </div>
 
-          </div>
-        </div>
-
-      </div>
-
-      <div id=demo class=row>
-
-        <div class=span4>
-          <div class=row-fluid>
-            <div class='span12 list-view'>
-            </div>
-          </div>
-        </div>
-
-        <div class=span4>
-          <div class=row-fluid>
-            <div class='span12 list-view'>
-            </div>
-          </div>
-        </div>
-
-        <div class=span4>
-          <div class=row-fluid>
-            <div class='span12 list-view'>
-            </div>
           </div>
         </div>
 
       </div>
 
     </div>
-
-    <div class='modal fade' id=save-modal>
-      <div class=modal-header>
-        <a href=# class=close>&times;</a>
-        <h1>Save To Puglist?</h1>
-      </div>
-      <div class=modal-body>
-        <p>Are you sure you want to save this to your puglist?</p>
-      </div>
-      <div class=modal-footer>
-        <a class='save btn' href=#>Yes</a>
-        <a class='no-save red btn' href=#>No</a>
-      </div>
-    </div>
-
-    <script type=text/html id=demo-template>
-      <div class=row-fluid>
-        <% for(var i = 0, length = pugs.length; i < length; i++) { %>
-          <%= pugs[i] %>
-        <% } %>
-      </div>
-    </script>
-
-    <script type=text/html id=demo-pug-template>
-      <div class='span12 pug-item'>
-        <div class='matte-media-box pug-box'
-          data-pug="<%= pug.src %>"
-          data-name="<%= title %>"
-          data-caption="<%= caption %>"
-        >
-          <% intendedSize = 322 %>
-          <% scale = (intendedSize - 10) / pug.width %>
-          <img class='pug' data-original="<%= pug.src %>" 
-                style="width: <%= pug.width * scale %>px;
-                      height: <%= pug.height * scale %>px;">
-
-          <div class=caption>
-            <h4 class=caption-name><%= title %></h4>
-            <p class=caption-text><%= caption %></p>
-            <div class='price-tag
-                        <%= rotateRight ? "rotate-right" : "" %>
-                        <%= rotateLeft ? "rotate-left" : ""%>
-                        '>
-              <div class=price-bottom>
-                <div class=curr-symbol>
-                  $
-                </div>
-                <div class=price-text>
-                  <%= price %>
-                </div>
-                <div class=per-night>
-                  per night
-                </div>
-              </div>
-              <div class=price-top>
-              </div>
-              <i class='icon icon-pushpin'></i>
-            </div>
-          </div>
-
-          <a class='heart<%= saved ? " saved" : "" %>' rel=tooltip title='Save to Puglist'>
-            <i class='icon icon-heart heart-inner'></i>
-          </a>
-        </div>
-      </div>
-    </script>
-
-    <script type=text/html id=spinner-template>
-      <div class=row>
-        <div class=span12>
-          <img src=assets/images/icons/spinner.gif class=spinner alt='Loading...'>
-        </div>
-      </div>
-    </script>
-
     <script type=text/javascript src=https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js></script>
     <script type=text/javascript src=assets/js/vendor/ender.min.js></script>
     <script>ender.noConflict();</script>
     <script type=text/javascript src=assets/js/vendor/stdair.min.js></script>
     <script type=text/javascript src=assets/js/vendor/o2.min.js></script>
-
-    <script type=text/javascript src=infinity.js></script>
-
-    <script type=text/javascript src=assets/js/demo/demo-package.js></script>
-    <script type=text/javascript src=assets/js/demo/config.js></script>
-    <script type=text/javascript src=assets/js/demo/pugs.js></script>
-    <script type=text/javascript src=assets/js/demo/names.js></script>
-    <script type=text/javascript src=assets/js/demo/taglines.js></script>
-    <script type=text/javascript src=assets/js/demo/storage.js></script>
-    <script type=text/javascript src=assets/js/demo/render.js></script>
-    <script type=text/javascript src=assets/js/demo/index.js></script>
   </body>
 </html>
