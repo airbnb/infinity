@@ -18,16 +18,15 @@ img {
 }
 
 .logo {
-  font-family: "Helvetica Neue", Helvetica, 'Muli', Tahoma, Verdana, sans-serif;
   margin-top: -40px;
   margin-left: -14px;
 }
 
 .infinity-logo {
-  font-family: "Helvetica Neue", Helvetica, 'Muli', Tahoma, Verdana, sans-serif;
+  font-family: 'Muli', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 1.5em;
   position: relative;
-  top: 2px;
+  top: 3px;
   color: #1D95CB;
   -webkit-transition: color 0.15s linear;
      -moz-transition: color 0.15s linear;
@@ -71,6 +70,7 @@ h2, h3 {
 }
 
 .logo-prefix {
+  font-family: 'Muli', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 200px;
   line-height: 200px;
 }
