@@ -18,11 +18,13 @@ img {
 }
 
 .logo {
+  font-family: "Helvetica Neue", Helvetica, Calibri, Tahoma, Verdana, sans-serif;
   margin-top: -40px;
   margin-left: -14px;
 }
 
 .infinity-logo {
+  font-family: "Helvetica Neue", Helvetica, Calibri, Tahoma, Verdana, sans-serif;
   font-size: 1.5em;
   position: relative;
   top: 2px;
