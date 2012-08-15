@@ -77,7 +77,7 @@
     var index;
     if(num <= 0) return;
 
-    for(index = 0; index < num && index < 20; index++) {
+    for(index = 0; index < num && index < 70; index++) {
       row();
     }
     num -= index;
