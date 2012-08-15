@@ -57,29 +57,39 @@
 
 
   function row() {
-    var index, colIndex, length, minCol, currCol, $pug;
+    var index, colIndex, length, $minCol, $currCol, $pug;
 
     for(index = 0, length = columns.length; index < length; index++) {
 
       for(colIndex = 0; colIndex < length; colIndex++) {
-        currCol = $(columns[colIndex]);
-        if(!minCol) minCol = currCol;
-        else minCol = minCol.height() > currCol.height() ? currCol : minCol;
+        $currCol = $(columns[colIndex]);
+
+        if(!$minCol) $minCol = $currCol;
+        else $minCol = $minCol.height() > $currCol.height() ? $currCol : $minCol;
       }
 
-      if(Pug.config.infinityOn) minCol.data('listView').append(pug());
-      else minCol.append(pug);
+      if(Pug.config.infinityOn) $minCol.data('listView').append(pug());
+      else $minCol.append(pug);
     }
   }
 
   function pb(num) {
-    for(var i = num; i > 0; i--) {
+    var index;
+    if(num <= 0) return;
+
+    for(index = 0; index < num && index < 20; index++) {
       row();
     }
-    $pug = columns.find('.pug');
-    $pug.each(function() {
-      $(this).attr('src', $(this).attr('data-original'));
-    });
+    num -= index;
+
+    if(!Pug.config.infinityOn) {
+      $pug = columns.find('.pug');
+      $pug.each(function() {
+        $(this).attr('src', $(this).attr('data-original'));
+      });
+    }
+
+    setTimeout(function() { pb(num - 1); }, 0);
   }
 
   Pug.bomb = pb;
