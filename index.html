@@ -14,7 +14,7 @@
       <div class=row>
         <div class=span12>
           <h1 class=logo>
-            <a class=logo-link href=/>
+            <a class=logo-link href=/infinity>
               <span class=logo-prefix>&infin;</span>
               <span class=logo-suffix>.js</span>
             </a>
@@ -24,7 +24,7 @@
       <div class='row main-copy'>
         <div class=span12>
           <p>
-            <a href=/ class=infinity-logo>&infin;</a> is a UITableView for the 
+            <a href=/infinity class=infinity-logo>&infin;</a> is a UITableView for the 
             web: it speeds up scrolling through long lists and keeps your 
             infinite feeds smooth and stable for your users. It is small, 
             battle-tested, and highly performant. The code is hosted on 
@@ -35,7 +35,7 @@
             and <a href=demo-on.html>on</a>.
           </p>
           <p>
-            <a href=/ class=infinity-logo>&infin;</a> was built by 
+            <a href=/infinity class=infinity-logo>&infin;</a> was built by 
             <a href=http://www.airbnb.com/jobs>Airbnb</a>
             alongside the development of the Popular Wishlists and Friends
             feeds, and sees daily production use there today. Its only
@@ -98,6 +98,7 @@ for(var index = 0, length = listItems.length; index < length; index++) {
               <li><a href=#api-listitem>ListItem</a>
               <li class=divider-vertical>
               <li><a href=#api-config>Configuration</a>
+              <li><a href=#future-work>Future Work</a>
             </ul>
 
             <ul class='nav pull-right'>
@@ -141,7 +142,8 @@ for(var index = 0, length = listItems.length; index < length; index++) {
                 </p>
                 <p class=api-copy>
                   <span class='label label-red'>Note</span> Because Firefox
-                  implements some unspecified behavior differently than other
+                  implements the unspecified behavior of <code>img</code> tags
+                  without <code>src</code> attributes differently than other
                   browsers, if you're lazy-loading images inside of a ListView
                   you should set their <code>display</code> to either
                   <code>block</code> or <code>inline-block</code>, or Firefox
@@ -329,6 +331,29 @@ for(var index = 0, length = listItems.length; index < length; index++) {
                 </ul>
               </div>
             </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=future-work>
+              <div class=span12>
+                <h2><a class=api-header-link href=#future-work>
+                    Future Work
+                </a></h2>
+
+                <ul class=api-list>
+                  <li>Switch Infinity's internal data structure from a sorted
+                  array to a self-balancing binary tree. This will make
+                  <code>remove()</code> operations on ListItems much faster,
+                  and allow simple, fast support for prepends (or even
+                  arbitrary insertion points).
+                  <li>Make an API for notifying ListViews/ListItems when
+                  elements change size, so that the ListView can reorganize
+                  itself. This is probably a next step after switching to a
+                  self-balancing binary tree.
+                </ul>
+              </div>
+            </div>
+
           </div>
         </div>
 
