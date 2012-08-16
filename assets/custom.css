@@ -75,11 +75,11 @@ h2, h3 {
   line-height: 200px;
 }
 .logo-suffix {
-  font-size: 140px;
-  line-height: 140px;
+  font-size: 135px;
+  line-height: 135px;
   position: relative;
-  top: -15px;
-  left: -10px;
+  top: -23px;
+  left: -15px;
   color: black;
 }
 
@@ -95,12 +95,19 @@ h2, h3 {
 }
 
 .download {
-  margin-bottom: 40px;
+  margin-bottom: 6px;
   padding-right: 16px;
 }
 
 .download .btn {
   float: right;
+}
+
+.quickstart p {
+  padding: 27px 0 10px 0;
+}
+.quickstart-code {
+  margin-top: -17px;
 }
 
 .navbar .container {
