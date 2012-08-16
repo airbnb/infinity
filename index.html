@@ -213,7 +213,7 @@ for(var index = 0, length = listItems.length; index < length; index++) {
                   are wrappers around jQuery elements that cache positioning
                   data and can communicate easily with the parent ListView 
                   (which is taken care of behind the scenes during
-                  <code>remove()</code> operations).
+                  <code>ListItem#remove()</code> operations).
                   <li><code>remove()</code>: removes the ListView from the DOM,
                   and cleans up after it.
                   <li><code>cleanup()</code>: unbinds all events, but does not
@@ -282,7 +282,8 @@ for(var index = 0, length = listItems.length; index < length; index++) {
                 </a></h3>
                 <ul class=api-list>
                   <li><code>remove()</code>: permanently removes the ListItem
-                  from the ListView, and cleans up after it.
+                  from the ListView and the ListItem's element from the DOM, 
+                  and cleans up after everything.
                   <li><code>cleanup()</code>: unbinds all events and
                   relinquishes all references it holds, but does not remove the
                   ListItem from the ListView.
