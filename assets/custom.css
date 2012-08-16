@@ -18,8 +18,7 @@ img {
 }
 
 .logo {
-  margin-top: -40px;
-  margin-left: -14px;
+  margin: -29px 0 10px -15px;
 }
 
 .infinity-logo {
@@ -84,14 +83,21 @@ h2, h3 {
 }
 
 .main-copy {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .main-copy p {
   font-size: 20px;
   line-height: 27px;
   font-weight: 200;
-  margin-bottom: 20px;
+  margin-bottom: 17px;
+}
+
+.start-container {
+  padding-top: 10px;
+}
+
+.download-box {
+  margin-top: 8px;
 }
 
 .download {
@@ -103,8 +109,11 @@ h2, h3 {
   float: right;
 }
 
-.quickstart p {
-  padding: 27px 0 10px 0;
+.quickstart-text:last-child {
+  padding: 27px 0 9px 0;
+}
+.quickstart-text:first-child {
+  padding-bottom: 30px;
 }
 .quickstart-code {
   margin-top: -17px;
