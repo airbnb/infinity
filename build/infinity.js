@@ -18,7 +18,7 @@
   //
   // 1. All DOM elements must either be visible or in the current layout.
   // infinity.js does not support elements that will at some point affect the
-  // layout, but are currently hidden using `display:block`.
+  // layout, but are currently hidden using `display:none`.
   //
   // 2. ListViews can't be nested.
   //
