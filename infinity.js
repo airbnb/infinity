@@ -377,12 +377,14 @@
 
       pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
       page = PageRegistry.lookup(pageId);
-      pageItems = page.items;
-      for(index = 0, length = pageItems.length; index < length; index++) {
-        currItem = pageItems[index];
-        if(currItem.$el.is($itemEl)) {
-          items.push(currItem);
-          break;
+      if(page) {
+        pageItems = page.items;
+        for(index = 0, length = pageItems.length; index < length; index++) {
+          currItem = pageItems[index];
+          if(currItem.$el.is($itemEl)) {
+            items.push(currItem);
+            break;
+          }
         }
       }
     });
