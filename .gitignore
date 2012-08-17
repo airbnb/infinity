@@ -4,3 +4,4 @@
 *~
 node_modules
 *.gz
+test/*.js
