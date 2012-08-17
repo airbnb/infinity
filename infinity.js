@@ -196,7 +196,7 @@
 
     for(index; index < length; index++) {
       curr = pages[index];
-      curr.lazyload(listView.lazyFn);
+      if(listView.lazy) curr.lazyload(listView.lazyFn);
       if(inserted && curr.onscreen) inOrder = false;
 
       if(!inOrder) {
