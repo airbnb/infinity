@@ -352,6 +352,11 @@ for(var index = 0, length = listItems.length; index < length; index++) {
                   elements change size, so that the ListView can reorganize
                   itself. This is probably a next step after switching to a
                   self-balancing binary tree.
+                  <li>Make the buffer scroll-direction-aware, so that you can
+                  either only have a back buffer or only have a front buffer
+                  depending on the scroll direction. This would allow you to
+                  increase the <code>PAGE_TO_SCREEN_RATIO</code> a bit without
+                  negatively impacting paint times.
                 </ul>
               </div>
             </div>
@@ -371,6 +376,35 @@ for(var index = 0, length = listItems.length; index < length; index++) {
 
     <script>
       prettyPrint();
+
+      !function(window, $) {
+        var $nav = $('.navbar'),
+            $win = $(window),
+            navTop = $nav.offset().top,
+            onTop = false,
+            checkScheduled = false;
+
+        function checkNav() {
+          var top = $win.scrollTop();
+          if(navTop < top && !onTop) {
+            onTop = true;
+            $nav.addClass('navbar-fixed-top');
+            } else if(navTop >= top && onTop) {
+            $nav.removeClass('navbar-fixed-top');
+            onTop = false;
+          }
+        }
+
+        $win.on('scroll', function() {
+          if(!checkScheduled) {
+            checkScheduled = true;
+            setTimeout(function() {
+              checkNav();
+              checkScheduled = false;
+            }, 100);
+          }
+        });
+      }(window, jQuery);
     </script>
   </body>
 </html>

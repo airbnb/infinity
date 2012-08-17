@@ -130,6 +130,11 @@ h2, h3 {
   text-shadow: none;
 }
 
+.navbar-fixed-top .brand {
+  position: relative;
+  left: 10px;
+}
+
 .icon-github {
   font-size: 12px;
   position: relative;
@@ -139,6 +144,9 @@ h2, h3 {
 .fork {
   position: relative;
   left: 5px;
+}
+.navbar-fixed-top .fork {
+  left: -10px;
 }
 
 .download-copy {
