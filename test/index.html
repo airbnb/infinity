@@ -9,6 +9,9 @@
     <div id=mocha>
     </div>
 
+    <div id=test>
+    </div>
+
     <!-- Infinity & dependencies -->
     <script src=https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js></script>
     <script src=../infinity.js></script>
@@ -16,8 +19,15 @@
     <!-- Test harness -->
     <script src=../node_modules/mocha/mocha.js></script>
     <script src=../node_modules/expect.js/expect.js></script>
+    <script>
+      mocha.setup({
+        ui: 'bdd',
+        ignoreLeaks: true // jQuery blows up mocha otherwise
+      });
+    </script>
 
     <!-- Unit tests -->
+    <script src=./listview.js></script>
 
     <!-- Run -->
     <script>
