@@ -86,7 +86,7 @@
     this.pages = [];
     this.startIndex = 0;
 
-    ScrollEvent.attach(this);
+    DOMEvent.attach(this);
   }
 
   // ### initBuffer
@@ -135,11 +135,10 @@
     if(!obj || (obj.length && obj.length === 0)) return null;
 
     var lastPage,
-        item = convertToItem(obj),
+        item = convertToItem(this, obj),
         pages = this.pages,
         pageChange = false;
 
-    cacheCoordsFor(this, item);
     this.height += item.height;
     this.$el.height(this.height);
 
@@ -274,13 +273,17 @@
   //
   // Takes:
   //
+  // - `listView`: the ListView instance that wants the item.
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
   
-  function convertToItem(possibleItem) {
+  function convertToItem(listView, possibleItem) {
+    var item;
     if(possibleItem instanceof ListItem) return possibleItem;
     if(typeof possibleItem === 'string') possibleItem = $(possibleItem);
-    return new ListItem(possibleItem);
+    item = new ListItem(possibleItem);
+    cacheCoordsFor(listView, item);
+    return item;
   }
 
 
@@ -312,8 +315,8 @@
     for(index = 0, length = pages.length; index < length; index++) {
       currPage = pages[index];
       for(itemIndex = 0, pageLength = currPage.items.length; itemIndex < pageLength; itemIndex++) {
-        currItem = currPage.items[index];
-        nextItem = convertToItem(currItem.$el);
+        currItem = currPage.items[itemIndex];
+        nextItem = currItem.clone();
         if(newPage.hasVacancy()) {
           newPage.append(nextItem);
         } else {
@@ -321,12 +324,12 @@
           newPages.push(newPage);
           newPage.append(nextItem);
         }
-        currItem.cleanup();
       }
-      currPage.cleanup();
+      currPage.remove();
     }
 
     listView.pages = newPages;
+    insertPagesInView(listView);
   }
 
 
@@ -476,22 +479,24 @@
 
   ListView.prototype.cleanup = function() {
     var pages = this.pages;
-    ScrollEvent.detach(this);
+    DOMEvent.detach(this);
     while(pages.length > 0) {
       pages.pop().cleanup();
     }
   };
 
 
-  // ListView scrolling 
-  // ------------------
+  // ListView event binding
+  // ----------------------
   //
-  // Internal scroll binding and throttling. Allows ListViews to bind to a
-  // throttled scroll event, and updates them as it fires.
+  // Internal scroll and resize  binding and throttling. Allows ListViews to
+  // bind to a throttled scroll event (and debounced resize event), and updates
+  // them as it fires.
 
-  var ScrollEvent = (function(window, $) {
-    var scrollIsBound = false,
+  var DOMEvent = (function(window, $) {
+    var eventIsBound = false,
         scrollScheduled = false,
+        resizeTimeout = null,
         boundViews = [];
 
 
@@ -522,6 +527,29 @@
       scrollScheduled = false;
     }
 
+
+    // ### resizeHandler
+    //
+    // Callback called on resize. Debounces a `resizeAll` callback.
+
+    function resizeHandler() {
+      if(resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resizeAll, 200);
+    }
+
+
+    // ### resizeAll
+    //
+    // Handles resizing all ListViews. Just calls `repartition` on them for
+    // now.
+
+    function resizeAll() {
+      var index, curr;
+      for(index = 0; curr = boundViews[index]; curr++) {
+        repartition(curr);
+      }
+    }
+
     return {
 
       // ### attach
@@ -535,9 +563,10 @@
       //   event.
 
       attach: function(listView) {
-        if(!scrollIsBound) {
+        if(!eventIsBound) {
           $(window).on('scroll', scrollHandler);
-          scrollIsBound = true;
+          $(window).on('resize', resizeHandler);
+          eventIsBound = true;
         }
         boundViews.push(listView);
       },
@@ -563,7 +592,8 @@
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
               $(window).off('scroll', scrollHandler);
-              scrollIsBound = false;
+              $(window).off('resize', resizeHandler);
+              eventIsBound = false;
             }
             return true;
           }
@@ -703,9 +733,9 @@
   Page.prototype.remove = function() {
     if(this.onscreen) {
       this.$el.remove();
-      this.cleanup();
       this.onscreen = false;
     }
+    this.cleanup();
   };
 
 
@@ -814,6 +844,17 @@
     this.height = 0;
   }
 
+  // ### clone
+  //
+  // Clones the ListItem.
+  ListItem.prototype.clone = function() {
+    var item = new ListItem(this.$el);
+    item.top = this.top;
+    item.bottom = this.bottom;
+    item.width = this.width;
+    item.height = this.height;
+    return item;
+  };
 
   // ### remove
   //
