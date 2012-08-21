@@ -294,7 +294,7 @@
 
   function tooSmall(listView, page) {
     // Naive solution:
-    repartition(listView);
+    // repartition(listView);
   }
 
 
@@ -545,7 +545,7 @@
 
     function resizeAll() {
       var index, curr;
-      for(index = 0; curr = boundViews[index]; curr++) {
+      for(index = 0; curr = boundViews[index]; index++) {
         repartition(curr);
       }
     }
