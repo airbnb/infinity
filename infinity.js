@@ -960,9 +960,21 @@
   infinity.Page = Page;
   infinity.ListItem = ListItem;
 
+  //jQuery plugin
+  function registerPlugin(infinity) {
+    var ListView = infinity.ListView;
+
+    $.fn.listView = function (options) {
+      return new ListView(this, options);
+    };
+  }
+
+  registerPlugin(infinity);
+
   // Destroy own packaging:
   infinity.noConflict = function() {
     window.infinity = oldInfinity;
+    registerPlugin(oldInfinity);
     return infinity;
   };
 
