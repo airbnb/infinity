@@ -475,10 +475,11 @@
   // ----------------
 
   ListView.prototype.cleanup = function() {
-    var pages = this.pages;
+    var pages = this.pages,
+        page;
     DOMEvent.detach(this);
-    while(pages.length > 0) {
-      pages.pop().cleanup();
+    while(page = pages.pop()) {
+      page.cleanup();
     }
   };
 
