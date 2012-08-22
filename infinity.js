@@ -66,27 +66,29 @@
   // - `options`: an optional hash of options
 
   function ListView($el, options) {
+    var that = this;
+
     options = options || {};
 
-    this.$el = blankDiv();
-    this.$shadow = blankDiv();
-    $el.append(this.$el);
+    that.$el = blankDiv();
+    that.$shadow = blankDiv();
+    $el.append(that.$el);
     // don't append the shadow element -- it's meant to only be used for
     // finding elements outside of the DOM
 
-    this.lazy = !!options.lazy;
-    this.lazyFn = options.lazy || null;
+    that.lazy = !!options.lazy;
+    that.lazyFn = options.lazy || null;
 
-    initBuffer(this);
+    initBuffer(that);
 
-    this.top = this.$el.offset().top;
-    this.width = 0;
-    this.height = 0;
+    that.top = that.$el.offset().top;
+    that.width = 0;
+    that.height = 0;
 
-    this.pages = [];
-    this.startIndex = 0;
+    that.pages = [];
+    that.startIndex = 0;
 
-    DOMEvent.attach(this);
+    DOMEvent.attach(that);
   }
 
   // ### initBuffer
@@ -134,24 +136,25 @@
   ListView.prototype.append = function(obj) {
     if(!obj || (obj.length && obj.length === 0)) return null;
 
-    var lastPage,
-        item = convertToItem(this, obj),
-        pages = this.pages,
+    var that = this,
+        lastPage,
+        item = convertToItem(that, obj),
+        pages = that.pages,
         pageChange = false;
 
-    this.height += item.height;
-    this.$el.height(this.height);
+    that.height += item.height;
+    that.$el.height(that.height);
 
     if(pages.length > 0) lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
-      lastPage = new Page(this);
+      lastPage = new Page(that);
       pages.push(lastPage);
       pageChange = true;
     }
 
     lastPage.append(item);
-    insertPagesInView(this);
+    insertPagesInView(that);
 
     return item;
   };
@@ -176,7 +179,7 @@
     listItem.$el.remove();
   }
 
-  
+
   // ### insertPagesInView
   //
   // Inserts any uninserted pages the given ListView owns.
@@ -184,7 +187,7 @@
   // Takes:
   //
   // - `listView`: the ListView whose onscreen pages you'd like to insert.
-  
+
   function insertPagesInView(listView) {
     var index, length, curr,
         pages = listView.pages,
@@ -276,7 +279,7 @@
   // - `listView`: the ListView instance that wants the item.
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
-  
+
   function convertToItem(listView, possibleItem) {
     var item;
     if(possibleItem instanceof ListItem) return possibleItem;
@@ -353,14 +356,15 @@
   // Returns a ListItem.
 
   ListView.prototype.find = function(findObj) {
-    var items, $onscreen, $offscreen;
+    var that = this,
+        items, $onscreen, $offscreen;
 
     // If given a selector string, find everything matching onscreen and
     // offscreen, and return both.
     if(typeof findObj === 'string') {
-      $onscreen = this.$el.find(findObj);
-      $offscreen = this.$shadow.find(findObj);
-      return this.find($onscreen).concat(this.find($offscreen));
+      $onscreen = that.$el.find(findObj);
+      $offscreen = that.$shadow.find(findObj);
+      return that.find($onscreen).concat(that.find($offscreen));
     }
 
     // Silly option, but might as well.
@@ -433,7 +437,7 @@
 
     // Start looking at the index of the page last contained by the screen --
     // not the first page in the onscreen pages
-    startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
+    startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES,
                           pages.length - 1);
 
     if(pages.length <= 0) return -1;
@@ -610,24 +614,26 @@
   // An internal class used for ordering items into roughly screen-sized pages.
   // Pages are removed and added to the DOM wholesale as they come in and out
   // of view.
-  
+
   function Page(parent) {
-    this.parent = parent;
+    var that = this;
 
-    this.items = [];
-    this.$el = blankDiv();
+    that.parent = parent;
 
-    this.id = PageRegistry.generatePageId(this);
-    this.$el.attr(PAGE_ID_ATTRIBUTE, this.id);
+    that.items = [];
+    that.$el = blankDiv();
 
-    this.top = 0;
-    this.bottom = 0;
-    this.width = 0;
-    this.height = 0;
+    that.id = PageRegistry.generatePageId(that);
+    that.$el.attr(PAGE_ID_ATTRIBUTE, that.id);
 
-    this.lazyloaded = false;
+    that.top = 0;
+    that.bottom = 0;
+    that.width = 0;
+    that.height = 0;
 
-    this.onscreen = false;
+    that.lazyloaded = false;
+
+    that.onscreen = false;
   }
 
 
@@ -640,19 +646,20 @@
   // - `item`: a ListItem.
 
   Page.prototype.append = function(item) {
-    var items = this.items;
+    var that = this,
+        items = that.items;
 
     // Recompute coords, sizing.
-    if(items.length === 0) this.top = item.top;
-    this.bottom = item.bottom;
-    this.width = this.width > item.width ? this.width : item.width;
-    this.height = this.bottom - this.top;
+    if(items.length === 0) that.top = item.top;
+    that.bottom = item.bottom;
+    that.width = that.width > item.width ? that.width : item.width;
+    that.height = that.bottom - that.top;
 
     items.push(item);
-    item.parent = this;
-    this.$el.append(item.$el);
+    item.parent = that;
+    that.$el.append(item.$el);
 
-    this.lazyloaded = false;
+    that.lazyloaded = false;
   };
 
 
@@ -665,18 +672,19 @@
   // - `item`: a ListItem.
 
   Page.prototype.prepend = function(item) {
-    var items = this.items;
+    var that = this,
+        items = that.items;
 
     // Recompute coords, sizing.
-    this.bottom += item.height;
-    this.width = this.width > item.width ? this.width : item.width;
-    this.height = this.bottom - this.top;
+    that.bottom += item.height;
+    that.width = that.width > item.width ? that.width : item.width;
+    that.height = that.bottom - that.top;
 
     items.push(item);
-    item.parent = this;
-    this.$el.prepend(item.$el);
+    item.parent = that;
+    that.$el.prepend(item.$el);
 
-    this.lazyloaded = false;
+    that.lazyloaded = false;
   };
 
 
@@ -694,10 +702,12 @@
   // Proxies to jQuery to append the Page to the given jQuery element.
 
   Page.prototype.appendTo = function($el) {
-    if(!this.onscreen) {
-      this.$el.remove();
-      this.$el.appendTo($el);
-      this.onscreen = true;
+    var that = this;
+
+    if(!that.onscreen) {
+      that.$el.remove();
+      that.$el.appendTo($el);
+      that.onscreen = true;
     }
   };
 
@@ -707,9 +717,11 @@
   // Proxies to jQuery to prepend the Page to the given jQuery element.
 
   Page.prototype.prependTo = function($el) {
-    if(!this.onscreen) {
-      this.$el.prependTo($el);
-      this.onscreen = true;
+    var that = this;
+
+    if(!that.onscreen) {
+      that.$el.prependTo($el);
+      that.onscreen = true;
     }
   };
 
@@ -718,10 +730,12 @@
   // Temporarily stash the onscreen page under a different element.
 
   Page.prototype.stash = function($el) {
-    if(this.onscreen) {
-      this.$el.remove();
-      this.onscreen = false;
-      $el.append(this.$el);
+    var that = this;
+
+    if(that.onscreen) {
+      that.$el.remove();
+      that.onscreen = false;
+      $el.append(that.$el);
     }
   };
 
@@ -731,11 +745,13 @@
   // Removes the Page from the DOM and cleans up after it.
 
   Page.prototype.remove = function() {
-    if(this.onscreen) {
-      this.$el.remove();
-      this.onscreen = false;
+    var that = this;
+
+    if(that.onscreen) {
+      that.$el.remove();
+      that.onscreen = false;
     }
-    this.cleanup();
+    that.cleanup();
   };
 
 
@@ -744,9 +760,11 @@
   // Cleans up the Page without removing it.
 
   Page.prototype.cleanup = function() {
-    var items = this.items;
-    this.parent = null;
-    PageRegistry.remove(this);
+    var that = this;
+
+    var items = that.items;
+    that.parent = null;
+    PageRegistry.remove(that);
     while(items.length > 0) {
       items.pop().cleanup();
     }
@@ -761,14 +779,15 @@
   //
   // - `callback`: a function of the form `function([$el]){}`. Will run on
   // each unloaded element, and will use the element as its calling context.
-  
+
   Page.prototype.lazyload = function(callback) {
-    var index, length;
-    if(!this.lazyloaded) {
-      for(index = 0, length = this.$el.length; index < length; index++) {
-        callback.call(this.$el[index], this.$el[index]);
+    var that = this,
+        index, length;
+    if(!that.lazyloaded) {
+      for(index = 0, length = that.$el.length; index < length; index++) {
+        callback.call(that.$el[index], that.$el[index]);
       }
-      this.lazyloaded = true;
+      that.lazyloaded = true;
     }
   };
 
@@ -834,25 +853,28 @@
   // All positioning data is relative to the containing ListView.
 
   function ListItem($el) {
-    this.$el = $el;
+    var that = this;
 
-    this.parent = null;
+    that.$el = $el;
 
-    this.top = 0;
-    this.bottom = 0;
-    this.width = 0;
-    this.height = 0;
+    that.parent = null;
+
+    that.top = 0;
+    that.bottom = 0;
+    that.width = 0;
+    that.height = 0;
   }
 
   // ### clone
   //
   // Clones the ListItem.
   ListItem.prototype.clone = function() {
-    var item = new ListItem(this.$el);
-    item.top = this.top;
-    item.bottom = this.bottom;
-    item.width = this.width;
-    item.height = this.height;
+    var that = this,
+        item = new ListItem(that.$el);
+    item.top = that.top;
+    item.bottom = that.bottom;
+    item.width = that.width;
+    item.height = that.height;
     return item;
   };
 
@@ -862,9 +884,11 @@
   // them.
 
   ListItem.prototype.remove = function() {
-    this.$el.remove();
-    removeItemFromPage(this, this.parent);
-    this.cleanup();
+    var that = this;
+
+    that.$el.remove();
+    removeItemFromPage(that, that.parent);
+    that.cleanup();
   };
 
 
@@ -886,7 +910,7 @@
   //
   //  - `listItem`: the ListItem whose cached coordinates you want to update.
   //  - `yOffset`: the y-offset of the ListItem from its ListView parent.
-  
+
   function updateCoords(listItem, yOffset) {
     var $el = listItem.$el,
         offset = $el.offset();
@@ -901,7 +925,7 @@
   // Helper functions
   // ================
 
-  
+
   // ### div
   //
   // Returns a new, empty `<div>` jQuery element.
