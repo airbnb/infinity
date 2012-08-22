@@ -699,7 +699,6 @@
     var that = this;
 
     if(!that.onscreen) {
-      that.$el.remove();
       that.$el.appendTo($el);
       that.onscreen = true;
     }
@@ -727,9 +726,8 @@
     var that = this;
 
     if(that.onscreen) {
-      that.$el.remove();
+      that.$el.appendTo($el);
       that.onscreen = false;
-      $el.append(that.$el);
     }
   };
 
