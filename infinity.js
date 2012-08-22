@@ -36,6 +36,9 @@
   // Initial Setup
   // =============
 
+  // Cached objects
+  var $window = $(window);
+
   // Packaging:
   var oldInfinity = window.infinity,
       infinity = window.infinity = {},
@@ -226,8 +229,8 @@
     var index, length, curr, pages, indexInView,
         lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        viewTop = $(window).scrollTop() - listView.top,
-        viewHeight = $(window).height(),
+        viewTop = $window.scrollTop() - listView.top,
+        viewHeight = $window.height(),
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
@@ -566,8 +569,8 @@
 
       attach: function(listView) {
         if(!eventIsBound) {
-          $(window).on('scroll', scrollHandler);
-          $(window).on('resize', resizeHandler);
+          $window.on('scroll', scrollHandler);
+          $window.on('resize', resizeHandler);
           eventIsBound = true;
         }
         boundViews.push(listView);
@@ -593,8 +596,8 @@
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-              $(window).off('scroll', scrollHandler);
-              $(window).off('resize', resizeHandler);
+              $window.off('scroll', scrollHandler);
+              $window.off('resize', resizeHandler);
               eventIsBound = false;
             }
             return true;
@@ -691,7 +694,7 @@
   // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
-    return this.height < $(window).height() * config.PAGE_TO_SCREEN_RATIO;
+    return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
