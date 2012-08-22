@@ -94,6 +94,8 @@
     DOMEvent.attach(that);
   }
 
+  var listViewPrototype = ListView.prototype;
+
   // ### initBuffer
   //
   // Private ListView method. Initializes the buffer element.
@@ -136,7 +138,7 @@
   //
   // TODO: optimized batch appends
 
-  ListView.prototype.append = function(obj) {
+  listViewPrototype.append = function(obj) {
     if(!obj || !obj.length) return null;
 
     var that = this,
@@ -258,7 +260,7 @@
   //
   // Removes the ListView from the DOM and cleans up after it.
 
-  ListView.prototype.remove = function() {
+  listViewPrototype.remove = function() {
     this.$el.remove();
     this.cleanup();
   };
@@ -352,7 +354,7 @@
   //
   // Returns a ListItem.
 
-  ListView.prototype.find = function(findObj) {
+  listViewPrototype.find = function(findObj) {
     var that = this,
         items, $onscreen, $offscreen;
 
@@ -474,7 +476,7 @@
   // ListView cleanup
   // ----------------
 
-  ListView.prototype.cleanup = function() {
+  listViewPrototype.cleanup = function() {
     var pages = this.pages,
         page;
     DOMEvent.detach(this);
@@ -630,6 +632,8 @@
     that.onscreen = false;
   }
 
+  var pagePrototype = Page.prototype;
+
 
   // ### append
   //
@@ -639,7 +643,7 @@
   //
   // - `item`: a ListItem.
 
-  Page.prototype.append = function(item) {
+  pagePrototype.append = function(item) {
     var that = this,
         items = that.items;
 
@@ -665,7 +669,7 @@
   //
   // - `item`: a ListItem.
 
-  Page.prototype.prepend = function(item) {
+  pagePrototype.prepend = function(item) {
     var that = this,
         items = that.items;
 
@@ -686,7 +690,7 @@
   //
   // Returns false if the Page is at max capacity; false otherwise.
 
-  Page.prototype.hasVacancy = function() {
+  pagePrototype.hasVacancy = function() {
     return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
@@ -695,7 +699,7 @@
   //
   // Proxies to jQuery to append the Page to the given jQuery element.
 
-  Page.prototype.appendTo = function($el) {
+  pagePrototype.appendTo = function($el) {
     var that = this;
 
     if(!that.onscreen) {
@@ -709,7 +713,7 @@
   //
   // Proxies to jQuery to prepend the Page to the given jQuery element.
 
-  Page.prototype.prependTo = function($el) {
+  pagePrototype.prependTo = function($el) {
     var that = this;
 
     if(!that.onscreen) {
@@ -722,7 +726,7 @@
   //
   // Temporarily stash the onscreen page under a different element.
 
-  Page.prototype.stash = function($el) {
+  pagePrototype.stash = function($el) {
     var that = this;
 
     if(that.onscreen) {
@@ -736,7 +740,7 @@
   //
   // Removes the Page from the DOM and cleans up after it.
 
-  Page.prototype.remove = function() {
+  pagePrototype.remove = function() {
     var that = this;
 
     if(that.onscreen) {
@@ -751,7 +755,7 @@
   //
   // Cleans up the Page without removing it.
 
-  Page.prototype.cleanup = function() {
+  pagePrototype.cleanup = function() {
     var that = this,
         items = that.items,
         item;
@@ -773,7 +777,7 @@
   // - `callback`: a function of the form `function([$el]){}`. Will run on
   // each unloaded element, and will use the element as its calling context.
 
-  Page.prototype.lazyload = function(callback) {
+  pagePrototype.lazyload = function(callback) {
     var that = this,
         $el = that.$el,
         index, length;
@@ -857,10 +861,12 @@
     that.height = 0;
   }
 
+  var listItemPrototype = ListItem.prototype;
+
   // ### clone
   //
   // Clones the ListItem.
-  ListItem.prototype.clone = function() {
+  listItemPrototype.clone = function() {
     var that = this,
         item = new ListItem(that.$el);
     item.top = that.top;
@@ -875,7 +881,7 @@
   // Removes the ListItem and its elements from the page, and cleans up after
   // them.
 
-  ListItem.prototype.remove = function() {
+  listItemPrototype.remove = function() {
     var that = this;
 
     that.$el.remove();
@@ -888,7 +894,7 @@
   //
   // Cleans up after the ListItem without removing it from the page.
 
-  ListItem.prototype.cleanup = function() {
+  listItemPrototype.cleanup = function() {
     this.parent = null;
   };
 
