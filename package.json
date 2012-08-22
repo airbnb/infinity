@@ -1,6 +1,6 @@
 {
   "name": "infinity",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A UITableView for the web.",
 
   "keywords": ["infinite", "scroll", "infinity", "UITableView", "ListView"],
