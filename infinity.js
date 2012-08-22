@@ -956,11 +956,11 @@
   // Takes:
   //
   // - `px`: a string value, which starts with a number and is
-  //   prefixed with the string `'px'`.
+  //   postfixed with the string `'px'`.
 
-  function pxToInt(px) {
-    return parseInt(px, 10);
-  }
+  //function pxToInt(px) {
+  //  return parseInt(px, 10);
+  //}
 
 
   // Export
