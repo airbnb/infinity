@@ -255,7 +255,7 @@
 
 
   // ### remove
-  // 
+  //
   // Removes the ListView from the DOM and cleans up after it.
 
   ListView.prototype.remove = function() {
@@ -265,9 +265,9 @@
 
 
   // ### convertToItem
-  // 
+  //
   // Given an object that is either a ListItem instance, a jQuery element, or a
-  // string of valid HTML, makes sure to return either the ListItem itself or 
+  // string of valid HTML, makes sure to return either the ListItem itself or
   // a new ListItem that wraps the element.
   //
   // Takes:
@@ -371,13 +371,9 @@
     items = [];
     findObj.each(function() {
       var pageId, page, pageItems, index, length, currItem,
-          $itemEl = $(this),
+          $itemEl = $(this).parentsUntil('[' + PAGE_ID_ATTRIBUTE + ']').andSelf().first(),
           $pageEl = $itemEl.parent();
 
-      while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
-        $itemEl = $pageEl;
-        $pageEl = $pageEl.parent();
-      }
 
       pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
       page = PageRegistry.lookup(pageId);
@@ -399,7 +395,7 @@
   // ### startIndexWithinRange
   //
   // Finds the starting index for a listView, given a range. Wraps
-  // indexWithinRange. 
+  // indexWithinRange.
   //
   // Takes:
   //
@@ -695,7 +691,7 @@
 
 
   // ### appendTo
-  // 
+  //
   // Proxies to jQuery to append the Page to the given jQuery element.
 
   Page.prototype.appendTo = function($el) {
@@ -843,8 +839,8 @@
   //
   // An individual item in the ListView.
   //
-  // Has cached top, bottom, width, and height properties, determined from 
-  // jQuery. This positioning data will be determined when the ListItem is 
+  // Has cached top, bottom, width, and height properties, determined from
+  // jQuery. This positioning data will be determined when the ListItem is
   // inserted into a ListView; it can't be determined ahead of time.
   //
   // All positioning data is relative to the containing ListView.
@@ -933,8 +929,8 @@
 
 
   // ### blankDiv
-  // 
-  // Returns a new, empty `<div>` jQuery element. The `<div>` will have its 
+  //
+  // Returns a new, empty `<div>` jQuery element. The `<div>` will have its
   // border, margin, and padding set to zero or none, as appropriate.
 
   function blankDiv() {
