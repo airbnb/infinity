@@ -752,13 +752,14 @@
   // Cleans up the Page without removing it.
 
   Page.prototype.cleanup = function() {
-    var that = this;
+    var that = this,
+        items = that.items,
+        item;
 
-    var items = that.items;
     that.parent = null;
     PageRegistry.remove(that);
-    while(items.length > 0) {
-      items.pop().cleanup();
+    while (item = items.pop()) {
+      item.cleanup();
     }
   };
 
