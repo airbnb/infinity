@@ -57,11 +57,7 @@ finding elements outside of the DOM</p>             </td>             <td class=
     <span class="k">this</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
     <span class="nx">DOMEvent</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-<<<<<<< HEAD
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h3>initBuffer</h3>
-=======
   <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>initBuffer</h3>
->>>>>>> master
 
 <p>Private ListView method. Initializes the buffer element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">initBuffer</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">listView</span><span class="p">.</span><span class="nx">_$buffer</span> <span class="o">=</span> <span class="nx">blankDiv</span><span class="p">()</span>
@@ -95,12 +91,7 @@ first page.</p>             </td>             <td class="code">               <d
 
     <span class="kd">var</span> <span class="nx">lastPage</span><span class="p">,</span>
         <span class="nx">item</span> <span class="o">=</span> <span class="nx">convertToItem</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">obj</span><span class="p">),</span>
-<<<<<<< HEAD
-        <span class="nx">pages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pages</span><span class="p">,</span>
-        <span class="nx">pageChange</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-=======
         <span class="nx">pages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pages</span><span class="p">;</span>
->>>>>>> master
 
     <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
@@ -211,12 +202,7 @@ a new ListItem that wraps the element.</p>
 <li><code>listView</code>: the ListView instance that wants the item.</li>
 <li><code>possibleItem</code>: an object that is either a ListItem, a jQuery element,
 or a string of valid HTML.</li>
-<<<<<<< HEAD
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>  
-  <span class="kd">function</span> <span class="nx">convertToItem</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">possibleItem</span><span class="p">)</span> <span class="p">{</span>
-=======
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">convertToItem</span><span class="p">(</span><span class="nx">listView</span><span class="p">,</span> <span class="nx">possibleItem</span><span class="p">)</span> <span class="p">{</span>
->>>>>>> master
     <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">possibleItem</span> <span class="k">instanceof</span> <span class="nx">ListItem</span><span class="p">)</span> <span class="k">return</span> <span class="nx">possibleItem</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">possibleItem</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="nx">possibleItem</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">possibleItem</span><span class="p">);</span>
@@ -241,14 +227,9 @@ the array, or recalculating everything on screen resize.</p>             </td>  
 
     <span class="k">for</span><span class="p">(</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">index</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
       <span class="nx">currPage</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-<<<<<<< HEAD
-      <span class="k">for</span><span class="p">(</span><span class="nx">itemIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">pageLength</span> <span class="o">=</span> <span class="nx">currPage</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">itemIndex</span> <span class="o">&lt;</span> <span class="nx">pageLength</span><span class="p">;</span> <span class="nx">itemIndex</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">currItem</span> <span class="o">=</span> <span class="nx">currPage</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">itemIndex</span><span class="p">];</span>
-=======
       <span class="nx">currItems</span> <span class="o">=</span> <span class="nx">currPage</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span>
       <span class="k">for</span><span class="p">(</span><span class="nx">itemIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">pageLength</span> <span class="o">=</span> <span class="nx">currItems</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">itemIndex</span> <span class="o">&lt;</span> <span class="nx">pageLength</span><span class="p">;</span> <span class="nx">itemIndex</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">currItem</span> <span class="o">=</span> <span class="nx">currItems</span><span class="p">[</span><span class="nx">itemIndex</span><span class="p">];</span>
->>>>>>> master
         <span class="nx">nextItem</span> <span class="o">=</span> <span class="nx">currItem</span><span class="p">.</span><span class="nx">clone</span><span class="p">();</span>
         <span class="k">if</span><span class="p">(</span><span class="nx">newPage</span><span class="p">.</span><span class="nx">hasVacancy</span><span class="p">())</span> <span class="p">{</span>
           <span class="nx">newPage</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">nextItem</span><span class="p">);</span>
@@ -371,28 +352,17 @@ not the first page in the onscreen pages</p>             </td>             <td c
       <span class="k">return</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <p>Perfect hit! Return it.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">return</span> <span class="nx">startIndex</span><span class="p">;</span>
   <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <h2>ListView cleanup</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ListView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">cleanup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-<<<<<<< HEAD
-    <span class="kd">var</span> <span class="nx">pages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pages</span><span class="p">;</span>
-    <span class="nx">DOMEvent</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="k">while</span><span class="p">(</span><span class="nx">pages</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">pages</span><span class="p">.</span><span class="nx">pop</span><span class="p">().</span><span class="nx">cleanup</span><span class="p">();</span>
-=======
     <span class="kd">var</span> <span class="nx">pages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pages</span><span class="p">,</span>
         <span class="nx">page</span><span class="p">;</span>
     <span class="nx">DOMEvent</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
     <span class="k">while</span><span class="p">(</span><span class="nx">page</span> <span class="o">=</span> <span class="nx">pages</span><span class="p">.</span><span class="nx">pop</span><span class="p">())</span> <span class="p">{</span>
       <span class="nx">page</span><span class="p">.</span><span class="nx">cleanup</span><span class="p">();</span>
->>>>>>> master
     <span class="p">}</span>
   <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <h2>ListView event binding</h2>
 
 <p>Internal scroll and resize  binding and throttling. Allows ListViews to
 bind to a throttled scroll event (and debounced resize event), and updates
-<<<<<<< HEAD
-them as it fires.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">DOMEvent</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
-=======
 them as it fires.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">DOMEvent</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
->>>>>>> master
     <span class="kd">var</span> <span class="nx">eventIsBound</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
         <span class="nx">scrollScheduled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
         <span class="nx">resizeTimeout</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
@@ -441,13 +411,8 @@ multiple event handlers if called by multiple ListViews.</p>
 event.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">attach</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">eventIsBound</span><span class="p">)</span> <span class="p">{</span>
-<<<<<<< HEAD
-          <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">scrollHandler</span><span class="p">);</span>
-          <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resizeHandler</span><span class="p">);</span>
-=======
           <span class="nx">$window</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">scrollHandler</span><span class="p">);</span>
           <span class="nx">$window</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resizeHandler</span><span class="p">);</span>
->>>>>>> master
           <span class="nx">eventIsBound</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="nx">boundViews</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">listView</span><span class="p">);</span>
@@ -470,13 +435,8 @@ otherwise.</p>
           <span class="k">if</span><span class="p">(</span><span class="nx">boundViews</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">===</span> <span class="nx">listView</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">boundViews</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
             <span class="k">if</span><span class="p">(</span><span class="nx">boundViews</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<<<<<<< HEAD
-              <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">scrollHandler</span><span class="p">);</span>
-              <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resizeHandler</span><span class="p">);</span>
-=======
               <span class="nx">$window</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span> <span class="nx">scrollHandler</span><span class="p">);</span>
               <span class="nx">$window</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resizeHandler</span><span class="p">);</span>
->>>>>>> master
               <span class="nx">eventIsBound</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
@@ -485,11 +445,7 @@ otherwise.</p>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
       <span class="p">}</span>
     <span class="p">};</span>
-<<<<<<< HEAD
-  <span class="p">}(</span><span class="nb">window</span><span class="p">,</span> <span class="nx">$</span><span class="p">));</span></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <h1>Page class</h1>
-=======
   <span class="p">}());</span></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <h1>Page class</h1>
->>>>>>> master
 
 <p>An internal class used for ordering items into roughly screen-sized pages.
 Pages are removed and added to the DOM wholesale as they come in and out
@@ -550,11 +506,7 @@ of view.</p>             </td>             <td class="code">               <div 
   <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <h3>hasVacancy</h3>
 
 <p>Returns false if the Page is at max capacity; false otherwise.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasVacancy</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-<<<<<<< HEAD
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">&lt;</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="o">*</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PAGE_TO_SCREEN_RATIO</span><span class="p">;</span>
-=======
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">&lt;</span> <span class="nx">$window</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span> <span class="o">*</span> <span class="nx">config</span><span class="p">.</span><span class="nx">PAGE_TO_SCREEN_RATIO</span><span class="p">;</span>
->>>>>>> master
   <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <h3>appendTo</h3>
 
 <p>Proxies to jQuery to append the Page to the given jQuery element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">Page</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">appendTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$el</span><span class="p">)</span> <span class="p">{</span>
@@ -703,15 +655,7 @@ from the parent ListView.</p>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">$el</span><span class="p">.</span><span class="nx">outerHeight</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">=</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
     <span class="nx">listItem</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">$el</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span>
-<<<<<<< HEAD
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-63">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-63">&#182;</a>               </div>               <h1>Helper functions</h1>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-64">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-64">&#182;</a>               </div>               <h3>div</h3>
-
-<p>Returns a new, empty <code>&lt;div&gt;</code> jQuery element.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">div</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-65">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-65">&#182;</a>               </div>               <h3>blankDiv</h3>
-=======
   <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-63">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-63">&#182;</a>               </div>               <h1>Helper functions</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-64">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-64">&#182;</a>               </div>               <h3>blankDiv</h3>
->>>>>>> master
 
 <p>Returns a new, empty <code>&lt;div&gt;</code> jQuery element. The <code>&lt;div&gt;</code> will have its
 border, margin, and padding set to zero or none, as appropriate.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">blankDiv</span><span class="p">()</span> <span class="p">{</span>
@@ -720,11 +664,7 @@ border, margin, and padding set to zero or none, as appropriate.</p>            
       <span class="nx">padding</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">border</span><span class="o">:</span> <span class="s1">&#39;none&#39;</span>
     <span class="p">});</span>
-<<<<<<< HEAD
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-66">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-66">&#182;</a>               </div>               <h3>pxToInt</h3>
-=======
   <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-65">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-65">&#182;</a>               </div>               <h3>pxToInt</h3>
->>>>>>> master
 
 <p>Converts pixel values returned by jQuery to base-10 ints.</p>
 
@@ -732,14 +672,6 @@ border, margin, and padding set to zero or none, as appropriate.</p>            
 
 <ul>
 <li><code>px</code>: a string value, which starts with a number and is
-<<<<<<< HEAD
-prefixed with the string <code>'px'</code>.</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">pxToInt</span><span class="p">(</span><span class="nx">px</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">px</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-67">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-67">&#182;</a>               </div>               <h1>Export</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-68">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-68">&#182;</a>               </div>               <p>Classes:</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListView</span> <span class="o">=</span> <span class="nx">ListView</span><span class="p">;</span>
-  <span class="nx">infinity</span><span class="p">.</span><span class="nx">Page</span> <span class="o">=</span> <span class="nx">Page</span><span class="p">;</span>
-  <span class="nx">infinity</span><span class="p">.</span><span class="nx">ListItem</span> <span class="o">=</span> <span class="nx">ListItem</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-69">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-69">&#182;</a>               </div>               <p>Destroy own packaging:</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">noConflict</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-=======
 postfixed with the string <code>'px'</code>.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-66">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-66">&#182;</a>               </div>               <p>function pxToInt(px) {
  return parseInt(px, 10);
@@ -760,7 +692,6 @@ postfixed with the string <code>'px'</code>.</li>
   <span class="p">}</span>
 
   <span class="nx">registerPlugin</span><span class="p">(</span><span class="nx">infinity</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-70">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-70">&#182;</a>               </div>               <p>Destroy own packaging:</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">infinity</span><span class="p">.</span><span class="nx">noConflict</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
->>>>>>> master
     <span class="nb">window</span><span class="p">.</span><span class="nx">infinity</span> <span class="o">=</span> <span class="nx">oldInfinity</span><span class="p">;</span>
     <span class="nx">registerPlugin</span><span class="p">(</span><span class="nx">oldInfinity</span><span class="p">);</span>
     <span class="k">return</span> <span class="nx">infinity</span><span class="p">;</span>

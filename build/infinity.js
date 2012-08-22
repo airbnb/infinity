@@ -140,12 +140,7 @@
 
     var lastPage,
         item = convertToItem(this, obj),
-<<<<<<< HEAD
-        pages = this.pages,
-        pageChange = false;
-=======
         pages = this.pages;
->>>>>>> master
 
     this.height += item.height;
     this.$el.height(this.height);
@@ -278,11 +273,7 @@
   // - `listView`: the ListView instance that wants the item.
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> master
   function convertToItem(listView, possibleItem) {
     var item;
     if(possibleItem instanceof ListItem) return possibleItem;
@@ -320,14 +311,9 @@
 
     for(index = 0, length = pages.length; index < length; index++) {
       currPage = pages[index];
-<<<<<<< HEAD
-      for(itemIndex = 0, pageLength = currPage.items.length; itemIndex < pageLength; itemIndex++) {
-        currItem = currPage.items[itemIndex];
-=======
       currItems = currPage.items;
       for(itemIndex = 0, pageLength = currItems.length; itemIndex < pageLength; itemIndex++) {
         currItem = currItems[itemIndex];
->>>>>>> master
         nextItem = currItem.clone();
         if(newPage.hasVacancy()) {
           newPage.append(nextItem);
@@ -486,18 +472,11 @@
   // ----------------
 
   ListView.prototype.cleanup = function() {
-<<<<<<< HEAD
-    var pages = this.pages;
-    DOMEvent.detach(this);
-    while(pages.length > 0) {
-      pages.pop().cleanup();
-=======
     var pages = this.pages,
         page;
     DOMEvent.detach(this);
     while(page = pages.pop()) {
       page.cleanup();
->>>>>>> master
     }
   };
 
@@ -509,11 +488,7 @@
   // bind to a throttled scroll event (and debounced resize event), and updates
   // them as it fires.
 
-<<<<<<< HEAD
-  var DOMEvent = (function(window, $) {
-=======
   var DOMEvent = (function() {
->>>>>>> master
     var eventIsBound = false,
         scrollScheduled = false,
         resizeTimeout = null,
@@ -584,13 +559,8 @@
 
       attach: function(listView) {
         if(!eventIsBound) {
-<<<<<<< HEAD
-          $(window).on('scroll', scrollHandler);
-          $(window).on('resize', resizeHandler);
-=======
           $window.on('scroll', scrollHandler);
           $window.on('resize', resizeHandler);
->>>>>>> master
           eventIsBound = true;
         }
         boundViews.push(listView);
@@ -616,13 +586,8 @@
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-<<<<<<< HEAD
-              $(window).off('scroll', scrollHandler);
-              $(window).off('resize', resizeHandler);
-=======
               $window.off('scroll', scrollHandler);
               $window.off('resize', resizeHandler);
->>>>>>> master
               eventIsBound = false;
             }
             return true;
@@ -873,17 +838,6 @@
     this.height = 0;
   }
 
-  // ### clone
-  //
-  // Clones the ListItem.
-  ListItem.prototype.clone = function() {
-    var item = new ListItem(this.$el);
-    item.top = this.top;
-    item.bottom = this.bottom;
-    item.width = this.width;
-    item.height = this.height;
-    return item;
-  };
 
   // ### clone
   //
