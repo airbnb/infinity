@@ -226,7 +226,7 @@
   // - `listView`: the ListView needing to be updated.
 
   function updateStartIndex(listView) {
-    var index, length, curr, pages, indexInView,
+    var index, length, pages, indexInView,
         lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewTop = $window.scrollTop() - listView.top,
