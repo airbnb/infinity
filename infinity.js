@@ -226,7 +226,8 @@
   // - `listView`: the ListView needing to be updated.
 
   function updateStartIndex(listView) {
-    var index, length, pages, indexInView,
+    var index, length, pages,
+        indexInView = {},
         lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewTop = $window.scrollTop() - listView.top,
@@ -238,7 +239,6 @@
 
     pages = listView.pages;
     startIndex = listView.startIndex;
-    indexInView = new Array(pages.length);
     lastIndex = Math.min(startIndex + PAGES_ONSCREEN, pages.length);
     nextLastIndex = Math.min(nextIndex + PAGES_ONSCREEN, pages.length);
 
