@@ -92,7 +92,6 @@
     DOMEvent.attach(this);
   }
 
-  var listViewPrototype = ListView.prototype;
 
   // ### initBuffer
   //
@@ -136,7 +135,7 @@
   //
   // TODO: optimized batch appends
 
-  listViewPrototype.append = function(obj) {
+  ListView.prototype.append = function(obj) {
     if(!obj || !obj.length) return null;
 
     var lastPage,
@@ -257,7 +256,7 @@
   //
   // Removes the ListView from the DOM and cleans up after it.
 
-  listViewPrototype.remove = function() {
+  ListView.prototype.remove = function() {
     this.$el.remove();
     this.cleanup();
   };
@@ -351,7 +350,7 @@
   //
   // Returns a ListItem.
 
-  listViewPrototype.find = function(findObj) {
+  ListView.prototype.find = function(findObj) {
     var items, $onscreen, $offscreen;
 
     // If given a selector string, find everything matching onscreen and
@@ -472,7 +471,7 @@
   // ListView cleanup
   // ----------------
 
-  listViewPrototype.cleanup = function() {
+  ListView.prototype.cleanup = function() {
     var pages = this.pages,
         page;
     DOMEvent.detach(this);
@@ -626,8 +625,6 @@
     this.onscreen = false;
   }
 
-  var pagePrototype = Page.prototype;
-
 
   // ### append
   //
@@ -637,7 +634,7 @@
   //
   // - `item`: a ListItem.
 
-  pagePrototype.append = function(item) {
+  Page.prototype.append = function(item) {
     var items = this.items;
 
     // Recompute coords, sizing.
@@ -662,7 +659,7 @@
   //
   // - `item`: a ListItem.
 
-  pagePrototype.prepend = function(item) {
+  Page.prototype.prepend = function(item) {
     var items = this.items;
 
     // Recompute coords, sizing.
@@ -682,7 +679,7 @@
   //
   // Returns false if the Page is at max capacity; false otherwise.
 
-  pagePrototype.hasVacancy = function() {
+  Page.prototype.hasVacancy = function() {
     return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
@@ -691,7 +688,7 @@
   //
   // Proxies to jQuery to append the Page to the given jQuery element.
 
-  pagePrototype.appendTo = function($el) {
+  Page.prototype.appendTo = function($el) {
     if(!this.onscreen) {
       this.$el.appendTo($el);
       this.onscreen = true;
@@ -703,7 +700,7 @@
   //
   // Proxies to jQuery to prepend the Page to the given jQuery element.
 
-  pagePrototype.prependTo = function($el) {
+  Page.prototype.prependTo = function($el) {
     if(!this.onscreen) {
       this.$el.prependTo($el);
       this.onscreen = true;
@@ -714,7 +711,7 @@
   //
   // Temporarily stash the onscreen page under a different element.
 
-  pagePrototype.stash = function($el) {
+  Page.prototype.stash = function($el) {
     if(this.onscreen) {
       this.$el.appendTo($el);
       this.onscreen = false;
@@ -726,7 +723,7 @@
   //
   // Removes the Page from the DOM and cleans up after it.
 
-  pagePrototype.remove = function() {
+  Page.prototype.remove = function() {
     if(this.onscreen) {
       this.$el.remove();
       this.onscreen = false;
@@ -739,7 +736,7 @@
   //
   // Cleans up the Page without removing it.
 
-  pagePrototype.cleanup = function() {
+  Page.prototype.cleanup = function() {
     var items = this.items,
         item;
 
@@ -760,7 +757,7 @@
   // - `callback`: a function of the form `function([$el]){}`. Will run on
   // each unloaded element, and will use the element as its calling context.
 
-  pagePrototype.lazyload = function(callback) {
+  Page.prototype.lazyload = function(callback) {
     var $el = this.$el,
         index, length;
     if (!this.lazyloaded) {
@@ -841,12 +838,11 @@
     this.height = 0;
   }
 
-  var listItemPrototype = ListItem.prototype;
 
   // ### clone
   //
   // Clones the ListItem.
-  listItemPrototype.clone = function() {
+  ListItem.prototype.clone = function() {
     var item = new ListItem(this.$el);
     item.top = this.top;
     item.bottom = this.bottom;
@@ -860,7 +856,7 @@
   // Removes the ListItem and its elements from the page, and cleans up after
   // them.
 
-  listItemPrototype.remove = function() {
+  ListItem.prototype.remove = function() {
     this.$el.remove();
     removeItemFromPage(this, this.parent);
     this.cleanup();
@@ -871,7 +867,7 @@
   //
   // Cleans up after the ListItem without removing it from the page.
 
-  listItemPrototype.cleanup = function() {
+  ListItem.prototype.cleanup = function() {
     this.parent = null;
   };
 
