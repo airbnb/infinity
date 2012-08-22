@@ -377,7 +377,7 @@
           $pageEl = $itemEl.parent();
 
 
-      pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
+      pageId = $pageEl.attr(PAGE_ID_ATTRIBUTE);
       page = PageRegistry.lookup(pageId);
       if(page) {
         pageItems = page.items;
