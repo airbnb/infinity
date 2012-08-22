@@ -2,13 +2,10 @@ a, a:hover {
   color: #EC2E90;
 }
 
-<<<<<<< HEAD
 img {
   display: inline-block;
 }
 
-=======
->>>>>>> parent of b10be27... spring cleaning
 .main-container {
   margin-top: 25px;
 }
@@ -21,7 +18,6 @@ img {
 }
 
 .logo {
-<<<<<<< HEAD
   margin: -29px 0 10px -15px;
 }
 
@@ -30,16 +26,6 @@ img {
   font-size: 1.5em;
   position: relative;
   top: 3px;
-=======
-  margin-top: -40px;
-  margin-left: -14px;
-}
-
-.infinity-logo {
-  font-size: 1.5em;
-  position: relative;
-  top: 2px;
->>>>>>> parent of b10be27... spring cleaning
   color: #1D95CB;
   -webkit-transition: color 0.15s linear;
      -moz-transition: color 0.15s linear;
@@ -83,43 +69,26 @@ h2, h3 {
 }
 
 .logo-prefix {
-<<<<<<< HEAD
   font-family: 'Muli', 'Helvetica Neue', Helvetica, sans-serif;
-=======
->>>>>>> parent of b10be27... spring cleaning
   font-size: 200px;
   line-height: 200px;
 }
 .logo-suffix {
-<<<<<<< HEAD
   font-size: 135px;
   line-height: 135px;
   position: relative;
   top: -23px;
   left: -15px;
-=======
-  font-size: 140px;
-  line-height: 140px;
-  position: relative;
-  top: -15px;
-  left: -10px;
->>>>>>> parent of b10be27... spring cleaning
   color: black;
 }
 
 .main-copy {
-<<<<<<< HEAD
   margin-bottom: 10px;
-=======
-  margin-top: 20px;
-  margin-bottom: 20px;
->>>>>>> parent of b10be27... spring cleaning
 }
 .main-copy p {
   font-size: 20px;
   line-height: 27px;
   font-weight: 200;
-<<<<<<< HEAD
   margin-bottom: 17px;
 }
 
@@ -133,13 +102,6 @@ h2, h3 {
 
 .download {
   margin-bottom: 6px;
-=======
-  margin-bottom: 20px;
-}
-
-.download {
-  margin-bottom: 40px;
->>>>>>> parent of b10be27... spring cleaning
   padding-right: 16px;
 }
 
@@ -147,7 +109,6 @@ h2, h3 {
   float: right;
 }
 
-<<<<<<< HEAD
 .quickstart-text:last-child {
   padding: 27px 0 9px 0;
 }
@@ -158,8 +119,6 @@ h2, h3 {
   margin-top: -17px;
 }
 
-=======
->>>>>>> parent of b10be27... spring cleaning
 .navbar .container {
   width: auto;
 }
@@ -171,14 +130,11 @@ h2, h3 {
   text-shadow: none;
 }
 
-<<<<<<< HEAD
 .navbar-fixed-top .brand {
   position: relative;
   left: 10px;
 }
 
-=======
->>>>>>> parent of b10be27... spring cleaning
 .icon-github {
   font-size: 12px;
   position: relative;
@@ -189,12 +145,9 @@ h2, h3 {
   position: relative;
   left: 5px;
 }
-<<<<<<< HEAD
 .navbar-fixed-top .fork {
   left: -10px;
 }
-=======
->>>>>>> parent of b10be27... spring cleaning
 
 .download-copy {
   font-size: 11px;
@@ -384,7 +337,6 @@ h2, h3 {
 .rotate-left {
   -webkit-transform: rotate(-3deg);
 }
-<<<<<<< HEAD
 
 #brian-box {
   position: relative;
@@ -420,5 +372,3 @@ h1.message-from {
 .demo-link {
   display: block;
 }
-=======
->>>>>>> parent of b10be27... spring cleaning
