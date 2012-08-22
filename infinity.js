@@ -775,10 +775,11 @@
 
   Page.prototype.lazyload = function(callback) {
     var that = this,
+        $el = that.$el,
         index, length;
-    if(!that.lazyloaded) {
-      for(index = 0, length = that.$el.length; index < length; index++) {
-        callback.call(that.$el[index], that.$el[index]);
+    if (!that.lazyloaded) {
+      for (index = 0, length = $el.length; index < length; index++) {
+        callback.call($el[index], $el[index]);
       }
       that.lazyloaded = true;
     }
