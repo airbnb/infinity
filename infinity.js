@@ -959,7 +959,7 @@
   //   prefixed with the string `'px'`.
 
   function pxToInt(px) {
-    return parseInt(px.replace('px', ''), 10);
+    return parseInt(px, 10);
   }
 
 
