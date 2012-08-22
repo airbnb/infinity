@@ -303,7 +303,7 @@
   // the array, or recalculating everything on screen resize.
 
   function repartition(listView) {
-    var currPage, newPage, index, length, itemIndex, pageLength, currItem,
+    var currPage, newPage, index, length, itemIndex, pageLength, currItems, currItem,
         nextItem,
         pages = listView.pages,
         newPages = [];
@@ -313,8 +313,9 @@
 
     for(index = 0, length = pages.length; index < length; index++) {
       currPage = pages[index];
-      for(itemIndex = 0, pageLength = currPage.items.length; itemIndex < pageLength; itemIndex++) {
-        currItem = currPage.items[itemIndex];
+      currItems = currPage.items;
+      for(itemIndex = 0, pageLength = currItems.length; itemIndex < pageLength; itemIndex++) {
+        currItem = currItems[itemIndex];
         nextItem = currItem.clone();
         if(newPage.hasVacancy()) {
           newPage.append(nextItem);
