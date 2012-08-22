@@ -145,7 +145,7 @@
     that.height += item.height;
     that.$el.height(that.height);
 
-    if(pages.length > 0) lastPage = pages[pages.length - 1];
+    lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
       lastPage = new Page(that);
