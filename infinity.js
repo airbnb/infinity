@@ -139,8 +139,7 @@
     var that = this,
         lastPage,
         item = convertToItem(that, obj),
-        pages = that.pages,
-        pageChange = false;
+        pages = that.pages;
 
     that.height += item.height;
     that.$el.height(that.height);
@@ -150,7 +149,6 @@
     if(!lastPage || !lastPage.hasVacancy()) {
       lastPage = new Page(that);
       pages.push(lastPage);
-      pageChange = true;
     }
 
     lastPage.append(item);
