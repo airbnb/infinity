@@ -918,22 +918,13 @@
   // ================
 
 
-  // ### div
-  //
-  // Returns a new, empty `<div>` jQuery element.
-
-  function div() {
-    return $('<div>');
-  }
-
-
   // ### blankDiv
   //
   // Returns a new, empty `<div>` jQuery element. The `<div>` will have its
   // border, margin, and padding set to zero or none, as appropriate.
 
   function blankDiv() {
-    return div().css({
+    return $('<div>').css({
       margin: 0,
       padding: 0,
       border: 'none'
