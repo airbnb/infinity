@@ -226,9 +226,7 @@
   // - `listView`: the ListView needing to be updated.
 
   function updateStartIndex(listView) {
-    var index, length, pages,
-        indexInView = {},
-        lastIndex, nextLastIndex,
+    var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewTop = $window.scrollTop() - listView.top,
         viewHeight = $window.height(),
@@ -242,13 +240,10 @@
     lastIndex = Math.min(startIndex + PAGES_ONSCREEN, pages.length);
     nextLastIndex = Math.min(nextIndex + PAGES_ONSCREEN, pages.length);
 
-    // mark current pages as valid
-    for(index = nextIndex, length = nextLastIndex; index < length; index++) {
-      indexInView[index] = true;
-    }
     // sweep any invalid old pages
     for(index = startIndex, length = lastIndex; index < length; index++) {
-      if(!indexInView[index]) pages[index].stash(listView.$shadow);
+      if(index < nextIndex || index >= nextLastIndex)
+        pages[index].stash(listView.$shadow);
     }
 
     listView.startIndex = nextIndex;
