@@ -57,11 +57,16 @@
 
 
   function row() {
+<<<<<<< HEAD
     var index, colIndex, length, $minCol, $currCol, $pug;
+=======
+    var index, colIndex, length, minCol, currCol, $pug;
+>>>>>>> parent of b10be27... spring cleaning
 
     for(index = 0, length = columns.length; index < length; index++) {
 
       for(colIndex = 0; colIndex < length; colIndex++) {
+<<<<<<< HEAD
         $currCol = $(columns[colIndex]);
 
         if(!$minCol) $minCol = $currCol;
@@ -70,10 +75,20 @@
 
       if(Pug.config.infinityOn) $minCol.data('listView').append(pug());
       else $minCol.append(pug);
+=======
+        currCol = $(columns[colIndex]);
+        if(!minCol) minCol = currCol;
+        else minCol = minCol.height() > currCol.height() ? currCol : minCol;
+      }
+
+      if(Pug.config.infinityOn) minCol.data('listView').append(pug());
+      else minCol.append(pug);
+>>>>>>> parent of b10be27... spring cleaning
     }
   }
 
   function pb(num) {
+<<<<<<< HEAD
     var index;
     if(num <= 0) return;
 
@@ -90,6 +105,15 @@
     }
 
     setTimeout(function() { pb(num - 1); }, 0);
+=======
+    for(var i = num; i > 0; i--) {
+      row();
+    }
+    $pug = columns.find('.pug');
+    $pug.each(function() {
+      $(this).attr('src', $(this).attr('data-original'));
+    });
+>>>>>>> parent of b10be27... spring cleaning
   }
 
   Pug.bomb = pb;

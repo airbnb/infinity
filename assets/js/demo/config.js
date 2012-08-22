@@ -1,0 +1,3 @@
+Pug.config = {
+  infinityOn: true
+};
