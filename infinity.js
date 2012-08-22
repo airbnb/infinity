@@ -796,12 +796,10 @@
         return pages.push(page) - 1;
       },
       lookup: function(id) {
-        if(id >= pages.length) return null;
-        return pages[id];
+        return pages[id] || null;
       },
       remove: function(page) {
         var id = page.id;
-        if(id >= pages.length) return false;
         if(!pages[id]) return false;
         pages[id] = null;
         return true;
