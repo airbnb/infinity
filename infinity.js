@@ -931,7 +931,7 @@
   // Returns a new, empty `<div>` jQuery element.
 
   function div() {
-    return $('<div></div>');
+    return $('<div>');
   }
 
 
