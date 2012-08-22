@@ -491,7 +491,7 @@
   // bind to a throttled scroll event (and debounced resize event), and updates
   // them as it fires.
 
-  var DOMEvent = (function(window, $) {
+  var DOMEvent = (function() {
     var eventIsBound = false,
         scrollScheduled = false,
         resizeTimeout = null,
@@ -599,7 +599,7 @@
         return false;
       }
     };
-  }(window, $));
+  }());
 
 
   // Page class
