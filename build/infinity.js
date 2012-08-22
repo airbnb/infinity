@@ -291,7 +291,7 @@
 
   function tooSmall(listView, page) {
     // Naive solution:
-    // repartition(listView);
+    repartition(listView);
   }
 
 
@@ -810,7 +810,7 @@
     items.splice(foundIndex, 1);
     page.bottom -= item.height;
     page.height = page.bottom - page.top;
-    if(!page.hasVacancy()) tooSmall(page.parent, page);
+    if(page.hasVacancy()) tooSmall(page.parent, page);
 
     return true;
   }
