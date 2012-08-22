@@ -904,8 +904,8 @@
   //  - `yOffset`: the y-offset of the ListItem from its ListView parent.
 
   function updateCoords(listItem, yOffset) {
-    var $el = listItem.$el,
-        offset = $el.offset();
+    var $el = listItem.$el;
+
     listItem.top = yOffset;
     listItem.height = $el.outerHeight(true);
     listItem.bottom = listItem.top + listItem.height;
