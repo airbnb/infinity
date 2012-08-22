@@ -935,11 +935,17 @@
 
   //jQuery plugin
   function registerPlugin(infinity) {
-    var ListView = infinity.ListView;
+    var ListView;
+    if(infinity) {
+      ListView = infinity.ListView;
 
-    $.fn.listView = function (options) {
-      return new ListView(this, options);
-    };
+      $.fn.listView = function (options) {
+        return new ListView(this, options);
+      };
+    }
+    else {
+      delete $.fn.listView;
+    }
   }
 
   registerPlugin(infinity);
