@@ -69,29 +69,27 @@
   // - `options`: an optional hash of options
 
   function ListView($el, options) {
-    var that = this;
-
     options = options || {};
 
-    that.$el = blankDiv();
-    that.$shadow = blankDiv();
-    $el.append(that.$el);
+    this.$el = blankDiv();
+    this.$shadow = blankDiv();
+    $el.append(this.$el);
     // don't append the shadow element -- it's meant to only be used for
     // finding elements outside of the DOM
 
-    that.lazy = !!options.lazy;
-    that.lazyFn = options.lazy || null;
+    this.lazy = !!options.lazy;
+    this.lazyFn = options.lazy || null;
 
-    initBuffer(that);
+    initBuffer(this);
 
-    that.top = that.$el.offset().top;
-    that.width = 0;
-    that.height = 0;
+    this.top = this.$el.offset().top;
+    this.width = 0;
+    this.height = 0;
 
-    that.pages = [];
-    that.startIndex = 0;
+    this.pages = [];
+    this.startIndex = 0;
 
-    DOMEvent.attach(that);
+    DOMEvent.attach(this);
   }
 
   var listViewPrototype = ListView.prototype;
@@ -141,23 +139,22 @@
   listViewPrototype.append = function(obj) {
     if(!obj || !obj.length) return null;
 
-    var that = this,
-        lastPage,
-        item = convertToItem(that, obj),
-        pages = that.pages;
+    var lastPage,
+        item = convertToItem(this, obj),
+        pages = this.pages;
 
-    that.height += item.height;
-    that.$el.height(that.height);
+    this.height += item.height;
+    this.$el.height(this.height);
 
     lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
-      lastPage = new Page(that);
+      lastPage = new Page(this);
       pages.push(lastPage);
     }
 
     lastPage.append(item);
-    insertPagesInView(that);
+    insertPagesInView(this);
 
     return item;
   };
@@ -355,15 +352,14 @@
   // Returns a ListItem.
 
   listViewPrototype.find = function(findObj) {
-    var that = this,
-        items, $onscreen, $offscreen;
+    var items, $onscreen, $offscreen;
 
     // If given a selector string, find everything matching onscreen and
     // offscreen, and return both.
     if(typeof findObj === 'string') {
-      $onscreen = that.$el.find(findObj);
-      $offscreen = that.$shadow.find(findObj);
-      return that.find($onscreen).concat(that.find($offscreen));
+      $onscreen = this.$el.find(findObj);
+      $offscreen = this.$shadow.find(findObj);
+      return this.find($onscreen).concat(this.find($offscreen));
     }
 
     // Silly option, but might as well.
@@ -612,24 +608,22 @@
   // of view.
 
   function Page(parent) {
-    var that = this;
+    this.parent = parent;
 
-    that.parent = parent;
+    this.items = [];
+    this.$el = blankDiv();
 
-    that.items = [];
-    that.$el = blankDiv();
+    this.id = PageRegistry.generatePageId(this);
+    this.$el.attr(PAGE_ID_ATTRIBUTE, this.id);
 
-    that.id = PageRegistry.generatePageId(that);
-    that.$el.attr(PAGE_ID_ATTRIBUTE, that.id);
+    this.top = 0;
+    this.bottom = 0;
+    this.width = 0;
+    this.height = 0;
 
-    that.top = 0;
-    that.bottom = 0;
-    that.width = 0;
-    that.height = 0;
+    this.lazyloaded = false;
 
-    that.lazyloaded = false;
-
-    that.onscreen = false;
+    this.onscreen = false;
   }
 
   var pagePrototype = Page.prototype;
@@ -644,20 +638,19 @@
   // - `item`: a ListItem.
 
   pagePrototype.append = function(item) {
-    var that = this,
-        items = that.items;
+    var items = this.items;
 
     // Recompute coords, sizing.
-    if(items.length === 0) that.top = item.top;
-    that.bottom = item.bottom;
-    that.width = that.width > item.width ? that.width : item.width;
-    that.height = that.bottom - that.top;
+    if(items.length === 0) this.top = item.top;
+    this.bottom = item.bottom;
+    this.width = this.width > item.width ? this.width : item.width;
+    this.height = this.bottom - this.top;
 
     items.push(item);
-    item.parent = that;
-    that.$el.append(item.$el);
+    item.parent = this;
+    this.$el.append(item.$el);
 
-    that.lazyloaded = false;
+    this.lazyloaded = false;
   };
 
 
@@ -670,19 +663,18 @@
   // - `item`: a ListItem.
 
   pagePrototype.prepend = function(item) {
-    var that = this,
-        items = that.items;
+    var items = this.items;
 
     // Recompute coords, sizing.
-    that.bottom += item.height;
-    that.width = that.width > item.width ? that.width : item.width;
-    that.height = that.bottom - that.top;
+    this.bottom += item.height;
+    this.width = this.width > item.width ? this.width : item.width;
+    this.height = this.bottom - this.top;
 
     items.push(item);
-    item.parent = that;
-    that.$el.prepend(item.$el);
+    item.parent = this;
+    this.$el.prepend(item.$el);
 
-    that.lazyloaded = false;
+    this.lazyloaded = false;
   };
 
 
@@ -700,11 +692,9 @@
   // Proxies to jQuery to append the Page to the given jQuery element.
 
   pagePrototype.appendTo = function($el) {
-    var that = this;
-
-    if(!that.onscreen) {
-      that.$el.appendTo($el);
-      that.onscreen = true;
+    if(!this.onscreen) {
+      this.$el.appendTo($el);
+      this.onscreen = true;
     }
   };
 
@@ -714,11 +704,9 @@
   // Proxies to jQuery to prepend the Page to the given jQuery element.
 
   pagePrototype.prependTo = function($el) {
-    var that = this;
-
-    if(!that.onscreen) {
-      that.$el.prependTo($el);
-      that.onscreen = true;
+    if(!this.onscreen) {
+      this.$el.prependTo($el);
+      this.onscreen = true;
     }
   };
 
@@ -727,11 +715,9 @@
   // Temporarily stash the onscreen page under a different element.
 
   pagePrototype.stash = function($el) {
-    var that = this;
-
-    if(that.onscreen) {
-      that.$el.appendTo($el);
-      that.onscreen = false;
+    if(this.onscreen) {
+      this.$el.appendTo($el);
+      this.onscreen = false;
     }
   };
 
@@ -741,13 +727,11 @@
   // Removes the Page from the DOM and cleans up after it.
 
   pagePrototype.remove = function() {
-    var that = this;
-
-    if(that.onscreen) {
-      that.$el.remove();
-      that.onscreen = false;
+    if(this.onscreen) {
+      this.$el.remove();
+      this.onscreen = false;
     }
-    that.cleanup();
+    this.cleanup();
   };
 
 
@@ -756,12 +740,11 @@
   // Cleans up the Page without removing it.
 
   pagePrototype.cleanup = function() {
-    var that = this,
-        items = that.items,
+    var items = this.items,
         item;
 
-    that.parent = null;
-    PageRegistry.remove(that);
+    this.parent = null;
+    PageRegistry.remove(this);
     while (item = items.pop()) {
       item.cleanup();
     }
@@ -778,14 +761,13 @@
   // each unloaded element, and will use the element as its calling context.
 
   pagePrototype.lazyload = function(callback) {
-    var that = this,
-        $el = that.$el,
+    var $el = this.$el,
         index, length;
-    if (!that.lazyloaded) {
+    if (!this.lazyloaded) {
       for (index = 0, length = $el.length; index < length; index++) {
         callback.call($el[index], $el[index]);
       }
-      that.lazyloaded = true;
+      this.lazyloaded = true;
     }
   };
 
@@ -849,16 +831,14 @@
   // All positioning data is relative to the containing ListView.
 
   function ListItem($el) {
-    var that = this;
+    this.$el = $el;
 
-    that.$el = $el;
+    this.parent = null;
 
-    that.parent = null;
-
-    that.top = 0;
-    that.bottom = 0;
-    that.width = 0;
-    that.height = 0;
+    this.top = 0;
+    this.bottom = 0;
+    this.width = 0;
+    this.height = 0;
   }
 
   var listItemPrototype = ListItem.prototype;
@@ -867,12 +847,11 @@
   //
   // Clones the ListItem.
   listItemPrototype.clone = function() {
-    var that = this,
-        item = new ListItem(that.$el);
-    item.top = that.top;
-    item.bottom = that.bottom;
-    item.width = that.width;
-    item.height = that.height;
+    var item = new ListItem(this.$el);
+    item.top = this.top;
+    item.bottom = this.bottom;
+    item.width = this.width;
+    item.height = this.height;
     return item;
   };
 
@@ -882,11 +861,9 @@
   // them.
 
   listItemPrototype.remove = function() {
-    var that = this;
-
-    that.$el.remove();
-    removeItemFromPage(that, that.parent);
-    that.cleanup();
+    this.$el.remove();
+    removeItemFromPage(this, this.parent);
+    this.cleanup();
   };
 
 
