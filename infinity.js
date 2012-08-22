@@ -134,7 +134,7 @@
   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
-    if(!obj || (obj.length && obj.length === 0)) return null;
+    if(!(obj && obj.length)) return null;
 
     var that = this,
         lastPage,
