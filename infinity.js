@@ -674,8 +674,8 @@
 
     this.start = 0;
     this.end = 0;
-    this.width = parent.width;
-    this.height = parent.height;
+    this.width = 0;
+    this.height = 0;
 
     this.lazyloaded = false;
 
@@ -748,7 +748,7 @@
 
   Page.prototype.hasVacancy = function() {
     if (this.parent.landscape) {
-        return this.width < $window.width() * config.PAGE_TO_SCREEN_RATIO;
+        return true;
     } else {
         return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
     }
