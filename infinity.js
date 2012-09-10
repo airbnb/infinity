@@ -83,7 +83,7 @@
     initBuffer(this);
 
     this.top = this.$el.offset().top;
-    this.width = 0;
+    this.width = options.width || 0;
     this.height = 0;
 
     this.pages = [];
@@ -145,6 +145,9 @@
     this.height += item.height;
     this.$el.height(this.height);
 
+    if (this.width !== 0) {
+        this.$el.width(this.width);
+    }
     lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
