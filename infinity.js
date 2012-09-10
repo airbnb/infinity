@@ -79,8 +79,8 @@
     
     this.landscape = options.landscape || false;
 
-    this.$el = blankDiv(this.landscape);
-    this.$shadow = blankDiv(this.landscape);
+    this.$el = blankDiv();
+    this.$shadow = blankDiv();
     $el.append(this.$el);
     // don't append the shadow element -- it's meant to only be used for
     // finding elements outside of the DOM
@@ -113,7 +113,7 @@
   // Private ListView method. Initializes the buffer element.
 
   function initBuffer(listView) {
-    listView._$buffer = blankDiv(listView.landscape)
+    listView._$buffer = blankDiv()
                         .prependTo(listView.$el);
   }
 
@@ -667,7 +667,7 @@
     this.parent = parent;
 
     this.items = [];
-    this.$el = blankDiv(parent.landscape);
+    this.$el = blankDiv();
 
     this.id = PageRegistry.generatePageId(this);
     this.$el.attr(PAGE_ID_ATTRIBUTE, this.id);
@@ -748,7 +748,12 @@
 
   Page.prototype.hasVacancy = function() {
     if (this.parent.landscape) {
-        return true;
+        if (this.parent.height === 0) {
+            return this.width < $window.width() * config.PAGE_TO_SCREEN_RATIO;
+        } else {
+            // 1 row
+            return true;
+        }
     } else {
         return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
     }
@@ -984,20 +989,12 @@
   // Returns a new, empty `<div>` jQuery element. The `<div>` will have its
   // border, margin, and padding set to zero or none, as appropriate.
 
-  function blankDiv(landscape) {
-    var $div = $('<div>').css({
+  function blankDiv() {
+    return $('<div>').css({
       margin: 0,
       padding: 0,
       border: 'none'
     });
-    
-    if (landscape) {
-        $div.css({
-            display: 'inline-block'
-        });
-    }
-
-    return $div;
   }
 
 
