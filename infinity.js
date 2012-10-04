@@ -159,6 +159,51 @@
   };
 
 
+  // ### prepend
+  //
+  // Prepend a jQuery element or a ListItem to the ListView.
+  //
+  // Takes:
+  //
+  // - `obj`: a jQuery element, a string of valid HTML, or a ListItem.
+  //
+  // TODO: optimized batch prepend
+
+  ListView.prototype.prepend = function(obj) {
+    if(!obj || !obj.length) return null;
+
+    var firstPage,
+        item = convertToItem(this, obj, true),
+        pages = this.pages,
+        page,
+        length,
+        index;
+
+    this.height += item.height;
+    this.$el.height(this.height);
+
+    firstPage = pages[0];
+
+    if(!firstPage || !firstPage.hasVacancy()) {
+      firstPage = new Page(this);
+      this.startIndex++;
+      pages.splice(0, 0, firstPage);
+    }
+
+    firstPage.prepend(item);
+
+    // loop through all other pages and update the top/bottom values
+    length = pages.length;
+    for ( index = 1; index < length; index++ ) {
+      page = pages[index];
+      page.top += item.height;
+      page.bottom += item.height;
+    }
+    updateStartIndex(this, true);
+
+    return item;
+  };
+
   // ### cacheCoordsFor
   //
   // Caches the coordinates for a given ListItem within the given ListView.
@@ -168,12 +213,17 @@
   // - `listView`: a ListView.
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
-  function cacheCoordsFor(listView, listItem) {
+  function cacheCoordsFor(listView, listItem, prepend) {
     listItem.$el.remove();
 
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
-    listView.$el.append(listItem.$el);
+    if ( prepend ) {
+      listView.$el.prepend(listItem.$el);
+    }
+    else {
+      listView.$el.append(listItem.$el);
+    }
     updateCoords(listItem, listView.height);
     listItem.$el.remove();
   }
@@ -223,7 +273,7 @@
   //
   // - `listView`: the ListView needing to be updated.
 
-  function updateStartIndex(listView) {
+  function updateStartIndex(listView, prepended) {
     var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewTop = $window.scrollTop() - listView.top,
@@ -231,7 +281,7 @@
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
-    if( nextIndex < 0 || nextIndex === startIndex) return startIndex;
+    if( nextIndex < 0 || (nextIndex === startIndex && !prepended)) return startIndex;
 
     pages = listView.pages;
     startIndex = listView.startIndex;
@@ -274,12 +324,12 @@
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
 
-  function convertToItem(listView, possibleItem) {
+  function convertToItem(listView, possibleItem, prepend) {
     var item;
     if(possibleItem instanceof ListItem) return possibleItem;
     if(typeof possibleItem === 'string') possibleItem = $(possibleItem);
     item = new ListItem(possibleItem);
-    cacheCoordsFor(listView, item);
+    cacheCoordsFor(listView, item, prepend);
     return item;
   }
 
