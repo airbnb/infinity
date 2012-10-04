@@ -80,6 +80,8 @@
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
 
+    this.useElementScroll = options.useElementScroll === true;
+
     initBuffer(this);
 
     this.top = this.$el.offset().top;
@@ -88,6 +90,10 @@
 
     this.pages = [];
     this.startIndex = 0;
+
+    if ( this.useElementScroll ) {
+      this.parent = $el;
+    }
 
     DOMEvent.attach(this);
   }
@@ -226,8 +232,9 @@
   function updateStartIndex(listView) {
     var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        viewTop = $window.scrollTop() - listView.top,
-        viewHeight = $window.height(),
+        viewRef = (this.useElementScroll ? listView.parent : $window),
+        viewTop = viewRef.scrollTop() - listView.top,
+        viewHeight = viewRef.height(),
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
@@ -558,8 +565,15 @@
       //   event.
 
       attach: function(listView) {
+        if(listView.useElementScroll && !listView.eventIsBound) {
+          listView.parent.on('scroll', scrollHandler);
+          listView.eventIsBound = true;
+        }
+
         if(!eventIsBound) {
-          $window.on('scroll', scrollHandler);
+          if ( !listView.useElementScroll ) {
+            $window.on('scroll', scrollHandler);
+          }
           $window.on('resize', resizeHandler);
           eventIsBound = true;
         }
@@ -582,11 +596,18 @@
 
       detach: function(listView) {
         var index, length;
+        if(listView.useElementScroll && !listView.eventIsBound) {
+          listView.parent.on('scroll', scrollHandler);
+          listView.eventIsBound = true;
+        }
+
         for(index = 0, length = boundViews.length; index < length; index++) {
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-              $window.off('scroll', scrollHandler);
+              if(!listView.useElementScroll){
+                $window.off('scroll', scrollHandler);
+              }
               $window.off('resize', resizeHandler);
               eventIsBound = false;
             }
@@ -680,7 +701,8 @@
   // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
-    return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
+    var viewRef = this.parent.useElementScroll ? this.parent.parent : $window;
+    return this.height < viewRef.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
