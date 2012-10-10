@@ -169,13 +169,13 @@
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
   function cacheCoordsFor(listView, listItem) {
-    listItem.$el.remove();
+    listItem.$el.detach();
 
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
     listView.$el.append(listItem.$el);
     updateCoords(listItem, listView.height);
-    listItem.$el.remove();
+    listItem.$el.detach();
   }
 
 
@@ -725,7 +725,7 @@
 
   Page.prototype.remove = function() {
     if(this.onscreen) {
-      this.$el.remove();
+      this.$el.detach();
       this.onscreen = false;
     }
     this.cleanup();
