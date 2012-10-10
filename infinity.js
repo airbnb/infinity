@@ -38,7 +38,6 @@
 
   // Cached objects
   var $window = $(window);
-
   // Packaging:
   var oldInfinity = window.infinity,
       infinity = window.infinity = {},
@@ -67,13 +66,29 @@
   //
   // - `$el`: a jQuery element.
   // - `options`: an optional hash of options
-
-  function ListView($el, options) {
-    options = options || {};
-
-    this.$el = blankDiv();
-    this.$shadow = blankDiv();
-    $el.append(this.$el);
+  // -startIndex is now Page index
+  //oz -extend a elContainer --
+  function ListView($el,options) {
+	options = options || {}; 
+	// -ozzyun add modify-
+	// appendMode value is "normal" and "array", defaule is normal
+    // when use appendArray this value will turn to "array"
+	// if isElementScroll is true you can use it at a element 
+	this.isElementScroll=false
+	this.appendMode="normal"
+	if(options!=null&&options.isElementScroll) this.isElementScroll=true
+	if(this.isElementScroll){
+		$window=$el
+		var newel=blankDiv();
+		this.$el = blankDiv();
+		newel.append(this.$el);
+		$window.append(newel)
+	}else{
+		this.$el = blankDiv();
+		$el.append(this.$el);
+	} 
+	this.$shadow = blankDiv();
+	//----------
     // don't append the shadow element -- it's meant to only be used for
     // finding elements outside of the DOM
 
@@ -134,14 +149,17 @@
   // - `obj`: a jQuery element, a string of valid HTML, or a ListItem.
   //
   // TODO: optimized batch appends
-
+  /*
+  ListView.prototype.elContainer=function($outer){
+	$window=$outer
+  }
+  */ 
   ListView.prototype.append = function(obj) {
     if(!obj || !obj.length) return null;
-
     var lastPage,
         item = convertToItem(this, obj),
-        pages = this.pages;
-
+        pages = this.pages;	
+		
     this.height += item.height;
     this.$el.height(this.height);
 
@@ -154,10 +172,31 @@
 
     lastPage.append(item);
     insertPagesInView(this);
-
     return item;
   };
+  // ### AppendArray -ozzysun add
+  // Append multi Items to List 
+  // obj in array : a jQuery element, a string of valid HTML, or a ListItem.
+	ListView.prototype.appendArray=function(_array){
+		this.appendMode="array"
+		var lastPage,
+		pages = this.pages,
+		itemArray=new Array();
+		for(var i=0;i<_array.length;i++){
+			var item=convertToItem(this, _array[i])
+			itemArray.push(item)
+			this.height += item.height;
+			this.$el.height(this.height);
+			lastPage = pages[pages.length - 1];
 
+			if(!lastPage || !lastPage.hasVacancy()) {
+				lastPage = new Page(this);
+				pages.push(lastPage);
+			}
+			lastPage.addItem(item);
+			insertPagesInView(this);
+		}
+	}
 
   // ### cacheCoordsFor
   //
@@ -221,13 +260,14 @@
   //
   // Takes:
   //
-  // - `listView`: the ListView needing to be updated.
-
-  function updateStartIndex(listView) {
-    var index, length, pages, lastIndex, nextLastIndex,
+  // - `listView`: the ListView needing to be updated. 
+  function updateStartIndex(listView) {	
+	var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewTop = $window.scrollTop() - listView.top,
         viewHeight = $window.height(),
+		//viewTop = $('#outer').scrollTop() - listView.top,
+        //viewHeight = $('#outer').height(),
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
@@ -248,9 +288,27 @@
 
     insertPagesInView(listView);
     updateBuffer(listView);
-    return nextIndex;
+	// ### ozzy modify for dynamic render view
+	//console.log("page "+nextIndex+"/"+pages.length+" status="+listView.pages[nextIndex].status)
+	if(listView.appendMode==="array") listView.render(nextIndex,PAGES_ONSCREEN)
+    //----
+	return nextIndex;
   }
-
+   // ### Render View - ozzysun add
+   // _startIndex is start render page index
+   // _num is how much pages you wannna render   
+  ListView.prototype.render = function(_startIndex,num) {
+    console.log('run render @='+_startIndex+" length="+this.pages.length)
+	for(var i=0;i<num;i++){
+		var _index=_startIndex+i;
+		if((_index<this.pages.length)&&this.pages[_index].status=="needRender"){
+			console.log("render page="+_index)
+			var _html=this.pages[_index].html.join("")
+			this.pages[_index].$el.append(_html)
+			this.pages[_index].status="rendered";
+		}
+	}
+  };
 
   // ### remove
   //
@@ -282,7 +340,7 @@
     cacheCoordsFor(listView, item);
     return item;
   }
-
+  
 
   // ### tooSmall
   //
@@ -513,22 +571,20 @@
     // Callback passed to the setTimeout throttle. Calls `scrollListView` on
     // every bound ListView, and then allows new scroll events to be
     // scheduled.
-
     function scrollAll() {
-      var index, length;
+	  var index, length;
       for(index = 0, length = boundViews.length; index < length; index++) {
         updateStartIndex(boundViews[index]);
       }
       scrollScheduled = false;
+	 
     }
-
-
     // ### resizeHandler
     //
     // Callback called on resize. Debounces a `resizeAll` callback.
 
-    function resizeHandler() {
-      if(resizeTimeout) clearTimeout(resizeTimeout);
+    function resizeHandler() {      
+	  if(resizeTimeout) clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(resizeAll, 200);
     }
 
@@ -558,7 +614,7 @@
       //   event.
 
       attach: function(listView) {
-        if(!eventIsBound) {
+        if(!eventIsBound) {		  
           $window.on('scroll', scrollHandler);
           $window.on('resize', resizeHandler);
           eventIsBound = true;
@@ -608,13 +664,12 @@
 
   function Page(parent) {
     this.parent = parent;
-
+	
     this.items = [];
     this.$el = blankDiv();
 
     this.id = PageRegistry.generatePageId(this);
     this.$el.attr(PAGE_ID_ATTRIBUTE, this.id);
-
     this.top = 0;
     this.bottom = 0;
     this.width = 0;
@@ -623,6 +678,13 @@
     this.lazyloaded = false;
 
     this.onscreen = false;
+	// ### ozzysun add
+	// html is page items html string,use this to render view
+	// status is view render status default is "init"
+	// if alreay render and show is "rendered"
+	// if not render is "needRender" ,you can use ListView.render()to show view
+	this.status="init";	
+	this.html=[];
   }
 
 
@@ -649,7 +711,26 @@
 
     this.lazyloaded = false;
   };
+  // ### AddItem -ozzysun add
+  // add item to Page,just only add items html wait for render
+  Page.prototype.addItem = function(item) {
+    var items = this.items;
+	var _html=item.$el[0].outerHTML;    
+    if(items.length === 0) this.top = item.top;
+    this.bottom = item.bottom;
+    this.width = this.width > item.width ? this.width : item.width;
+    this.height = this.bottom - this.top;
 
+    items.push(item);
+    item.parent = this;    
+	this.html.push(_html);
+    this.lazyloaded = false;
+	if(!this.hasVacancy()){
+		this.status="needRender";
+		if(this.id===PAGES_ONSCREEN) this.parent.render(0,PAGES_ONSCREEN)
+	}
+	
+  };
 
   // ### prepend
   //
@@ -661,7 +742,6 @@
 
   Page.prototype.prepend = function(item) {
     var items = this.items;
-
     // Recompute coords, sizing.
     this.bottom += item.height;
     this.width = this.width > item.width ? this.width : item.width;
@@ -829,9 +909,7 @@
 
   function ListItem($el) {
     this.$el = $el;
-
     this.parent = null;
-
     this.top = 0;
     this.bottom = 0;
     this.width = 0;
