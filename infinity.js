@@ -91,9 +91,7 @@
     this.pages = [];
     this.startIndex = 0;
 
-    if ( this.useElementScroll ) {
-      this.parent = $el;
-    }
+    this.$scrollParent = this.useElementScroll ? $el : $window;
 
     DOMEvent.attach(this);
   }
@@ -232,7 +230,7 @@
   function updateStartIndex(listView) {
     var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        viewRef = (listView.useElementScroll ? listView.parent : $window),
+        viewRef = listView.$scrollParent,
         viewTop = viewRef.scrollTop() - listView.top,
         viewHeight = viewRef.height(),
         viewBottom = viewTop + viewHeight,
@@ -565,15 +563,12 @@
       //   event.
 
       attach: function(listView) {
-        if(listView.useElementScroll && !listView.eventIsBound) {
-          listView.parent.on('scroll', scrollHandler);
+        if(!listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
           listView.eventIsBound = true;
         }
 
         if(!eventIsBound) {
-          if ( !listView.useElementScroll ) {
-            $window.on('scroll', scrollHandler);
-          }
           $window.on('resize', resizeHandler);
           eventIsBound = true;
         }
@@ -596,8 +591,8 @@
 
       detach: function(listView) {
         var index, length;
-        if(listView.useElementScroll && !listView.eventIsBound) {
-          listView.parent.on('scroll', scrollHandler);
+        if(!listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
           listView.eventIsBound = true;
         }
 
@@ -605,9 +600,6 @@
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-              if(!listView.useElementScroll){
-                $window.off('scroll', scrollHandler);
-              }
               $window.off('resize', resizeHandler);
               eventIsBound = false;
             }
@@ -701,7 +693,7 @@
   // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
-    var viewRef = this.parent.useElementScroll ? this.parent.parent : $window;
+    var viewRef = this.parent.$scrollParent;
     return this.height < viewRef.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
