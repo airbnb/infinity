@@ -174,10 +174,7 @@
 
     var firstPage,
         item = convertToItem(this, obj, true),
-        pages = this.pages,
-        page,
-        length,
-        index;
+        pages = this.pages;
 
     this.height += item.height;
     this.$el.height(this.height);
@@ -190,18 +187,56 @@
       pages.splice(0, 0, firstPage);
     }
 
-    firstPage.prepend(item);
+    updatePagePosition(pages, item.height, 1);
 
-    // loop through all other pages and update the top/bottom values
-    length = pages.length;
-    for ( index = 1; index < length; index++ ) {
-      page = pages[index];
-      page.top += item.height;
-      page.bottom += item.height;
-    }
+    firstPage.prepend(item);
     updateStartIndex(this, true);
 
     return item;
+  };
+
+  // ### updatePagePosition
+  //
+  // Update the top/bottom coordinate values for the given array of Pages
+  //
+  // Takes:
+  //
+  // - `pages`: array of Pages.
+  // - `positionChange`: the change in value to add to all Pages.
+  // - `offset`: an offset from the first page to process. Defaults to zero.
+
+  function updatePagePosition(pages, positionChange, offset) {
+    var length = pages.length,
+        i,
+        page;
+    for ( i = offset || 0; i < length; i++ ) {
+      page = pages[i];
+      page.top += positionChange;
+      page.bottom += positionChange;
+      // loop through all page items and update the top/bottom values
+      updateItemPosition(page.items, positionChange);
+    }
+  };
+
+  // ### updateItemPosition
+  //
+  // Update the top/bottom coordinate values for the given array of ListItems
+  //
+  // Takes:
+  //
+  // - `items`: array of ListItems.
+  // - `positionChange`: the change in value to add to all ListItems.
+  // - `offset`: an offset from the first item to process. Defaults to zero.
+
+  function updateItemPosition(items, positionChange, offset) {
+    var length = items.length,
+        i,
+        item;
+    for ( i = offset || 0; i < length; i++ ) {
+      item = items[i];
+      item.top += positionChange;
+      item.bottom += positionChange;
+    }
   };
 
   // ### cacheCoordsFor
@@ -214,7 +249,6 @@
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
   function cacheCoordsFor(listView, listItem, prepend) {
-    listItem.$el.remove();
     listItem.$el.detach();
 
     // WARNING: this will always break for prepends. Once support gets added for
@@ -225,7 +259,7 @@
     else {
       listView.$el.append(listItem.$el);
     }
-    updateCoords(listItem, listView.height);
+    updateCoords(listItem, prepend ? 0 : listView.height);
     listItem.$el.detach();
   }
 
@@ -718,7 +752,7 @@
     this.width = this.width > item.width ? this.width : item.width;
     this.height = this.bottom - this.top;
 
-    items.push(item);
+    items.splice(0,0,item);
     item.parent = this;
     this.$el.prepend(item.$el);
 
