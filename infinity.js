@@ -591,9 +591,9 @@
 
       detach: function(listView) {
         var index, length;
-        if(!listView.eventIsBound) {
+        if(listView.eventIsBound) {
           listView.$scrollParent.on('scroll', scrollHandler);
-          listView.eventIsBound = true;
+          listView.eventIsBound = false;
         }
 
         for(index = 0, length = boundViews.length; index < length; index++) {
