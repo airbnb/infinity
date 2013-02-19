@@ -11,7 +11,7 @@ annotate:
 	@./node_modules/.bin/docco infinity.js
 
 build-test:
-	@coffee -c test/
+	@./node_modules/.bin/coffee -c test/
 
 build: clean build-js build-test
 
