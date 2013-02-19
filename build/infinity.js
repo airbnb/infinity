@@ -144,7 +144,7 @@
 
     // [grippy] A ListItem won't be an array
     //          so check if we have an empty array
-    if(!obj || Array.isArray(obj) && !obj.length) return null;
+    if(!obj || (obj instanceof Array) && !obj.length) return null;
 
     var lastPage,
         item = convertToItem(this, obj),
