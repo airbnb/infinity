@@ -1,3 +1,4 @@
+
 //     (c) 2012 Airbnb, Inc.
 //
 //     infinity.js may be freely distributed under the terms of the BSD
@@ -83,6 +84,14 @@
 
     this.useElementScroll = options.useElementScroll === true;
 
+    // [grippy] Use this to pass an option to set 
+    //          the width and height for all ListItem's
+    //          cacheItemDimensions = {width: int, height: int}
+    //          if either width or height is missing
+    //          the width or height will default to the 
+    //          first page item width or height
+    this.cacheItemDimensions = options.cacheItemDimensions;
+
     initBuffer(this);
 
     this.top = this.$el.offset().top;
@@ -162,9 +171,19 @@
       pages.push(lastPage);
     }
 
+    // [grippy] should we cache the dimensions for this item?
+    //          cacheItemDimensions allows for passing an object
+    //          with width and height
+    //          if we don't have a width and height
+    //          use the item.width and/or item.height
+    //          as computed by jquery
+    if (this.cacheItemDimensions && !lastPage.itemHeight) {
+      lastPage.itemWidth = this.cacheItemDimensions.width || Number(item.width);
+      lastPage.itemHeight = this.cacheItemDimensions.height || Number(item.height);
+    }
+
     lastPage.append(item);
     insertPagesInView(this);
-
     return item;
   };
 
@@ -184,6 +203,16 @@
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
     listView.$el.append(listItem.$el);
+
+    // [grippy] should we cache the dimensions for this item?
+    var pages = listView.pages;
+    var lastPage = pages[pages.length - 1];
+    if (listView.cacheItemDimensions && 
+        lastPage && 
+        lastPage.itemHeight) {
+      listItem.width = lastPage.itemWidth;
+      listItem.height = lastPage.itemHeight;
+    }
     updateCoords(listItem, listView.height);
     listItem.$el.detach();
   }
@@ -861,9 +890,7 @@
 
   function ListItem($el) {
     this.$el = $el;
-
     this.parent = null;
-
     this.top = 0;
     this.bottom = 0;
     this.width = 0;
@@ -916,7 +943,6 @@
 
   function updateCoords(listItem, yOffset) {
     var $el = listItem.$el;
-
     listItem.top = yOffset;
     if (!listItem.height) listItem.height = $el.outerHeight(true);
     listItem.bottom = listItem.top + listItem.height;
