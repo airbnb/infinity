@@ -1,5 +1,5 @@
 //     (c) 2012 Airbnb, Inc.
-//     
+//
 //     infinity.js may be freely distributed under the terms of the BSD
 //     license. For all licensing information, details, and documention:
 //     http://airbnb.github.com/infinity
@@ -79,6 +79,7 @@
 
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
+    this.loadFn = options.load || null;
 
     this.useElementScroll = options.useElementScroll === true;
 
@@ -140,14 +141,19 @@
   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
-    if(!obj || !obj.length) return null;
+
+    // [grippy] A ListItem won't be an array
+    //          so check if we have an empty array
+    if(!obj || Array.isArray(obj) && !obj.length) return null;
 
     var lastPage,
         item = convertToItem(this, obj),
         pages = this.pages;
 
     this.height += item.height;
-    this.$el.height(this.height);
+
+    // [grippy] css lookup should be faster here
+    this.$el.css('height', this.height);
 
     lastPage = pages[pages.length - 1];
 
@@ -250,6 +256,8 @@
     }
 
     listView.startIndex = nextIndex;
+
+    if(listView.loadFn) listView.loadFn.call(listView, pages.length - nextLastIndex);
 
     insertPagesInView(listView);
     updateBuffer(listView);
@@ -694,7 +702,17 @@
 
   Page.prototype.hasVacancy = function() {
     var viewRef = this.parent.$scrollParent;
-    return this.height < viewRef.height() * config.PAGE_TO_SCREEN_RATIO;
+    var parentHeight;
+    // [grippy] while using element scroll
+    //          cache the parent height
+    //          since it shouldn't change
+    if (this.parent.useElementScroll) {
+      if (!this.parentHeight) this.parentHeight = viewRef.height();
+      parentHeight = this.parentHeight;
+    } else {
+      parentHeight = viewRef.height();
+    }
+    return this.height < parentHeight * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
@@ -900,9 +918,9 @@
     var $el = listItem.$el;
 
     listItem.top = yOffset;
-    listItem.height = $el.outerHeight(true);
+    if (!listItem.height) listItem.height = $el.outerHeight(true);
     listItem.bottom = listItem.top + listItem.height;
-    listItem.width = $el.width();
+    if (!listItem.width) listItem.width = $el.width();
   }
 
 
@@ -946,6 +964,8 @@
   infinity.ListView = ListView;
   infinity.Page = Page;
   infinity.ListItem = ListItem;
+  infinity.convertToItem = convertToItem;
+  infinity.cacheCoordsFor = cacheCoordsFor;
 
   //jQuery plugin
   function registerPlugin(infinity) {

@@ -1,5 +1,5 @@
 //     (c) 2012 Airbnb, Inc.
-//     
+//
 //     infinity.js may be freely distributed under the terms of the BSD
 //     license. For all licensing information, details, and documention:
 //     http://airbnb.github.com/infinity
@@ -79,6 +79,9 @@
 
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
+    this.loadFn = options.load || null;
+
+    this.useElementScroll = options.useElementScroll === true;
 
     initBuffer(this);
 
@@ -88,6 +91,8 @@
 
     this.pages = [];
     this.startIndex = 0;
+
+    this.$scrollParent = this.useElementScroll ? $el : $window;
 
     DOMEvent.attach(this);
   }
@@ -136,14 +141,19 @@
   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
-    if(!obj || !obj.length) return null;
+
+    // [grippy] A ListItem won't be an array
+    //          so check if we have an empty array
+    if(!obj || Array.isArray(obj) && !obj.length) return null;
 
     var lastPage,
         item = convertToItem(this, obj),
         pages = this.pages;
 
     this.height += item.height;
-    this.$el.height(this.height);
+
+    // [grippy] css lookup should be faster here
+    this.$el.css('height', this.height);
 
     lastPage = pages[pages.length - 1];
 
@@ -169,13 +179,13 @@
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
   function cacheCoordsFor(listView, listItem) {
-    listItem.$el.remove();
+    listItem.$el.detach();
 
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
     listView.$el.append(listItem.$el);
     updateCoords(listItem, listView.height);
-    listItem.$el.remove();
+    listItem.$el.detach();
   }
 
 
@@ -226,8 +236,9 @@
   function updateStartIndex(listView) {
     var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        viewTop = $window.scrollTop() - listView.top,
-        viewHeight = $window.height(),
+        viewRef = listView.$scrollParent,
+        viewTop = viewRef.scrollTop() - listView.top,
+        viewHeight = viewRef.height(),
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
@@ -245,6 +256,8 @@
     }
 
     listView.startIndex = nextIndex;
+
+    if(listView.loadFn) listView.loadFn.call(listView, pages.length - nextLastIndex);
 
     insertPagesInView(listView);
     updateBuffer(listView);
@@ -558,8 +571,12 @@
       //   event.
 
       attach: function(listView) {
+        if(!listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
+          listView.eventIsBound = true;
+        }
+
         if(!eventIsBound) {
-          $window.on('scroll', scrollHandler);
           $window.on('resize', resizeHandler);
           eventIsBound = true;
         }
@@ -582,11 +599,15 @@
 
       detach: function(listView) {
         var index, length;
+        if(listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
+          listView.eventIsBound = false;
+        }
+
         for(index = 0, length = boundViews.length; index < length; index++) {
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-              $window.off('scroll', scrollHandler);
               $window.off('resize', resizeHandler);
               eventIsBound = false;
             }
@@ -680,7 +701,18 @@
   // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
-    return this.height < $window.height() * config.PAGE_TO_SCREEN_RATIO;
+    var viewRef = this.parent.$scrollParent;
+    var parentHeight;
+    // [grippy] while using element scroll
+    //          cache the parent height
+    //          since it shouldn't change
+    if (this.parent.useElementScroll) {
+      if (!this.parentHeight) this.parentHeight = viewRef.height();
+      parentHeight = this.parentHeight;
+    } else {
+      parentHeight = viewRef.height();
+    }
+    return this.height < parentHeight * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
@@ -725,7 +757,7 @@
 
   Page.prototype.remove = function() {
     if(this.onscreen) {
-      this.$el.remove();
+      this.$el.detach();
       this.onscreen = false;
     }
     this.cleanup();
@@ -886,9 +918,9 @@
     var $el = listItem.$el;
 
     listItem.top = yOffset;
-    listItem.height = $el.outerHeight(true);
+    if (!listItem.height) listItem.height = $el.outerHeight(true);
     listItem.bottom = listItem.top + listItem.height;
-    listItem.width = $el.width();
+    if (!listItem.width) listItem.width = $el.width();
   }
 
 
@@ -932,6 +964,8 @@
   infinity.ListView = ListView;
   infinity.Page = Page;
   infinity.ListItem = ListItem;
+  infinity.convertToItem = convertToItem;
+  infinity.cacheCoordsFor = cacheCoordsFor;
 
   //jQuery plugin
   function registerPlugin(infinity) {
