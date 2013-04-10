@@ -163,6 +163,86 @@
   };
 
 
+  // ### prepend
+  //
+  // Prepend a jQuery element or a ListItem to the ListView.
+  //
+  // Takes:
+  //
+  // - `obj`: a jQuery element, a string of valid HTML, or a ListItem.
+  //
+  // TODO: optimized batch prepend
+
+  ListView.prototype.prepend = function(obj) {
+    if(!obj || !obj.length) return null;
+
+    var firstPage,
+        item = convertToItem(this, obj, true),
+        pages = this.pages;
+
+    this.height += item.height;
+    this.$el.height(this.height);
+
+    firstPage = pages[0];
+
+    if(!firstPage || !firstPage.hasVacancy()) {
+      firstPage = new Page(this);
+      this.startIndex++;
+      pages.splice(0, 0, firstPage);
+    }
+
+    updatePagePosition(pages, item.height, 1);
+
+    firstPage.prepend(item);
+    updateStartIndex(this, true);
+
+    return item;
+  };
+
+  // ### updatePagePosition
+  //
+  // Update the top/bottom coordinate values for the given array of Pages
+  //
+  // Takes:
+  //
+  // - `pages`: array of Pages.
+  // - `positionChange`: the change in value to add to all Pages.
+  // - `offset`: an offset from the first page to process. Defaults to zero.
+
+  function updatePagePosition(pages, positionChange, offset) {
+    var length = pages.length,
+        i,
+        page;
+    for ( i = offset || 0; i < length; i++ ) {
+      page = pages[i];
+      page.top += positionChange;
+      page.bottom += positionChange;
+      // loop through all page items and update the top/bottom values
+      updateItemPosition(page.items, positionChange);
+    }
+  };
+
+  // ### updateItemPosition
+  //
+  // Update the top/bottom coordinate values for the given array of ListItems
+  //
+  // Takes:
+  //
+  // - `items`: array of ListItems.
+  // - `positionChange`: the change in value to add to all ListItems.
+  // - `offset`: an offset from the first item to process. Defaults to zero.
+
+  function updateItemPosition(items, positionChange, offset) {
+    var length = items.length,
+        i,
+        item;
+    for ( i = offset || 0; i < length; i++ ) {
+      item = items[i];
+      item.top += positionChange;
+      item.bottom += positionChange;
+    }
+  };
+
   // ### cacheCoordsFor
   //
   // Caches the coordinates for a given ListItem within the given ListView.
@@ -172,13 +252,18 @@
   // - `listView`: a ListView.
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
-  function cacheCoordsFor(listView, listItem) {
+  function cacheCoordsFor(listView, listItem, prepend) {
     listItem.$el.detach();
 
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
-    listView.$el.append(listItem.$el);
-    updateCoords(listItem, listView.height);
+    if ( prepend ) {
+      listView.$el.prepend(listItem.$el);
+    }
+    else {
+      listView.$el.append(listItem.$el);
+    }
+    updateCoords(listItem, prepend ? 0 : listView.height);
     listItem.$el.detach();
   }
 
@@ -227,7 +312,7 @@
   //
   // - `listView`: the ListView needing to be updated.
 
-  function updateStartIndex(listView) {
+  function updateStartIndex(listView, prepended) {
     var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
         viewRef = listView.$scrollParent,
@@ -236,7 +321,7 @@
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
-    if( nextIndex < 0 || nextIndex === startIndex) return startIndex;
+    if( nextIndex < 0 || (nextIndex === startIndex && !prepended)) return startIndex;
 
     pages = listView.pages;
     startIndex = listView.startIndex;
@@ -279,12 +364,12 @@
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
 
-  function convertToItem(listView, possibleItem) {
+  function convertToItem(listView, possibleItem, prepend) {
     var item;
     if(possibleItem instanceof ListItem) return possibleItem;
     if(typeof possibleItem === 'string') possibleItem = $(possibleItem);
     item = new ListItem(possibleItem);
-    cacheCoordsFor(listView, item);
+    cacheCoordsFor(listView, item, prepend);
     return item;
   }
 
@@ -680,7 +765,7 @@
     this.width = this.width > item.width ? this.width : item.width;
     this.height = this.bottom - this.top;
 
-    items.push(item);
+    items.splice(0,0,item);
     item.parent = this;
     this.$el.prepend(item.$el);
 
