@@ -1,7 +1,7 @@
 //     (c) 2012 Airbnb, Inc.
 //     
 //     infinity.js may be freely distributed under the terms of the BSD
-//     license. For all licensing information, details, and documention:
+//     license. For all licensing information, details, and documentation:
 //     http://airbnb.github.com/infinity
 
 !function(window, Math, $) {
