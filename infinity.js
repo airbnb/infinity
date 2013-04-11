@@ -493,7 +493,7 @@
   function startIndexWithinRange(listView, top, bottom) {
     var index = indexWithinRange(listView, top, bottom);
     index = Math.max(index - NUM_BUFFER_PAGES, 0);
-    index = Math.min(index, listView.pages.length);
+    index = Math.min(index, listView.pages.length - PAGES_ONSCREEN);
     return index;
   }
 
