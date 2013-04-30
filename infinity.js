@@ -600,17 +600,6 @@
       }
     }
 		
-		// ### isBottomList
-		//
-		// On scroll, check if the given element has appeared onscreen.  Used to trigger
-		// the optional more callback
-
-		function isBottomList($el){
-				var viewportBot = $(window).scrollTop()+$(window).height();
-				return $el.offset().top <= viewportBot;
-		}
-
-
     // ### scrollAll
     //
     // Callback passed to the setTimeout throttle. Calls `scrollListView` on
@@ -624,7 +613,7 @@
 				updateStartIndex(currentView);
 				var lastPage = currentView.pages[currentView.pages.length-1]
 				var lastItem = lastPage.items[lastPage.items.length-1]
-				if (isBottomList(lastItem.$el) && currentView.more){
+				if (lastPage.onscreen && currentView.more){
 					currentView.more = false;
 					// If we have reached the bottom of the list and the last element of the 
 					// last page is onscreen, call the optional more callback and get more elements
