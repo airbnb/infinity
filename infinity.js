@@ -1,7 +1,7 @@
 //     (c) 2012 Airbnb, Inc.
 //     
 //     infinity.js may be freely distributed under the terms of the BSD
-//     license. For all licensing information, details, and documention:
+//     license. For all licensing information, details, and documentation:
 //     http://airbnb.github.com/infinity
 
 !function(window, Math, $) {
@@ -35,6 +35,9 @@
 
   // Initial Setup
   // =============
+
+  // Cached objects
+  var $window = $(window);
 
   // Packaging:
   var oldInfinity = window.infinity,
@@ -80,6 +83,8 @@
 		this.more = !!options.more;
 		this.moreFn = options.more || null;
 
+    this.useElementScroll = options.useElementScroll === true;
+
     initBuffer(this);
 
     this.top = this.$el.offset().top;
@@ -89,8 +94,11 @@
     this.pages = [];
     this.startIndex = 0;
 
+    this.$scrollParent = this.useElementScroll ? $el : $window;
+
     DOMEvent.attach(this);
   }
+
 
   // ### initBuffer
   //
@@ -135,22 +143,20 @@
   // TODO: optimized batch appends
 
   ListView.prototype.append = function(obj) {
-    if(!obj || (obj.length && obj.length === 0)) return null;
+    if(!obj || !obj.length) return null;
 
     var lastPage,
         item = convertToItem(this, obj),
-        pages = this.pages,
-        pageChange = false;
+        pages = this.pages;
 
     this.height += item.height;
     this.$el.height(this.height);
 
-    if(pages.length > 0) lastPage = pages[pages.length - 1];
+    lastPage = pages[pages.length - 1];
 
     if(!lastPage || !lastPage.hasVacancy()) {
       lastPage = new Page(this);
       pages.push(lastPage);
-      pageChange = true;
     }
 
     lastPage.append(item);
@@ -159,6 +165,86 @@
     return item;
   };
 
+
+  // ### prepend
+  //
+  // Prepend a jQuery element or a ListItem to the ListView.
+  //
+  // Takes:
+  //
+  // - `obj`: a jQuery element, a string of valid HTML, or a ListItem.
+  //
+  // TODO: optimized batch prepend
+
+  ListView.prototype.prepend = function(obj) {
+    if(!obj || !obj.length) return null;
+
+    var firstPage,
+        item = convertToItem(this, obj, true),
+        pages = this.pages;
+
+    this.height += item.height;
+    this.$el.height(this.height);
+
+    firstPage = pages[0];
+
+    if(!firstPage || !firstPage.hasVacancy()) {
+      firstPage = new Page(this);
+      this.startIndex++;
+      pages.splice(0, 0, firstPage);
+    }
+
+    updatePagePosition(pages, item.height, 1);
+
+    firstPage.prepend(item);
+    updateStartIndex(this, true);
+
+    return item;
+  };
+
+  // ### updatePagePosition
+  //
+  // Update the top/bottom coordinate values for the given array of Pages
+  //
+  // Takes:
+  //
+  // - `pages`: array of Pages.
+  // - `positionChange`: the change in value to add to all Pages.
+  // - `offset`: an offset from the first page to process. Defaults to zero.
+
+  function updatePagePosition(pages, positionChange, offset) {
+    var length = pages.length,
+        i,
+        page;
+    for ( i = offset || 0; i < length; i++ ) {
+      page = pages[i];
+      page.top += positionChange;
+      page.bottom += positionChange;
+      // loop through all page items and update the top/bottom values
+      updateItemPosition(page.items, positionChange);
+    }
+  };
+
+  // ### updateItemPosition
+  //
+  // Update the top/bottom coordinate values for the given array of ListItems
+  //
+  // Takes:
+  //
+  // - `items`: array of ListItems.
+  // - `positionChange`: the change in value to add to all ListItems.
+  // - `offset`: an offset from the first item to process. Defaults to zero.
+
+  function updateItemPosition(items, positionChange, offset) {
+    var length = items.length,
+        i,
+        item;
+    for ( i = offset || 0; i < length; i++ ) {
+      item = items[i];
+      item.top += positionChange;
+      item.bottom += positionChange;
+    }
+  };
 
   // ### cacheCoordsFor
   //
@@ -169,17 +255,22 @@
   // - `listView`: a ListView.
   // - `listItem`: the ListItem whose coordinates you want to cache.
 
-  function cacheCoordsFor(listView, listItem) {
-    listItem.$el.remove();
+  function cacheCoordsFor(listView, listItem, prepend) {
+    listItem.$el.detach();
 
     // WARNING: this will always break for prepends. Once support gets added for
     // prepends, change this.
-    listView.$el.append(listItem.$el);
-    updateCoords(listItem, listView.height);
-    listItem.$el.remove();
+    if ( prepend ) {
+      listView.$el.prepend(listItem.$el);
+    }
+    else {
+      listView.$el.append(listItem.$el);
+    }
+    updateCoords(listItem, prepend ? 0 : listView.height);
+    listItem.$el.detach();
   }
 
-  
+
   // ### insertPagesInView
   //
   // Inserts any uninserted pages the given ListView owns.
@@ -187,7 +278,7 @@
   // Takes:
   //
   // - `listView`: the ListView whose onscreen pages you'd like to insert.
-  
+
   function insertPagesInView(listView) {
     var index, length, curr,
         pages = listView.pages,
@@ -224,30 +315,26 @@
   //
   // - `listView`: the ListView needing to be updated.
 
-  function updateStartIndex(listView) {
-    var index, length, curr, pages, indexInView,
-        lastIndex, nextLastIndex,
+  function updateStartIndex(listView, prepended) {
+    var index, length, pages, lastIndex, nextLastIndex,
         startIndex = listView.startIndex,
-        viewTop = $(window).scrollTop() - listView.top,
-        viewHeight = $(window).height(),
+        viewRef = listView.$scrollParent,
+        viewTop = viewRef.scrollTop() - listView.top,
+        viewHeight = viewRef.height(),
         viewBottom = viewTop + viewHeight,
         nextIndex = startIndexWithinRange(listView, viewTop, viewBottom);
 
-    if( nextIndex < 0 || nextIndex === startIndex) return startIndex;
+    if( nextIndex < 0 || (nextIndex === startIndex && !prepended)) return startIndex;
 
     pages = listView.pages;
     startIndex = listView.startIndex;
-    indexInView = new Array(pages.length);
     lastIndex = Math.min(startIndex + PAGES_ONSCREEN, pages.length);
     nextLastIndex = Math.min(nextIndex + PAGES_ONSCREEN, pages.length);
 
-    // mark current pages as valid
-    for(index = nextIndex, length = nextLastIndex; index < length; index++) {
-      indexInView[index] = true;
-    }
     // sweep any invalid old pages
     for(index = startIndex, length = lastIndex; index < length; index++) {
-      if(!indexInView[index]) pages[index].stash(listView.$shadow);
+      if(index < nextIndex || index >= nextLastIndex)
+        pages[index].stash(listView.$shadow);
     }
 
     listView.startIndex = nextIndex;
@@ -259,7 +346,7 @@
 
 
   // ### remove
-  // 
+  //
   // Removes the ListView from the DOM and cleans up after it.
 
   ListView.prototype.remove = function() {
@@ -269,9 +356,9 @@
 
 
   // ### convertToItem
-  // 
+  //
   // Given an object that is either a ListItem instance, a jQuery element, or a
-  // string of valid HTML, makes sure to return either the ListItem itself or 
+  // string of valid HTML, makes sure to return either the ListItem itself or
   // a new ListItem that wraps the element.
   //
   // Takes:
@@ -279,13 +366,13 @@
   // - `listView`: the ListView instance that wants the item.
   // - `possibleItem`: an object that is either a ListItem, a jQuery element,
   // or a string of valid HTML.
-  
-  function convertToItem(listView, possibleItem) {
+
+  function convertToItem(listView, possibleItem, prepend) {
     var item;
     if(possibleItem instanceof ListItem) return possibleItem;
     if(typeof possibleItem === 'string') possibleItem = $(possibleItem);
     item = new ListItem(possibleItem);
-    cacheCoordsFor(listView, item);
+    cacheCoordsFor(listView, item, prepend);
     return item;
   }
 
@@ -297,7 +384,7 @@
 
   function tooSmall(listView, page) {
     // Naive solution:
-    // repartition(listView);
+    repartition(listView);
   }
 
 
@@ -307,7 +394,7 @@
   // the array, or recalculating everything on screen resize.
 
   function repartition(listView) {
-    var currPage, newPage, index, length, itemIndex, pageLength, currItem,
+    var currPage, newPage, index, length, itemIndex, pageLength, currItems, currItem,
         nextItem,
         pages = listView.pages,
         newPages = [];
@@ -317,8 +404,9 @@
 
     for(index = 0, length = pages.length; index < length; index++) {
       currPage = pages[index];
-      for(itemIndex = 0, pageLength = currPage.items.length; itemIndex < pageLength; itemIndex++) {
-        currItem = currPage.items[itemIndex];
+      currItems = currPage.items;
+      for(itemIndex = 0, pageLength = currItems.length; itemIndex < pageLength; itemIndex++) {
+        currItem = currItems[itemIndex];
         nextItem = currItem.clone();
         if(newPage.hasVacancy()) {
           newPage.append(nextItem);
@@ -373,15 +461,11 @@
     items = [];
     findObj.each(function() {
       var pageId, page, pageItems, index, length, currItem,
-          $itemEl = $(this),
+          $itemEl = $(this).parentsUntil('[' + PAGE_ID_ATTRIBUTE + ']').andSelf().first(),
           $pageEl = $itemEl.parent();
 
-      while(!$pageEl.attr(PAGE_ID_ATTRIBUTE) && $pageEl.length > 0) {
-        $itemEl = $pageEl;
-        $pageEl = $pageEl.parent();
-      }
 
-      pageId = parseInt($pageEl.attr(PAGE_ID_ATTRIBUTE), 10);
+      pageId = $pageEl.attr(PAGE_ID_ATTRIBUTE);
       page = PageRegistry.lookup(pageId);
       if(page) {
         pageItems = page.items;
@@ -401,7 +485,7 @@
   // ### startIndexWithinRange
   //
   // Finds the starting index for a listView, given a range. Wraps
-  // indexWithinRange. 
+  // indexWithinRange.
   //
   // Takes:
   //
@@ -436,7 +520,7 @@
 
     // Start looking at the index of the page last contained by the screen --
     // not the first page in the onscreen pages
-    startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES, 
+    startIndex = Math.min(listView.startIndex + NUM_BUFFER_PAGES,
                           pages.length - 1);
 
     if(pages.length <= 0) return -1;
@@ -481,10 +565,11 @@
   // ----------------
 
   ListView.prototype.cleanup = function() {
-    var pages = this.pages;
+    var pages = this.pages,
+        page;
     DOMEvent.detach(this);
-    while(pages.length > 0) {
-      pages.pop().cleanup();
+    while(page = pages.pop()) {
+      page.cleanup();
     }
   };
 
@@ -496,7 +581,7 @@
   // bind to a throttled scroll event (and debounced resize event), and updates
   // them as it fires.
 
-  var DOMEvent = (function(window, $) {
+  var DOMEvent = (function() {
     var eventIsBound = false,
         scrollScheduled = false,
         resizeTimeout = null,
@@ -584,9 +669,13 @@
       //   event.
 
       attach: function(listView) {
+        if(!listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
+          listView.eventIsBound = true;
+        }
+
         if(!eventIsBound) {
-          $(window).on('scroll', scrollHandler);
-          $(window).on('resize', resizeHandler);
+          $window.on('resize', resizeHandler);
           eventIsBound = true;
         }
         boundViews.push(listView);
@@ -608,12 +697,16 @@
 
       detach: function(listView) {
         var index, length;
+        if(listView.eventIsBound) {
+          listView.$scrollParent.on('scroll', scrollHandler);
+          listView.eventIsBound = false;
+        }
+
         for(index = 0, length = boundViews.length; index < length; index++) {
           if(boundViews[index] === listView) {
             boundViews.splice(index, 1);
             if(boundViews.length === 0) {
-              $(window).off('scroll', scrollHandler);
-              $(window).off('resize', resizeHandler);
+              $window.off('resize', resizeHandler);
               eventIsBound = false;
             }
             return true;
@@ -622,7 +715,7 @@
         return false;
       }
     };
-  }(window, $));
+  }());
 
 
   // Page class
@@ -631,7 +724,7 @@
   // An internal class used for ordering items into roughly screen-sized pages.
   // Pages are removed and added to the DOM wholesale as they come in and out
   // of view.
-  
+
   function Page(parent) {
     this.parent = parent;
 
@@ -693,7 +786,7 @@
     this.width = this.width > item.width ? this.width : item.width;
     this.height = this.bottom - this.top;
 
-    items.push(item);
+    items.splice(0,0,item);
     item.parent = this;
     this.$el.prepend(item.$el);
 
@@ -706,17 +799,17 @@
   // Returns false if the Page is at max capacity; false otherwise.
 
   Page.prototype.hasVacancy = function() {
-    return this.height < $(window).height() * config.PAGE_TO_SCREEN_RATIO;
+    var viewRef = this.parent.$scrollParent;
+    return this.height < viewRef.height() * config.PAGE_TO_SCREEN_RATIO;
   };
 
 
   // ### appendTo
-  // 
+  //
   // Proxies to jQuery to append the Page to the given jQuery element.
 
   Page.prototype.appendTo = function($el) {
     if(!this.onscreen) {
-      this.$el.remove();
       this.$el.appendTo($el);
       this.onscreen = true;
     }
@@ -740,9 +833,8 @@
 
   Page.prototype.stash = function($el) {
     if(this.onscreen) {
-      this.$el.remove();
+      this.$el.appendTo($el);
       this.onscreen = false;
-      $el.append(this.$el);
     }
   };
 
@@ -753,7 +845,7 @@
 
   Page.prototype.remove = function() {
     if(this.onscreen) {
-      this.$el.remove();
+      this.$el.detach();
       this.onscreen = false;
     }
     this.cleanup();
@@ -765,11 +857,13 @@
   // Cleans up the Page without removing it.
 
   Page.prototype.cleanup = function() {
-    var items = this.items;
+    var items = this.items,
+        item;
+
     this.parent = null;
     PageRegistry.remove(this);
-    while(items.length > 0) {
-      items.pop().cleanup();
+    while (item = items.pop()) {
+      item.cleanup();
     }
   };
 
@@ -782,12 +876,13 @@
   //
   // - `callback`: a function of the form `function([$el]){}`. Will run on
   // each unloaded element, and will use the element as its calling context.
-  
+
   Page.prototype.lazyload = function(callback) {
-    var index, length;
-    if(!this.lazyloaded) {
-      for(index = 0, length = this.$el.length; index < length; index++) {
-        callback.call(this.$el[index], this.$el[index]);
+    var $el = this.$el,
+        index, length;
+    if (!this.lazyloaded) {
+      for (index = 0, length = $el.length; index < length; index++) {
+        callback.call($el[index], $el[index]);
       }
       this.lazyloaded = true;
     }
@@ -804,12 +899,10 @@
         return pages.push(page) - 1;
       },
       lookup: function(id) {
-        if(id >= pages.length) return null;
-        return pages[id];
+        return pages[id] || null;
       },
       remove: function(page) {
         var id = page.id;
-        if(id >= pages.length) return false;
         if(!pages[id]) return false;
         pages[id] = null;
         return true;
@@ -837,7 +930,7 @@
     items.splice(foundIndex, 1);
     page.bottom -= item.height;
     page.height = page.bottom - page.top;
-    if(!page.hasVacancy()) tooSmall(page.parent, page);
+    if(page.hasVacancy()) tooSmall(page.parent, page);
 
     return true;
   }
@@ -848,8 +941,8 @@
   //
   // An individual item in the ListView.
   //
-  // Has cached top, bottom, width, and height properties, determined from 
-  // jQuery. This positioning data will be determined when the ListItem is 
+  // Has cached top, bottom, width, and height properties, determined from
+  // jQuery. This positioning data will be determined when the ListItem is
   // inserted into a ListView; it can't be determined ahead of time.
   //
   // All positioning data is relative to the containing ListView.
@@ -864,6 +957,7 @@
     this.width = 0;
     this.height = 0;
   }
+
 
   // ### clone
   //
@@ -907,10 +1001,10 @@
   //
   //  - `listItem`: the ListItem whose cached coordinates you want to update.
   //  - `yOffset`: the y-offset of the ListItem from its ListView parent.
-  
+
   function updateCoords(listItem, yOffset) {
-    var $el = listItem.$el,
-        offset = $el.offset();
+    var $el = listItem.$el;
+
     listItem.top = yOffset;
     listItem.height = $el.outerHeight(true);
     listItem.bottom = listItem.top + listItem.height;
@@ -922,23 +1016,14 @@
   // Helper functions
   // ================
 
-  
-  // ### div
-  //
-  // Returns a new, empty `<div>` jQuery element.
-
-  function div() {
-    return $('<div></div>');
-  }
-
 
   // ### blankDiv
-  // 
-  // Returns a new, empty `<div>` jQuery element. The `<div>` will have its 
+  //
+  // Returns a new, empty `<div>` jQuery element. The `<div>` will have its
   // border, margin, and padding set to zero or none, as appropriate.
 
   function blankDiv() {
-    return div().css({
+    return $('<div>').css({
       margin: 0,
       padding: 0,
       border: 'none'
@@ -953,11 +1038,11 @@
   // Takes:
   //
   // - `px`: a string value, which starts with a number and is
-  //   prefixed with the string `'px'`.
+  //   postfixed with the string `'px'`.
 
-  function pxToInt(px) {
-    return parseInt(px.replace('px', ''), 10);
-  }
+  //function pxToInt(px) {
+  //  return parseInt(px, 10);
+  //}
 
 
   // Export
@@ -968,9 +1053,27 @@
   infinity.Page = Page;
   infinity.ListItem = ListItem;
 
+  //jQuery plugin
+  function registerPlugin(infinity) {
+    var ListView;
+    if(infinity) {
+      ListView = infinity.ListView;
+
+      $.fn.listView = function (options) {
+        return new ListView(this, options);
+      };
+    }
+    else {
+      delete $.fn.listView;
+    }
+  }
+
+  registerPlugin(infinity);
+
   // Destroy own packaging:
   infinity.noConflict = function() {
     window.infinity = oldInfinity;
+    registerPlugin(oldInfinity);
     return infinity;
   };
 

@@ -14,6 +14,11 @@ describe 'ListItem', ->
     item = lv.append $content
     expect(item).to.be.a(ListItem)
 
+  it 'should be returned from a preppend', ->
+    $content = $ '<br>'
+    item = lv.prepend $content
+    expect(item).to.be.a(ListItem)
+
   it 'should remove itself from the parent ListView when removed', ->
     $content = $ '<br>'
     item = lv.append $content
