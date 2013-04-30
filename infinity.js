@@ -80,8 +80,8 @@
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
     // new callback for loading more content
-		this.more = !!options.more;
-		this.moreFn = options.more || null;
+	this.more = !!options.more;
+	this.moreFn = options.more || null;
 
     this.useElementScroll = options.useElementScroll === true;
 
@@ -625,9 +625,12 @@
 				var lastPage = currentView.pages[currentView.pages.length-1]
 				var lastItem = lastPage.items[lastPage.items.length-1]
 				if (isBottomList(lastItem.$el) && currentView.more){
+					currentView.more = false;
 					// If we have reached the bottom of the list and the last element of the 
 					// last page is onscreen, call the optional more callback and get more elements
-					currentView.moreFn()
+					currentView.moreFn(function(){
+						currentView.more=true;
+					})
 				}
       }
       scrollScheduled = false;
