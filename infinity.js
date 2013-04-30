@@ -628,8 +628,11 @@
 					currentView.more = false;
 					// If we have reached the bottom of the list and the last element of the 
 					// last page is onscreen, call the optional more callback and get more elements
-					currentView.moreFn(function(){
-						currentView.more=true;
+					currentView.moreFn(function(hasMore){
+						if(typeof hasMore === 'undefined'){
+							hasMore = true;
+						}
+						currentView.more=hasMore;
 					})
 				}
       }
