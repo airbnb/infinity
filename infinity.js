@@ -220,7 +220,7 @@
       // loop through all page items and update the top/bottom values
       updateItemPosition(page.items, positionChange);
     }
-  };
+  }
 
   // ### updateItemPosition
   //
@@ -241,7 +241,7 @@
       item.top += positionChange;
       item.bottom += positionChange;
     }
-  };
+  }
 
   // ### cacheCoordsFor
   //
@@ -379,7 +379,7 @@
   // Alerts the given ListView that the given Page is too small. May result
   // in modifications to the `pages` array.
 
-  function tooSmall(listView, page) {
+  function tooSmall(listView) {
     // Naive solution:
     repartition(listView);
   }
