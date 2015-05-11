@@ -2,7 +2,7 @@
   "name": "infinity",
   "version": "0.2.2",
   "description": "A UITableView for the web.",
-
+  "main": "infinity.js",
   "keywords": ["infinite", "scroll", "infinity", "UITableView", "ListView"],
 
   "homepage": "http://airbnb.github.com/infinity",
