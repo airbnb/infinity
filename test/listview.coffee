@@ -18,7 +18,7 @@ describe 'ListView', ->
   it 'should be initialized with no height', ->
     expect(lv.height).to.be(0)
     expect($el.height()).to.be(0)
-  
+
   it 'should find things appended to it with a CSS selector', ->
     $content = $ '<div class=test></div>'
     lv.append $content
