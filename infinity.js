@@ -79,6 +79,9 @@
 
     this.lazy = !!options.lazy;
     this.lazyFn = options.lazy || null;
+    // new callback for loading more content
+	this.more = !!options.more;
+	this.moreFn = options.more || null;
 
     this.useElementScroll = options.useElementScroll === true;
 
@@ -591,13 +594,12 @@
     // and disallows future scheduling.
 
     function scrollHandler() {
-      if(!scrollScheduled) {
+			if(!scrollScheduled) {
         setTimeout(scrollAll, config.SCROLL_THROTTLE);
-        scrollScheduled = true;
+				scrollScheduled = true;
       }
     }
-
-
+		
     // ### scrollAll
     //
     // Callback passed to the setTimeout throttle. Calls `scrollListView` on
@@ -607,7 +609,19 @@
     function scrollAll() {
       var index, length;
       for(index = 0, length = boundViews.length; index < length; index++) {
-        updateStartIndex(boundViews[index]);
+        var currentView = boundViews[index];
+				updateStartIndex(currentView);
+				var lastPage = currentView.pages[currentView.pages.length-1]
+				var lastItem = lastPage.items[lastPage.items.length-1]
+				if (lastPage.onscreen && currentView.more){
+					currentView.more = false;
+					// If we have reached the bottom of the list and the last element of the 
+					// last page is onscreen, call the optional more callback and get more elements
+					currentView.moreFn(function(hasMore){
+						hasMore = typeof hasMore == 'boolean' ? hasMore : true;
+						currentView.more=hasMore;
+					})
+				}
       }
       scrollScheduled = false;
     }
