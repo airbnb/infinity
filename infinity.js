@@ -84,6 +84,11 @@
 
     initBuffer(this);
 
+    // Provide a method to disable repartitioning.
+    // Repartitioning is called unnecessarily due to the `window` being faux resized whenever
+    // an item is added to the `ListView` on a mobile web device.
+    this.repartitionOnResize = options.repartitionOnResize !== false;
+
     this.top = this.$el.offset().top;
     this.width = 0;
     this.height = 0;
@@ -395,6 +400,10 @@
         nextItem,
         pages = listView.pages,
         newPages = [];
+
+    if (!listView.repartitionOnResize) {
+      return;
+    }
 
     newPage = new Page(listView);
     newPages.push(newPage);
