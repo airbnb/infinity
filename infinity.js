@@ -957,7 +957,11 @@
 
   ListItem.prototype.remove = function() {
     this.$el.remove();
-    removeItemFromPage(this, this.parent);
+    // when removing multiple items at once
+    // tooSmall/repartition was causing item parent to be null
+    if (this.parent !== null) {
+        removeItemFromPage(this, this.parent);
+    }
     this.cleanup();
   };
 
