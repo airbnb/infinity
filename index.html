@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>Infinity.js</title>
+    <link rel=stylesheet type=text/css href=assets/google-code-prettify/prettify.css>
+    <link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+    <link rel=stylesheet type=text/css href=assets/o2.css>
+    <link rel=stylesheet type=text/css href=assets/custom.css>
+  </head>
+
+  <body>
+    <div class='container main-container'>
+      <div class=row>
+        <div class=span12>
+          <h1 class=logo>
+            <a class=logo-link href=/infinity>
+              <span class=logo-prefix>&infin;</span>
+              <span class=logo-suffix>.js</span>
+            </a>
+          </h1>
+        </div>
+      </div>
+      <div class='row main-copy'>
+        <div class=span12>
+          <p>
+            <a href=/infinity class=infinity-logo>&infin;</a> is a UITableView for the 
+            web: it speeds up scrolling through long lists and keeps your 
+            infinite feeds smooth and stable for your users. It is small, 
+            battle-tested, and highly performant. The code is hosted on 
+            <a href=https://github.com/airbnb/infinity>Github</a>, and 
+            distributed under the BSD License. The
+            <a href=docs/infinity.html>annotated source</a> is available, as
+            are demos both with Infinity turned <a href=demo-off.html>off</a>
+            and <a href=demo-on.html>on</a>.
+          </p>
+          <p>
+            <a href=/infinity class=infinity-logo>&infin;</a> was built by 
+            <a href=http://www.airbnb.com/jobs>Airbnb</a>
+            alongside the development of the Popular Wishlists and Friends
+            feeds, and sees daily production use there today. Its only
+            dependency is on jQuery.
+          </p>
+
+        </div>
+      </div>
+
+      <hr>
+
+      <div class='row start-container'>
+        <div class='span8 main-copy quickstart'>
+          <p class=quickstart-text>It's easy to get started:</p>
+<pre class='prettyprint linenums lang-js quickstart-code'>
+var $el = $('#my-infinite-container');
+var listView = new infinity.ListView($el);
+
+// ... When adding new content:
+
+var $newContent = $('&lt;p&gt;Hello World&lt;/p&gt;');
+listView.append($newContent);
+
+// ... To remove items from a list:
+
+var listItems = listView.find('.my-items');
+for(var index = 0, length = listItems.length; index < length; index++) {
+  listItems[index].remove();
+}
+</pre>
+          <p class=quickstart-text>For full API documentation, keep reading.</p>
+        </div>
+
+        <div class='span4 download-box'>
+            <div class='row-fluid download'>
+              <p class=download-copy>
+                Development version (unminified, with comments)
+              </p>
+              <a href=infinity.js class='btn gray'>Download</a>
+            </div>
+            <br>
+            <div class='row-fluid download'>
+              <p class=download-copy>
+                Production version (2.3k minified &amp; compressed)
+              </p>
+              <a href=build/infinity.min.js class=btn>Download</a>
+            </div>
+        </div>
+      </div>
+
+      <div class=navbar id=reference>
+        <div class=navbar-inner>
+          <div class=container>
+            <a href=#reference class=brand>
+              <span class=infinity-logo>&infin;</span> Reference Guide
+            </a>
+            <ul class=nav>
+              <li><a href=#api-listview>ListView</a>
+              <li class=divider-vertical>
+              <li><a href=#api-listitem>ListItem</a>
+              <li class=divider-vertical>
+              <li><a href=#api-config>Configuration</a>
+              <li class=divider-vertical>
+              <li><a href=#future-work>Future Work</a>
+            </ul>
+
+            <ul class='nav pull-right'>
+              <li><a href=http://github.com/airbnb/infinity class='pink btn fork'>
+                    <i class='icon icon-github'></i> Fork Me
+                  </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class=row>
+        <div class=span12>
+          <div class='panel-padding'>
+
+            <div class='row-fluid api-doc' id=api-listview>
+              <div class=span8>
+                <h2><a class=api-header-link href=#api-listview>
+                    ListView API Reference
+                </a></h2>
+                <p class=api-copy>
+                  A <strong>ListView</strong> is a container
+                  that moves content in and out of the DOM on the scroll event.
+                  ListViews help keep repaint times of expensive pages down
+                  (and scrolling smooth) by making sure that there are never
+                  too many elements onscreen at a single time. ListViews excel
+                  at speeding up long lists of complex HTML elements,
+                  where new content is frequently appended to the end and
+                  existing content is rarely removed.
+                </p>
+                <p class=api-copy>
+                  ListViews are simple, and have several caveats: they can't be
+                  nested inside each other, and they can't have heights set via
+                  CSS. Additionally, ListViews can't easily change sizes except
+                  by appending or removing elements, and so list items that
+                  need to slide open or change their sizing will be difficult
+                  to implement. Appending elements to a ListView is relatively
+                  fast, but removing elements is slower &mdash; so designs that
+                  need to remove elements multiple times a second at high
+                  framerates will struggle.
+                </p>
+                <p class=api-copy>
+                  <span class='label label-red'>Note</span> Because Firefox
+                  implements the unspecified behavior of 
+                  <code>&lt;img&gt;</code> tags
+                  without <code>src</code> attributes differently than other
+                  browsers, if you're lazy-loading images inside of a ListView
+                  you should set their <code>display</code> to either
+                  <code>block</code> or <code>inline-block</code>, or Firefox
+                  will report the wrong height data to Infinity.
+                </p>
+              </div>
+              <div class='span3 offset1'>
+                <div class='panel-background-white panel-border summary'>
+                  <div class='panel-header panel-header-dark'>
+                    <h3>Table of Contents</h3>
+                  </div>
+                  <div class=panel-padding>
+                    <ul class=unstyled>
+                      <li class=pull-right><a href=#api-listview>Summary</a>
+                      <li class=pull-right><a href=#api-listview-properties>Properties</a>
+                      <li class=pull-right><a href=#api-listview-methods>Methods</a>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listview-properties>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listview-properties>
+                    Properties
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>$el</code>: the jQuery element used as the parent
+                  of the ListView.
+                  <li><code>width</code>: the width of the ListView.
+                  <li><code>height</code>: the height of the ListView.
+                </ul>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listview-methods>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listview-methods>
+                    Methods
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>new ListView($el [, options])</code>: creates a new
+                  ListView that will append its content inside the given
+                  jQuery element. The element passed in must be already in
+                  the DOM: otherwise, the ListView will cache incorrect
+                  size and positioning data. <code>options</code> is an options
+                  hash, and can be filled with the following options:
+                  <ul class=api-list>
+                    <li><code>lazy</code>: a function that will be called to
+                    lazily load any unloaded ListItems onscreen. The function
+                    will be called with the ListItem's jQuery element as its
+                    context.
+                  </ul>
+                  <li><code>append($el | listItem)</code>: appends a jQuery
+                  element or a ListItem to the ListView. Returns either the
+                  given ListItem, or the given jQuery element wrapped inside of
+                  a new ListItem.
+                  <li><code>find(selector | $el)</code>: given a selector or a
+                  jQuery element, returns the ListItem(s) that contain the
+                  element or selector.
+                  It's important to use the ListView to find the items you want,
+                  and not the DOM, since the items will often be removed from
+                  the DOM to save scrolling performance. Note that
+                  <code>find()</code> will return an array of ListItems, which
+                  are wrappers around jQuery elements that cache positioning
+                  data and can communicate easily with the parent ListView 
+                  (which is taken care of behind the scenes during
+                  <code>ListItem#remove()</code> operations).
+                  <li><code>remove()</code>: removes the ListView from the DOM,
+                  and cleans up after it.
+                  <li><code>cleanup()</code>: unbinds all events, but does not
+                  remove the ListView from the DOM.
+                </ul>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=api-listitem>
+              <div class=span9>
+                <h2><a class=api-header-link href=#api-listitem>
+                    ListItem API Reference
+                </a></h2>
+                <p class=api-copy>
+                  <strong>ListItems</strong> are wrappers for individual DOM
+                  nodes placed inside a ListView. You'll normally never need
+                  to create ListItems yourself: the ListView will automatically
+                  wrap any jQuery elements you pass into it for you. However,
+                  you may find it useful to interact with them
+                  individually &mdash; for example, if you need to remove an
+                  element, you should do so by calling remove on the ListItem
+                  so that it reports the removal to the parent ListView
+                  &mdash; and so ListViews make it easy to inspect their
+                  collections of ListItems.
+                </p>
+              </div>
+              <div class=span3>
+                <div class='panel-background-white panel-border summary'>
+                  <div class='panel-header panel-header-dark'>
+                    <h3>Table of Contents</h3>
+                  </div>
+                  <div class=panel-padding>
+                    <ul class=unstyled>
+                      <li class=pull-right><a href=#api-listitem>Summary</a>
+                      <li class=pull-right><a href=#api-listitem-properties>Properties</a>
+                      <li class=pull-right><a href=#api-listitem-methods>Methods</a>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listitem-properties>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listitem-properties>
+                    Properties
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>$el</code>: the jQuery element this ListItem wraps.
+                  <li><code>top</code>: the top of the ListItem onscreen,
+                  relative to its ListView parent.
+                  <li><code>bottom</code>: the bottom of the ListItem onscreen,
+                  relative to its ListView parent.
+                  <li><code>width</code>: the width of the ListItem.
+                  <li><code>height</code>: the height of the ListItem.
+                </ul>
+              </div>
+            </div>
+
+            <div class='row-fluid api-doc' id=api-listitem-methods>
+              <div class=span12>
+                <h3><a class=api-header-link href=api-listitem-methods>
+                    Methods
+                </a></h3>
+                <ul class=api-list>
+                  <li><code>remove()</code>: permanently removes the ListItem
+                  from the ListView and the ListItem's element from the DOM, 
+                  and cleans up after everything.
+                  <li><code>cleanup()</code>: unbinds all events and
+                  relinquishes all references it holds, but does not remove the
+                  ListItem from the ListView.
+                </ul>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=api-config>
+              <div class=span12>
+                <h2><a class=api-header-link href=#api-config>
+                    Configuring Infinity.js
+                </a></h2>
+                <p class=api-copy>
+                  We've tried to choose sensible defaults for Infinity,
+                  but sometimes there are special cases we haven't designed
+                  for. Infinity.js can be configured with two options to help
+                  make sure scrolling stays smooth for a variety of
+                  circumstances. The configuration options are as follows:
+                </p>
+                <ul class=api-list>
+                  <li><code>infinity.config.PAGE_TO_SCREEN_RATIO</code>:
+                  internally, Infinity.js puts its ListItems into blocks of
+                  <strong>Pages</strong>, and this variable controls how large a
+                  page should be relative to the size of the viewport. By
+                  default, it is set to <code>3</code>. Larger pages mean
+                  that Infinity has to swap pages less frequently, and smaller
+                  pages mean faster rendering times. If you have extremely
+                  complex pages, you might want to decrease this so that 
+                  there's less onscreen to slow down the page; on the other
+                  hand, if you have very simple pages, you might want to
+                  increase this to minimize even further the possibility of
+                  jarring swaps or scroll flickering.
+                  <li><code>infinity.config.SCROLL_THROTTLE</code>: Infinity.js
+                  throttles its scroll event: it only responds to scroll events
+                  every 350 milliseconds. If you'd like to make it respond
+                  more or less often, set this value to the desired number
+                  of milliseconds you'd like Infinity to throttle to. If you've
+                  increased the <code>PAGE_TO_SCREEN_RATIO</code>, you could
+                  increase the <code>SCROLL_THROTTLE</code> to do less frequent
+                  computation; if you've decreased the
+                  <code>PAGE_TO_SCREEN_RATIO</code>, you'll probably want to
+                  also decrease the <code>SCROLL_THROTTLE</code> to make sure
+                  the smaller pages get swapped onto the page more regularly,
+                  since your given buffer around the screen is smaller.
+                </ul>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class='row-fluid api-doc' id=future-work>
+              <div class=span12>
+                <h2><a class=api-header-link href=#future-work>
+                    Future Work
+                </a></h2>
+
+                <ul class=api-list>
+                  <li>Switch Infinity's internal data structure from a sorted
+                  array to a self-balancing binary tree. This will make
+                  <code>remove()</code> operations on ListItems much faster,
+                  and allow simple, fast support for prepends (or even
+                  arbitrary insertion points).
+                  <li>Make an API for notifying ListViews/ListItems when
+                  elements change size, so that the ListView can reorganize
+                  itself. This is probably a next step after switching to a
+                  self-balancing binary tree.
+                  <li>Make the buffer scroll-direction-aware, so that you can
+                  either only have a back buffer or only have a front buffer
+                  depending on the scroll direction. This would allow you to
+                  increase the <code>PAGE_TO_SCREEN_RATIO</code> a bit without
+                  negatively impacting paint times.
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <script type=text/javascript src=https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js></script>
+    <script src="assets/google-code-prettify/prettify.js"></script>
+    <script type=text/javascript src=assets/js/vendor/ender.min.js></script>
+    <script>ender.noConflict();</script>
+    <script type=text/javascript src=assets/js/vendor/stdair.min.js></script>
+    <script type=text/javascript src=assets/js/vendor/o2.min.js></script>
+
+    <script>
+      prettyPrint();
+
+      !function(window, $) {
+        var $nav = $('.navbar'),
+            $win = $(window),
+            navTop = $nav.offset().top,
+            onTop = false,
+            checkScheduled = false;
+
+        function checkNav() {
+          var top = $win.scrollTop();
+          if(navTop < top && !onTop) {
+            onTop = true;
+            $nav.addClass('navbar-fixed-top');
+            } else if(navTop >= top && onTop) {
+            $nav.removeClass('navbar-fixed-top');
+            onTop = false;
+          }
+        }
+
+        $win.on('scroll', function() {
+          if(!checkScheduled) {
+            checkScheduled = true;
+            setTimeout(function() {
+              checkNav();
+              checkScheduled = false;
+            }, 100);
+          }
+        });
+      }(window, jQuery);
+    </script>
+  </body>
+</html>
